@@ -10,85 +10,85 @@ namespace MiniProj
 {
     public class Asset : Reference
     {
-        private List<Object> m_Requires;
-        protected Type m_AssetType;
-        protected string m_Name;
-        protected string m_Path;
-        protected StringBuilder mStrBuilder;
+        private List<Object> m_requires;
+        protected Type m_assetType;
+        protected string m_name;
+        protected string m_path;
+        protected StringBuilder m_strBuilder;
 
         public string Id
         {
-            get { return m_Path+m_Name; }
+            get { return m_path+m_name; }
         }
-        public Object m_Asset { get; internal set; }
+        public Object m_asset { get; internal set; }
 
         private bool CheckRequires
         {
-            get { return m_Requires != null; }
+            get { return m_requires != null; }
         }
 
         public void Require(Object obj)
         {
-            if (m_Requires == null)
-                m_Requires = new List<Object>();
+            if (m_requires == null)
+                m_requires = new List<Object>();
 
-            m_Requires.Add(obj);
+            m_requires.Add(obj);
             Retain();
         }
 
         // ReSharper disable once IdentifierTypo
         public void Dequire(Object obj)
         {
-            if (m_Requires == null)
+            if (m_requires == null)
                 return;
 
-            if (m_Requires.Remove(obj))
+            if (m_requires.Remove(obj))
                 Release();
         }
 
         private void UpdateRequires()
         {
-            for (var i = 0; i < m_Requires.Count; i++)
+            for (var _i = 0; _i < m_requires.Count; _i++)
             {
-                var item = m_Requires[i];
-                if (item != null)
+                var _item = m_requires[_i];
+                if (_item != null)
                     continue;
                 Release();
-                m_Requires.RemoveAt(i);
-                i--;
+                m_requires.RemoveAt(_i);
+                _i--;
             }
 
-            if (m_Requires.Count == 0)
-                m_Requires = null;
+            if (m_requires.Count == 0)
+                m_requires = null;
         }
 
         internal virtual void Load()
         {
-            mStrBuilder.Length = 0;
-            mStrBuilder.Append("Assets/");
-            mStrBuilder.Append(m_Path);
-            mStrBuilder.Append("/");
-            mStrBuilder.Append(m_Name);
+            m_strBuilder.Length = 0;
+            m_strBuilder.Append("Assets/");
+            m_strBuilder.Append(m_path);
+            m_strBuilder.Append("/");
+            m_strBuilder.Append(m_name);
 
-            m_Asset = AssetDatabase.LoadAssetAtPath(mStrBuilder.ToString(), m_AssetType);
+            m_asset = AssetDatabase.LoadAssetAtPath(m_strBuilder.ToString(), m_assetType);
         }
 
         internal virtual void Unload()
         {
-            if (m_Asset == null)
+            if (m_asset == null)
                 return;
-            if (!(m_Asset is GameObject))
-                Resources.UnloadAsset(m_Asset);
+            if (!(m_asset is GameObject))
+                Resources.UnloadAsset(m_asset);
 
-            m_Asset = null;
+            m_asset = null;
         }
 
         public Asset(string path, string name, Type type)
         {
-            m_Path = path;
-            m_Name = name;
-            m_AssetType = type;
-            mStrBuilder = new StringBuilder();
+            m_path = path;
+            m_name = name;
+            m_assetType = type;
+            m_strBuilder = new StringBuilder();
         }
 
         internal bool Update()
@@ -103,29 +103,29 @@ namespace MiniProj
 
     public class BundleAsset : Asset
     {
-        protected readonly string assetBundleName;
-        protected BundleItem m_Bundle;
+        protected readonly string m_assetBundleName;
+        protected BundleItem m_bundle;
 
         public BundleAsset(string path, string name, Type type) :base(path, name, type)
         {
-            assetBundleName = path.Replace('/', '_');
+            m_assetBundleName = path.Replace('/', '_');
         }
 
         internal override void Load()
         {
-            m_Bundle = GameManager.ResManager.LoadAssetBundleSync(assetBundleName);
-            m_Asset = m_Bundle.Bundle.LoadAsset(m_Name, m_AssetType);
+            m_bundle = GameManager.ResManager.LoadAssetBundleSync(m_assetBundleName);
+            m_asset = m_bundle.Bundle.LoadAsset(m_name, m_assetType);
         }
 
         internal override void Unload()
         {
-            if (m_Bundle != null)
+            if (m_bundle != null)
             {
-                m_Bundle.Release();
-                m_Bundle = null;
+                m_bundle.Release();
+                m_bundle = null;
             }
 
-            m_Asset = null;
+            m_asset = null;
         }
     }
 }

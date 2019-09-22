@@ -7,43 +7,48 @@ namespace MiniProj
 {
     public class BundleItem : Reference
     {
-        private string m_Name;
-        private StringBuilder m_StringBuilder;
-        private string m_Error;
-        private AssetBundle m_AssetBundle;
-        public readonly List<BundleItem> m_Dependencies = new List<BundleItem>();
+        private string m_name;
+        private StringBuilder m_stringBuilder;
+        private string m_error;
+        private AssetBundle m_assetBundle;
+        public readonly List<BundleItem> m_dependencies = new List<BundleItem>();
         public string Name
         {
-            get { return m_Name; }
+            get { return m_name; }
         }
         public AssetBundle Bundle
         {
-            get { return m_AssetBundle; }
+            get { return m_assetBundle; }
+        }
+
+        public string Error
+        {
+            get { return m_error; }
         }
 
 
         public BundleItem(string name)
         {
-            m_Name = name;
-            m_StringBuilder = new StringBuilder();
+            m_name = name;
+            m_stringBuilder = new StringBuilder();
         }
 
         internal virtual void Load()
         {
-            m_StringBuilder.Length = 0;
-            m_StringBuilder.Append(ResourceManager.AssetBundlePath);
-            m_StringBuilder.Append(m_Name);
-            m_AssetBundle = AssetBundle.LoadFromFile(m_StringBuilder.ToString());
-            if (m_AssetBundle == null)
-                m_Error = m_Name + " LoadFromFile failed.";
+            m_stringBuilder.Length = 0;
+            m_stringBuilder.Append(ResourceManager.AssetBundlePath);
+            m_stringBuilder.Append(m_name);
+            m_assetBundle = AssetBundle.LoadFromFile(m_stringBuilder.ToString());
+            if (m_assetBundle == null)
+                m_error = m_name + " LoadFromFile failed.";
         }
 
         internal virtual void Unload()
         {
-            if (m_AssetBundle == null)
+            if (m_assetBundle == null)
                 return;
-            m_AssetBundle.Unload(true);
-            m_AssetBundle = null;
+            m_assetBundle.Unload(true);
+            m_assetBundle = null;
         }
 
     }

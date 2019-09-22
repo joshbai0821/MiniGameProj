@@ -8,21 +8,21 @@ namespace MiniProj
 {
     public class ResourceManager : MonoBehaviour
     {
-        private StringBuilder mStrBuilder;
-        private List<BundleItem> m_BundleList;
-        private List<Asset> m_AssetList;
-        private Dictionary<string, List<String>> m_Manifest;
-        private int count;
+        private StringBuilder m_strBuilder;
+        private List<BundleItem> m_bundleList;
+        private List<Asset> m_assetList;
+        private Dictionary<string, List<String>> m_manifest;
+        private int m_count;
         private static int CountInterval = 20;
         public static string AssetBundlePath;
 
         public ResourceManager()
         {
-            mStrBuilder = new StringBuilder();
-            m_Manifest = new Dictionary<string, List<string>>(8);
-            m_BundleList = new List<BundleItem>(8);
-            m_AssetList = new List<Asset>(8);
-            count = 0;
+            m_strBuilder = new StringBuilder();
+            m_manifest = new Dictionary<string, List<string>>(8);
+            m_bundleList = new List<BundleItem>(8);
+            m_assetList = new List<Asset>(8);
+            m_count = 0;
         }
 
         private void Awake()
@@ -36,7 +36,7 @@ namespace MiniProj
             var _assets = LoadAssetSync(path, name, type, abName);
             if (_assets != null)
             {
-                _obj = UnityEngine.Object.Instantiate(_assets.m_Asset);
+                _obj = UnityEngine.Object.Instantiate(_assets.m_asset);
                 _assets.Require(_obj);
                 
                 return _obj;
@@ -52,9 +52,9 @@ namespace MiniProj
                 return null;
             }
 
-            for (int i = 0, max = m_AssetList.Count; i < max; i++)
+            for (int i = 0, max = m_assetList.Count; i < max; i++)
             {
-                var item = m_AssetList[i];
+                var item = m_assetList[i];
                 if (!item.Id.Equals(path+name))
                     continue;
                 item.Retain();
@@ -62,13 +62,13 @@ namespace MiniProj
             }
 #if UNITY_EDITOR
             Asset asset = new Asset(path, name, type);
-            m_AssetList.Add(asset);
+            m_assetList.Add(asset);
             asset.Load();
             asset.Retain();
             return asset;
 #else
             Asset asset = new BundleAsset(path, name, type);
-            m_AssetList.Add(asset);
+            m_assetList.Add(asset);
             asset.Load();
             asset.Retain();
             return asset;
@@ -78,11 +78,11 @@ namespace MiniProj
         protected bool LoadAssetBundleManifest()
         {
             bool _ret = true;
-            mStrBuilder.Length = 0;
-            mStrBuilder.Append(AssetBundlePath);
-            mStrBuilder.Append("/AssetBundles");
+            m_strBuilder.Length = 0;
+            m_strBuilder.Append(AssetBundlePath);
+            m_strBuilder.Append("/AssetBundles");
 
-            var _bundle = AssetBundle.LoadFromFile(mStrBuilder.ToString());
+            var _bundle = AssetBundle.LoadFromFile(m_strBuilder.ToString());
             if (_bundle == null)
             {
                 Debug.Log("Load asset bundle manifest failed");
@@ -97,7 +97,7 @@ namespace MiniProj
             {
                 string[] _dependencies = _manifest.GetAllDependencies(_abName);
                 List<string> _dpList = new List<string>(_dependencies);
-                m_Manifest.Add(_abName, _dpList);
+                m_manifest.Add(_abName, _dpList);
             }
 
             _bundle.Unload(true);
@@ -107,7 +107,7 @@ namespace MiniProj
 
         public BundleItem LoadAssetBundleSync(string abName)
         {
-            if (m_Manifest == null)
+            if (m_manifest == null)
             {
                 // 加载 manifest 先
                 if (!LoadAssetBundleManifest())
@@ -116,9 +116,9 @@ namespace MiniProj
                 }
             }
 
-            for (int _i = 0, _max = m_BundleList.Count; _i < _max; _i++)
+            for (int _i = 0, _max = m_bundleList.Count; _i < _max; _i++)
             {
-                var _item = m_BundleList[_i];
+                var _item = m_bundleList[_i];
                 if(!_item.Name.Equals(abName))
                 {
                     continue;
@@ -128,7 +128,7 @@ namespace MiniProj
             }
 
             BundleItem _bundleItem = new BundleItem(abName);
-            m_BundleList.Add(_bundleItem);
+            m_bundleList.Add(_bundleItem);
             _bundleItem.Load();
             LoadDependencies(abName);
             _bundleItem.Retain();
@@ -139,17 +139,17 @@ namespace MiniProj
         protected bool LoadDependencies(string bundleName)
         {
             bool _ret = true;
-            if (m_Manifest != null)
+            if (m_manifest != null)
             {
                 List<string> _dpList;
-                if (m_Manifest.TryGetValue(bundleName, out _dpList))
+                if (m_manifest.TryGetValue(bundleName, out _dpList))
                 {
                     foreach (string _abName in _dpList)
                     {
                         bool _find = false;
-                        for (int _i = 0, _max = m_BundleList.Count; _i < _max; _i++)
+                        for (int _i = 0, _max = m_bundleList.Count; _i < _max; _i++)
                         {
-                            var _item = m_BundleList[_i];
+                            var _item = m_bundleList[_i];
                             if (!_item.Name.Equals(_abName))
                             {
                                 continue;
@@ -162,7 +162,7 @@ namespace MiniProj
                         if(!_find)
                         {
                             BundleItem _bundleItem = new BundleItem(_abName);
-                            m_BundleList.Add(_bundleItem);
+                            m_bundleList.Add(_bundleItem);
                             _bundleItem.Load();
                             _bundleItem.Retain();
                         }
@@ -179,42 +179,42 @@ namespace MiniProj
 
         protected static void UnloadDependencies(BundleItem bundle)
         {
-            for (var i = 0; i < bundle.m_Dependencies.Count; i++)
+            for (var i = 0; i < bundle.m_dependencies.Count; i++)
             {
-                var item = bundle.m_Dependencies[i];
+                var item = bundle.m_dependencies[i];
                 item.Release();
             }
 
-            bundle.m_Dependencies.Clear();
+            bundle.m_dependencies.Clear();
         }
 
         private void Update()
         {
-            ++count;
-            if(count >= CountInterval)
+            ++m_count;
+            if(m_count >= CountInterval)
             {
-                for (var _i = 0; _i < m_AssetList.Count; _i++)
+                for (var _i = 0; _i < m_assetList.Count; _i++)
                 {
-                    var _item = m_AssetList[_i];
+                    var _item = m_assetList[_i];
                     _item.Update();
                     if (!_item.IsUnused())
                         continue;
                     _item.Unload();
-                    m_AssetList.RemoveAt(_i);
+                    m_assetList.RemoveAt(_i);
                     _i--;
                 }
 
-                for (var _j = 0; _j < m_BundleList.Count; _j++)
+                for (var _j = 0; _j < m_bundleList.Count; _j++)
                 {
-                    var _item = m_BundleList[_j];
+                    var _item = m_bundleList[_j];
                     if (!_item.IsUnused())
                         continue;
                     UnloadDependencies(_item);
                     _item.Unload();
-                    m_BundleList.RemoveAt(_j);
+                    m_bundleList.RemoveAt(_j);
                     _j--;
                 }
-                count = 0;
+                m_count = 0;
             }
             
         }

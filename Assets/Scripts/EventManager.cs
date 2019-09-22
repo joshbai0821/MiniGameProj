@@ -8,10 +8,11 @@ namespace MiniProj
 
     public class EventManager
     {
-        private static Dictionary<HLEventId, Dictionary<int, EventHandleFun>> m_eventPool;
-        private static Dictionary<HLEventId, Dictionary<int, EventHandleFun>> m_eventOncePool;
-        private static bool m_bCacheAll = false;
-        private static Queue<KeyValuePair<EventHandleFun, EventArgs>> m_eventCacheQueue;
+        private static Dictionary<HLEventId, Dictionary<int, EventHandleFun>> EventPool = 
+            new Dictionary<HLEventId, Dictionary<int, EventHandleFun>>();
+        private static bool BCacheAll = false;
+        private static Queue<KeyValuePair<EventHandleFun, EventArgs>> EventCacheQueue =
+            new Queue<KeyValuePair<EventHandleFun, EventArgs>>();
 
         /// <summary>
         /// 注册事件
@@ -29,7 +30,7 @@ namespace MiniProj
                 Debug.Log(string.Format(String.Format("HLEventManager, EventID is Out of Range")));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if (!m_eventPool.TryGetValue(id, out _eventHandler))
+            if (!EventPool.TryGetValue(id, out _eventHandler))
             {
                 EventHandleFun _handleFun;
                 if (!_eventHandler.TryGetValue(objHashId, out _handleFun))
@@ -45,8 +46,8 @@ namespace MiniProj
             }
             else
             {
-                m_eventPool[id] = new Dictionary<int, EventHandleFun>();
-                m_eventPool[id].Add(objHashId, handleFun);
+                EventPool[id] = new Dictionary<int, EventHandleFun>();
+                EventPool[id].Add(objHashId, handleFun);
             }
             return _ret;
         }
@@ -66,12 +67,12 @@ namespace MiniProj
                 Debug.Log(string.Format(String.Format("HLEventManager, EventID {0} is Out of Range", id)));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if(!m_eventPool.TryGetValue(id, out _eventHandler))
+            if(!EventPool.TryGetValue(id, out _eventHandler))
             {
                 EventHandleFun _handleFun;
-                if(!m_eventPool[id].TryGetValue(objHashId, out _handleFun))
+                if(!EventPool[id].TryGetValue(objHashId, out _handleFun))
                 {
-                    m_eventPool[id].Remove(objHashId);
+                    EventPool[id].Remove(objHashId);
                 }
                 else
                 {
@@ -102,14 +103,14 @@ namespace MiniProj
                 Debug.Log(string.Format(String.Format("HLEventManager, EventID {0} is Out of Range", id)));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if (!m_eventPool.TryGetValue(id, out _eventHandler))
+            if (!EventPool.TryGetValue(id, out _eventHandler))
             {
                 Dictionary<int, EventHandleFun>.Enumerator _enumerator = _eventHandler.GetEnumerator();
                 while(_enumerator.MoveNext())
                 {
-                    if(m_bCacheAll)
+                    if(BCacheAll)
                     {
-                        m_eventCacheQueue.Enqueue(new KeyValuePair<EventHandleFun, EventArgs>(_enumerator.Current.Value, args));
+                        EventCacheQueue.Enqueue(new KeyValuePair<EventHandleFun, EventArgs>(_enumerator.Current.Value, args));
                     }
                     else
                     {
@@ -136,7 +137,7 @@ namespace MiniProj
         public static bool UnRegisterObjectEvents(int objHashId)
         {
             bool _ret = true;
-            Dictionary<HLEventId, Dictionary<int, EventHandleFun>>.Enumerator _enumerator = m_eventPool.GetEnumerator();
+            Dictionary<HLEventId, Dictionary<int, EventHandleFun>>.Enumerator _enumerator = EventPool.GetEnumerator();
             while(_enumerator.MoveNext())
             {
                 Dictionary<int, EventHandleFun> _eventHandler = _enumerator.Current.Value;
@@ -152,7 +153,7 @@ namespace MiniProj
         /// <returns></returns>
         public static void StartCacheEvent()
         {
-            m_bCacheAll = true;
+            BCacheAll = true;
         }
 
 
@@ -162,12 +163,12 @@ namespace MiniProj
         /// <returns></returns>
         public static void StopCacheEvent()
         {
-            m_bCacheAll = false;
-            foreach(KeyValuePair<EventHandleFun, EventArgs> kvp in m_eventCacheQueue)
+            BCacheAll = false;
+            foreach(KeyValuePair<EventHandleFun, EventArgs> kvp in EventCacheQueue)
             {
                 kvp.Key(kvp.Value);
             }
-            m_eventCacheQueue.Clear();
+            EventCacheQueue.Clear();
         }
 
 

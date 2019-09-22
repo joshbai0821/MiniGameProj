@@ -6,33 +6,33 @@ namespace MiniProj
 {
     public class Module : MonoBehaviour
     {
-        protected float m_TimeStamp;
-        protected string m_Name;
+        protected float m_timeStamp;
+        protected string m_name;
         public virtual string Name
         {
-            get { return m_Name; }
+            get { return m_name; }
         }
 
         public float TimeStamp
         {
-            get { return m_TimeStamp; }
+            get { return m_timeStamp; }
         }
 
         public void UpdateFreeTime(float delta)
         {
-            m_TimeStamp += delta;
+            m_timeStamp += delta;
         }
 
         public Module(string name = "Module")
         {
-            m_TimeStamp = 0.0f;
-            m_Name = name;
+            m_timeStamp = 0.0f;
+            m_name = name;
         }
     }
 
     public class SceneModule : Module
     {
-        private GameObject m_MapRoot;
+        private GameObject m_mapRoot;
 
         public SceneModule():base("SceneModule")
         {
@@ -50,12 +50,12 @@ namespace MiniProj
 
         private static string MapPrefabPath = "Prefabs/Map";
 
-        private List<List<int>> m_MapData;
+        private List<List<int>> m_mapData;
 
         private void Awake()
         {
             
-            m_MapRoot = new GameObject("MapRoot");
+            m_mapRoot = new GameObject("MapRoot");
             LoadMap("map1");
         }
 
@@ -65,7 +65,7 @@ namespace MiniProj
             TextAsset _textAsset = Resources.Load<TextAsset>(name);
             string[] _rowString = _textAsset.text.Trim().Split('\n');
             float _minX = -(_rowString.Length / 2.0f) * MapPrefabSizeX;
-            m_MapData = new List<List<int>>(_rowString.Length);
+            m_mapData = new List<List<int>>(_rowString.Length);
             for (int _i = 0; _i < _rowString.Length; ++_i)
             {
                 
@@ -76,62 +76,62 @@ namespace MiniProj
                 {
                     int _mapPrefabId = int.Parse(_str[_j]);
                     GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, PrefabName[_mapPrefabId], typeof(GameObject));
-                    obj.transform.SetParent(m_MapRoot.transform, false);
+                    obj.transform.SetParent(m_mapRoot.transform, false);
                     obj.transform.position = new Vector3(_minX + _i * MapPrefabSizeX, obj.transform.position.y, _minZ + _j * MapPrefabSizeZ);
                     _dataList.Add(obj.GetComponent<MapData>().Data);
                 }
-                m_MapData.Add(_dataList);
+                m_mapData.Add(_dataList);
             }
         }
 
         private void OnEnable()
         {
             //Debug.Log("SceneModule | OnEnable");
-            if(m_MapRoot != null)
-                m_MapRoot.SetActive(true);
+            if(m_mapRoot != null)
+                m_mapRoot.SetActive(true);
         }
 
         private void OnDisable()
         {
             //Debug.Log("SceneModule | Disable");
-            if (m_MapRoot != null)
-                m_MapRoot.SetActive(false);
+            if (m_mapRoot != null)
+                m_mapRoot.SetActive(false);
         }
 
         private void OnDestroy()
         {
             //Debug.Log("SceneModule | OnDestroy");
-            if (m_MapRoot != null)
-                GameObject.Destroy(m_MapRoot);
+            if (m_mapRoot != null)
+                GameObject.Destroy(m_mapRoot);
         }
 
         public void ClearMap()
         {
-            if(m_MapRoot != null)
+            if(m_mapRoot != null)
             {
-                for (int _i = 0; _i < m_MapRoot.transform.childCount; _i++)
+                for (int _i = 0; _i < m_mapRoot.transform.childCount; _i++)
                 {
-                    GameObject.Destroy(m_MapRoot.transform.GetChild(_i).gameObject);
+                    GameObject.Destroy(m_mapRoot.transform.GetChild(_i).gameObject);
                 }
             }
             else
             {
-                Debug.Log("SceneModule | m_MapRoot is Null");
+                Debug.Log("SceneModule | m_mapRoot is Null");
             }
             ClearMapData();
         }
 
         private void ClearMapData()
         {
-            if(m_MapData != null)
+            if(m_mapData != null)
             {
-                for (int _i = 0, _max = m_MapData.Count; _i < _max; _i++)
+                for (int _i = 0, _max = m_mapData.Count; _i < _max; _i++)
                 {
-                    m_MapData[_i].Clear();
+                    m_mapData[_i].Clear();
                 }
-                m_MapData.Clear();
+                m_mapData.Clear();
             }
-            m_MapData = null;
+            m_mapData = null;
         }
 
     }

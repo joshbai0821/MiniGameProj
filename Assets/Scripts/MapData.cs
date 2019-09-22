@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MapData : MonoBehaviour {
     [SerializeField]
-    private int m_Data;
+    private int m_data;
     public int Data
     {
-        get { return m_Data; }
+        get { return m_data; }
     }
 }

@@ -7,15 +7,15 @@ namespace MiniProj
 {
     public class TimerManager
     {
-        private static List<TimerItem> m_timerList;
-        private static long managerTimerId = 0;
-        private static long m_dtTickFrom = 0;
+        private static List<TimerItem> TimerList = new List<TimerItem>();
+        private static long ManagerTimerId = 0;
+        private static long DtTickFrom = 0;
 
         public void Initial()
         {
-            managerTimerId = 0;
+            ManagerTimerId = 0;
             DateTime _dtFrom = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            m_dtTickFrom = _dtFrom.Ticks;
+            DtTickFrom = _dtFrom.Ticks;
         }
 
         enum TimerStatus
@@ -32,7 +32,7 @@ namespace MiniProj
             private long m_callTime;
             private long m_timerId;
             private bool m_bLoop;
-            private TimerStatus status;
+            private TimerStatus m_status;
             private EventHandleFun m_func;
             private EventArgs m_args;
 
@@ -53,8 +53,8 @@ namespace MiniProj
 
             public TimerStatus Status
             {
-                get { return status; }
-                set { status = value; }
+                get { return m_status; }
+                set { m_status = value; }
             }
 
 
@@ -67,7 +67,7 @@ namespace MiniProj
                 m_bLoop = loop;
                 m_func = fun;
                 m_args = args;
-                status = TimerStatus.BORNING;
+                m_status = TimerStatus.BORNING;
             }
 
             public static bool operator > (TimerItem a, TimerItem b)
@@ -101,8 +101,8 @@ namespace MiniProj
         {
 
             long _callTime = GetCurrentMilliSecond() + interval + delay;
-            long _timeId = managerTimerId;
-            ++managerTimerId;
+            long _timeId = ManagerTimerId;
+            ++ManagerTimerId;
             TimerItem item = new TimerItem(interval, delay, _callTime, _timeId, loop, func, args);
             AddTimerItem(item);
             return _timeId;
@@ -110,13 +110,13 @@ namespace MiniProj
 
         public static void StopTimer(long timerId)
         {
-            if(timerId < 0 || timerId >= managerTimerId)
+            if(timerId < 0 || timerId >= ManagerTimerId)
             {
                 Debug.Log(String.Format("TimerId {0} is Not Correct", timerId.ToString()));
             }
             else
             {
-                foreach(TimerItem item in m_timerList)
+                foreach(TimerItem item in TimerList)
                 {
                     if(timerId == item.TimerID)
                     {
@@ -130,8 +130,8 @@ namespace MiniProj
         public static void UpdateTimerList()
         {
             long currentTicks = DateTime.Now.Ticks;
-            long currentMillis = (currentTicks - m_dtTickFrom) / 10000;
-            while(m_timerList.Count > 0 && currentMillis > m_timerList[0].CallTime)
+            long currentMillis = (currentTicks - DtTickFrom) / 10000;
+            while(TimerList.Count > 0 && currentMillis > TimerList[0].CallTime)
             {
                 TimerItem _item = RemoveTimerItem();
                 if(_item.Status == TimerStatus.BORNING)
@@ -152,10 +152,10 @@ namespace MiniProj
 
         private static void AddTimerItem(TimerItem item)
         {
-            m_timerList.Add(item);
-            int index = m_timerList.Count - 1;
+            TimerList.Add(item);
+            int index = TimerList.Count - 1;
             int parentIndex = (index + 1) / 2 - 1; 
-            while (parentIndex >= 0 && m_timerList[parentIndex] > m_timerList[index])
+            while (parentIndex >= 0 && TimerList[parentIndex] > TimerList[index])
             {
                 SwapTimerItem(index, parentIndex);
                 index = parentIndex;
@@ -165,26 +165,26 @@ namespace MiniProj
 
         private static void SwapTimerItem(int index1, int index2)
         {
-            TimerItem tempItem = m_timerList[index1];
-            m_timerList[index1] = m_timerList[index2];
-            m_timerList[index2] = tempItem;
+            TimerItem tempItem = TimerList[index1];
+            TimerList[index1] = TimerList[index2];
+            TimerList[index2] = tempItem;
         }
 
         private static TimerItem RemoveTimerItem()
         {
-            int _lastIndex = m_timerList.Count - 1;
+            int _lastIndex = TimerList.Count - 1;
             SwapTimerItem(0, _lastIndex);
-            TimerItem item = m_timerList[_lastIndex];
-            m_timerList.RemoveAt(_lastIndex);
+            TimerItem item = TimerList[_lastIndex];
+            TimerList.RemoveAt(_lastIndex);
             int _index = 0;
             int _childIndex = _index * 2 + 1;
-            while(_childIndex < m_timerList.Count)
+            while(_childIndex < TimerList.Count)
             {
-                if(_childIndex + 1 < m_timerList.Count && m_timerList[_childIndex] > m_timerList[_childIndex + 1])
+                if(_childIndex + 1 < TimerList.Count && TimerList[_childIndex] > TimerList[_childIndex + 1])
                 {
                     ++_childIndex;
                 }
-                if(m_timerList[_childIndex] < m_timerList[_index])
+                if(TimerList[_childIndex] < TimerList[_index])
                 {
                     SwapTimerItem(_index, _childIndex);
                     _index = _childIndex;
@@ -203,7 +203,7 @@ namespace MiniProj
         {
             //获取当前Ticks
             long currentTicks = DateTime.Now.Ticks;
-            long currentMillis = (currentTicks - m_dtTickFrom) / 10000;
+            long currentMillis = (currentTicks - DtTickFrom) / 10000;
             return currentMillis;
         }
     }

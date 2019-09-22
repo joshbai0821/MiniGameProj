@@ -10,9 +10,9 @@ public class ResourceExporter {
     [MenuItem("Assets/Export AssetBundle")]
     public static void ExportAssetBundleResource()
     {
-        ResourceExporter exporter = new ResourceExporter();
-        exporter.ExportAb();
-        exporter = null;
+        ResourceExporter _exporter = new ResourceExporter();
+        _exporter.ExportAb();
+        _exporter = null;
         System.GC.Collect();
     }
 
@@ -25,24 +25,24 @@ public class ResourceExporter {
     {
         bool _ret = true;
         string _path = Application.dataPath + "/prefabs";
-        Dictionary<string, List<string>> abResDic = new Dictionary<string, List<string>>(8);
+        Dictionary<string, List<string>> _abResDic = new Dictionary<string, List<string>>(8);
 
-        CollectBuildMap(_path, ref abResDic);
+        CollectBuildMap(_path, ref _abResDic);
 
-        int _abCount = abResDic.Count;
+        int _abCount = _abResDic.Count;
         AssetBundleBuild[] _buildMap = new AssetBundleBuild[_abCount];
 
-        int count = 0;
-        foreach (var item in abResDic)
+        int _count = 0;
+        foreach (var _item in _abResDic)
         {
-            string[] assets = new string[item.Value.Count];
+            string[] _assets = new string[_item.Value.Count];
             int _j = 0;
-            for (_j = 0; _j < item.Value.Count; _j++)
+            for (_j = 0; _j < _item.Value.Count; _j++)
             {
-                assets[_j] = item.Value[_j];
+                _assets[_j] = _item.Value[_j];
             }
-            _buildMap[count].assetBundleName = item.Key;
-            _buildMap[count].assetNames = assets;
+            _buildMap[_count].assetBundleName = _item.Key;
+            _buildMap[_count].assetNames = _assets;
         }
 
         if(!Directory.Exists(m_exportPath))
@@ -72,20 +72,20 @@ public class ResourceExporter {
     protected bool CollectBuildMap(string path, ref Dictionary<string, List<string>> abResDic)
     {
         bool _ret = true;
-        foreach (string dir in Directory.GetFileSystemEntries(path))
+        foreach (string _dir in Directory.GetFileSystemEntries(path))
         {
-            if (File.Exists(dir))
+            if (File.Exists(_dir))
             {
-                if(!(dir.EndsWith(".meta")) && !(dir.EndsWith(".cs"))
-                    && !dir.EndsWith(".mm") && !dir.EndsWith(".m")
-                        && !dir.EndsWith(".h") && !dir.EndsWith(".DS_Store"))
+                if(!(_dir.EndsWith(".meta")) && !(_dir.EndsWith(".cs"))
+                    && !_dir.EndsWith(".mm") && !_dir.EndsWith(".m")
+                        && !_dir.EndsWith(".h") && !_dir.EndsWith(".DS_Store"))
                 {
                     string _relativePath = path.Substring(Application.dataPath.Length);
                     string _abName = _relativePath.Replace('/', '_');
                     List<string> _assetsList;
                     if(abResDic.TryGetValue(_abName, out _assetsList))
                     {
-                        _assetsList.Add(_relativePath + dir);
+                        _assetsList.Add(_relativePath + _dir);
                     }
                     else
                     {
@@ -97,9 +97,9 @@ public class ResourceExporter {
             else
             {
                 //文件夹
-                if(!dir.Contains(".svn"))
+                if(!_dir.Contains(".svn"))
                 {
-                    _ret = _ret && CollectBuildMap(path + dir, ref abResDic);
+                    _ret = _ret && CollectBuildMap(path + _dir, ref abResDic);
                 }
             }
         }

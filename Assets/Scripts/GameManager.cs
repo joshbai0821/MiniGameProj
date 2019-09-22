@@ -8,44 +8,44 @@ namespace MiniProj
     public class GameManager : MonoBehaviour
     {
 
-        private static GameObject m_GameManagerObj = null;
-        private static ResourceManager m_sResourceMgr = null;
-        public static GameObject GameManagerObj { get { return m_GameManagerObj; } }
-        public static ResourceManager ResManager { get { return m_sResourceMgr; } }
+        private static GameObject SGameManagerObj = null;
+        private static ResourceManager SResourceMgr = null;
+        public static GameObject GameManagerObj { get { return SGameManagerObj; } }
+        public static ResourceManager ResManager { get { return SResourceMgr; } }
 
-        private List<Module> m_ModuleList;
-        private List<Module> m_FreeModuleList;
+        private List<Module> m_moduleList;
+        private List<Module> m_freeModuleList;
         //private int _test;
 
         private void Awake()
         {
-            m_GameManagerObj = CreateGameRootObject();
-            m_sResourceMgr = CreateInstance<ResourceManager>();
-            m_ModuleList = new List<Module>();
-            m_FreeModuleList = new List<Module>();
+            SGameManagerObj = CreateGameRootObject();
+            SResourceMgr = CreateInstance<ResourceManager>();
+            m_moduleList = new List<Module>();
+            m_freeModuleList = new List<Module>();
             LoadModule("SceneModule");
             //_test = 0;
         }
 
         private void LoadModule(string name)
         {
-            for(int _i = 0, _max = m_ModuleList.Count; _i < _max; _i++)
+            for(int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {
-                if (m_ModuleList[_i].Name == name)
+                if (m_moduleList[_i].Name == name)
                 {
                     Debug.Log(string.Format("GameManager {0} has already loaded !!!", name));
                     return;
                 }
             }
 
-            for(int _i = 0, _max = m_FreeModuleList.Count; _i < _max; _i++)
+            for(int _i = 0, _max = m_freeModuleList.Count; _i < _max; _i++)
             {
-                if(m_FreeModuleList[_i].Name == name)
+                if(m_freeModuleList[_i].Name == name)
                 {
-                    m_FreeModuleList[_i].enabled = true;
-                    Module _module = m_FreeModuleList[_i];
-                    m_FreeModuleList.RemoveAt(_i);
-                    m_ModuleList.Add(_module);
+                    m_freeModuleList[_i].enabled = true;
+                    Module _module = m_freeModuleList[_i];
+                    m_freeModuleList.RemoveAt(_i);
+                    m_moduleList.Add(_module);
                     return;
                 }
             }
@@ -57,14 +57,14 @@ namespace MiniProj
         private void UnloadModule(string name)
         {
             
-            for (int _i = 0, _max = m_ModuleList.Count; _i < _max; _i++)
+            for (int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {
-                if (m_ModuleList[_i].Name == name)
+                if (m_moduleList[_i].Name == name)
                 {
-                    Module _module = m_ModuleList[_i];
-                    m_ModuleList.RemoveAt(_i);
+                    Module _module = m_moduleList[_i];
+                    m_moduleList.RemoveAt(_i);
                     _module.enabled = false;
-                    m_FreeModuleList.Add(_module);
+                    m_freeModuleList.Add(_module);
                     return;
                 }
             }
@@ -74,11 +74,11 @@ namespace MiniProj
         
         private Module GetModuleByName(string name)
         {
-            for (int _i = 0, _max = m_ModuleList.Count; _i < _max; _i++)
+            for (int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {
-                if (m_ModuleList[_i].Name == name)
+                if (m_moduleList[_i].Name == name)
                 {
-                    return m_ModuleList[_i];
+                    return m_moduleList[_i];
                 }
             }
             Debug.Log(string.Format("GameManager | {0} did not load !!!", name));
@@ -94,15 +94,15 @@ namespace MiniProj
                     break;
                 case ModuleId.LoginModule:
                     LoginModule _loginModule = CreateInstance<LoginModule>();
-                    m_ModuleList.Add(_loginModule);
+                    m_moduleList.Add(_loginModule);
                     break;
                 case ModuleId.MainMenuModule:
                     MainMenuModule _mainMenuModule = CreateInstance<MainMenuModule>();
-                    m_ModuleList.Add(_mainMenuModule);
+                    m_moduleList.Add(_mainMenuModule);
                     break;
                 case ModuleId.SceneModule:
                     SceneModule _sceneModule = CreateInstance<SceneModule>();
-                    m_ModuleList.Add(_sceneModule);
+                    m_moduleList.Add(_sceneModule);
                     break;
                 default:
                     break;
@@ -124,12 +124,12 @@ namespace MiniProj
 
         private static T CreateInstance<T>() where T : Component
         {
-            if (m_GameManagerObj != null)
+            if (SGameManagerObj != null)
             {
-                T tValue = m_GameManagerObj.GetComponent<T>();
+                T tValue = SGameManagerObj.GetComponent<T>();
                 if (tValue == null)
                 {
-                    tValue = m_GameManagerObj.AddComponent<T>();
+                    tValue = SGameManagerObj.AddComponent<T>();
                 }
                 return tValue;
             }
@@ -139,9 +139,9 @@ namespace MiniProj
 
         private static void DestroyInstance<T>() where T : Component
         {
-            if(m_GameManagerObj != null)
+            if(SGameManagerObj != null)
             {
-                T tValue = m_GameManagerObj.GetComponent<T>();
+                T tValue = SGameManagerObj.GetComponent<T>();
                 if (tValue != null)
                 {
                     Destroy(tValue);
@@ -160,12 +160,12 @@ namespace MiniProj
             //    _module.ClearMap();
             //    UnloadModule("SceneModule");
             //}
-            for (int _i = 0; _i < m_FreeModuleList.Count; ++_i)
+            for (int _i = 0; _i < m_freeModuleList.Count; ++_i)
             {
-                m_FreeModuleList[_i].UpdateFreeTime(Time.deltaTime);
-                if(m_FreeModuleList[_i].TimeStamp > 10.0f)
+                m_freeModuleList[_i].UpdateFreeTime(Time.deltaTime);
+                if(m_freeModuleList[_i].TimeStamp > 10.0f)
                 {
-                    Destroy(m_FreeModuleList[_i]);
+                    Destroy(m_freeModuleList[_i]);
                 }
             }
         }

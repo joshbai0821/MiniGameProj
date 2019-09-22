@@ -6,21 +6,21 @@ namespace MiniProj
 {
     public class Reference
     {
-        protected int refCount;
+        protected int m_refCount;
 
         public bool IsUnused()
         {
-            return refCount <= 0;
+            return m_refCount <= 0;
         }
 
         public void Retain()
         {
-            refCount++;
+            m_refCount++;
         }
 
         public void Release()
         {
-            refCount--;
+            m_refCount--;
         }
     }
 }

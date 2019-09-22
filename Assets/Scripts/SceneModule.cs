@@ -64,21 +64,57 @@ namespace MiniProj
             ClearMapData();
             TextAsset _textAsset = Resources.Load<TextAsset>(name);
             string[] _rowString = _textAsset.text.Trim().Split('\n');
-            float _minX = -(_rowString.Length / 2.0f) * MapPrefabSizeX;
-            m_mapData = new List<List<int>>(_rowString.Length);
-            for (int _i = 0; _i < _rowString.Length; ++_i)
+            DealSkillData(_rowString[0]);
+            DealMapData(ref _rowString);
+
+            
+        }
+
+        private void DealSkillData(string skillStr)
+        {
+            string[] _str = skillStr.Split(',');
+            for(int _i = 0; _i < _str.Length; ++_i)
             {
-                
-                string[] _str = _rowString[_i].Split(',');
+                int _skillId = -1;
+                if (int.TryParse(_str[_i], out _skillId))
+                {
+
+                }
+            }
+
+            return;
+        }
+
+        private void DealMapData(ref string[] rowString)
+        {
+            float _minX = -((rowString.Length - 1) / 2.0f) * MapPrefabSizeX;
+            m_mapData = new List<List<int>>(rowString.Length);
+            for (int _i = 1; _i < rowString.Length; ++_i)
+            {
+
+                string[] _str = rowString[_i].Split(',');
                 float _minZ = -(_str.Length / 2.0f) * MapPrefabSizeZ;
                 List<int> _dataList = new List<int>(_str.Length);
                 for (int _j = 0; _j < _str.Length; ++_j)
                 {
-                    int _mapPrefabId = int.Parse(_str[_j]);
-                    GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, PrefabName[_mapPrefabId], typeof(GameObject));
-                    obj.transform.SetParent(m_mapRoot.transform, false);
-                    obj.transform.position = new Vector3(_minX + _i * MapPrefabSizeX, obj.transform.position.y, _minZ + _j * MapPrefabSizeZ);
-                    _dataList.Add(obj.GetComponent<MapData>().Data);
+                    int _mapPrefabId = -1;
+                    if (int.TryParse(_str[_j], out _mapPrefabId) && _mapPrefabId >= -1 && _mapPrefabId < PrefabName.Length)
+                    {
+                        if (_mapPrefabId != -1)
+                        {
+                            GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, PrefabName[_mapPrefabId], typeof(GameObject));
+                            obj.transform.SetParent(m_mapRoot.transform, false);
+                            obj.transform.position = new Vector3(_minX + _i * MapPrefabSizeX, obj.transform.position.y, _minZ + _j * MapPrefabSizeZ);
+                            _dataList.Add(obj.GetComponent<MapData>().Data);
+                        }
+                        _dataList.Add(-1);
+                    }
+                    else
+                    {
+
+                        Debug.Log(string.Format("SceneModule, DealMapData Error In row {0} col {1}", _i, _j));
+                    }
+
                 }
                 m_mapData.Add(_dataList);
             }

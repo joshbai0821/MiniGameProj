@@ -15,6 +15,12 @@ namespace MiniProj
 
         private List<Module> m_moduleList;
         private List<Module> m_freeModuleList;
+        private static int m_sceneConfigId;
+        public static int SceneConfigId
+        {
+            get { return m_sceneConfigId; }
+        }
+        public Transform UILayer;
         //private int _test;
 
         private void Awake()
@@ -23,6 +29,7 @@ namespace MiniProj
             SResourceMgr = CreateInstance<ResourceManager>();
             m_moduleList = new List<Module>();
             m_freeModuleList = new List<Module>();
+            m_sceneConfigId = 0;
             LoadModule("SceneModule");
             //_test = 0;
         }
@@ -72,7 +79,7 @@ namespace MiniProj
             return;
         }
         
-        private Module GetModuleByName(string name)
+        public Module GetModuleByName(string name)
         {
             for (int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {

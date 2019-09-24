@@ -1,12 +1,41 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapData : MonoBehaviour {
-    [SerializeField]
-    private int m_data;
-    public int Data
+namespace MiniProj
+{
+    [Serializable]
+    public struct MapPos
     {
-        get { return m_data; }
+        public int m_row;
+        public int m_col;
     }
+
+    public enum MapDataType
+    {
+        NONE = -1,
+        PINGDI = 0,
+        GAOTAI = 1,
+    }
+
+    public class MapData : MonoBehaviour
+    {
+        
+        [SerializeField]
+        private MapDataType m_data;
+        [SerializeField]
+        private MapPos m_pos;
+
+        public MapDataType Data
+        {
+            get { return m_data; }
+        }
+
+        public MapPos Pos
+        {
+            get { return m_pos; }
+        }
+    }
+
 }

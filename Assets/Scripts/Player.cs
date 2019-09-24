@@ -264,8 +264,8 @@ namespace MiniProj
         {
             m_state = State.UseSkill;
             m_skillId = (SkillId)((IntEventArgs)args).m_args;
-
-            Debug.Log(m_skillId);
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            _sceneModule.ChangeMap(m_skillId, m_playerPos.m_row, m_playerPos.m_col);
         }
     }
 

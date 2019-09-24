@@ -69,6 +69,7 @@ namespace MiniProj
             m_strBuilder.Append(m_path);
             m_strBuilder.Append("/");
             m_strBuilder.Append(m_name);
+            m_strBuilder.Append(".prefab");
 
             m_asset = AssetDatabase.LoadAssetAtPath(m_strBuilder.ToString(), m_assetType);
         }

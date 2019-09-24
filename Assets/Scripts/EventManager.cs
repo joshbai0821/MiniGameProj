@@ -6,6 +6,17 @@ namespace MiniProj
 {
     public delegate void EventHandleFun(EventArgs args);
 
+    public class IntEventArgs : EventArgs
+    {
+        public int m_args;
+
+        public IntEventArgs(int args)
+        {
+            m_args = args;
+        }
+    }
+
+
     public class EventManager
     {
         private static Dictionary<HLEventId, Dictionary<int, EventHandleFun>> EventPool = 
@@ -24,13 +35,14 @@ namespace MiniProj
         public static bool RegisterEvent(HLEventId id, int objHashId, EventHandleFun handleFun)
         {
             bool _ret = true;
-            if(id >= 0 && id < HLEventId.MAX_EVENT)
+            if(id < 0 && id >= HLEventId.MAX_EVENT)
             {
                 _ret = false;
-                Debug.Log(string.Format(String.Format("HLEventManager, EventID is Out of Range")));
+                Debug.Log(string.Format(String.Format("EventManager, EventID is Out of Range")));
+                return _ret;
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if (!EventPool.TryGetValue(id, out _eventHandler))
+            if (EventPool.TryGetValue(id, out _eventHandler))
             {
                 EventHandleFun _handleFun;
                 if (!_eventHandler.TryGetValue(objHashId, out _handleFun))
@@ -67,7 +79,7 @@ namespace MiniProj
                 Debug.Log(string.Format(String.Format("HLEventManager, EventID {0} is Out of Range", id)));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if(!EventPool.TryGetValue(id, out _eventHandler))
+            if(EventPool.TryGetValue(id, out _eventHandler))
             {
                 EventHandleFun _handleFun;
                 if(!EventPool[id].TryGetValue(objHashId, out _handleFun))
@@ -97,13 +109,13 @@ namespace MiniProj
         public static bool SendEvent(HLEventId id, EventArgs args)
         {
             bool _ret = true;
-            if(id >= 0 && id <= HLEventId.MAX_EVENT)
+            if(id < 0 || id >= HLEventId.MAX_EVENT)
             {
                 _ret = false;
                 Debug.Log(string.Format(String.Format("HLEventManager, EventID {0} is Out of Range", id)));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
-            if (!EventPool.TryGetValue(id, out _eventHandler))
+            if (EventPool.TryGetValue(id, out _eventHandler))
             {
                 Dictionary<int, EventHandleFun>.Enumerator _enumerator = _eventHandler.GetEnumerator();
                 while(_enumerator.MoveNext())

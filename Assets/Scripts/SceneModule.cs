@@ -4,126 +4,111 @@ using UnityEngine;
 
 namespace MiniProj
 {
-    public class Module : MonoBehaviour
-    {
-        protected float m_timeStamp;
-        protected string m_name;
-        public virtual string Name
-        {
-            get { return m_name; }
-        }
-
-        public float TimeStamp
-        {
-            get { return m_timeStamp; }
-        }
-
-        public void UpdateFreeTime(float delta)
-        {
-            m_timeStamp += delta;
-        }
-
-        public Module(string name = "Module")
-        {
-            m_timeStamp = 0.0f;
-            m_name = name;
-        }
-    }
-
     public class SceneModule : Module
     {
         private GameObject m_mapRoot;
+        private SceneConfig m_config;
+        private Player m_player;
 
-        public SceneModule():base("SceneModule")
+        public SceneModule() : base("SceneModule")
         {
         }
-
-        private static string[] PrefabName =
-        {
-            "BlueCube.Prefab",
-            "GreenCube.Prefab",
-            "RedCube.Prefab",
-        };
 
         private static float MapPrefabSizeX = 1;
         private static float MapPrefabSizeZ = 1;
 
         private static string MapPrefabPath = "Prefabs/Map";
 
-        private List<List<int>> m_mapData;
+        private List<List<MapDataType>> m_mapData;
+        public List<List<MapDataType>> Data
+        {
+            get { return m_mapData; }
+        }
 
         private void Awake()
         {
-            
+            m_config = Resources.Load<SceneConfig>("SceneConfig");
             m_mapRoot = new GameObject("MapRoot");
-            LoadMap("map1");
+            string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
+            GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name , typeof(GameObject));
+            _mapPrefab.transform.SetParent(m_mapRoot.transform, false);
+            LoadMap();
+            LoadPlayer();
+            LoadSkillBtn();
         }
 
-        public void LoadMap(string name)
+        public bool isPlayerReady()
         {
-            ClearMapData();
-            TextAsset _textAsset = Resources.Load<TextAsset>(name);
-            string[] _rowString = _textAsset.text.Trim().Split('\n');
-            DealSkillData(_rowString[0]);
-            DealMapData(ref _rowString);
-
-            
+            return m_player.IsReady();
         }
 
-        private void DealSkillData(string skillStr)
+        private void LoadSkillBtn()
         {
-            string[] _str = skillStr.Split(',');
-            for(int _i = 0; _i < _str.Length; ++_i)
+            GameObject _skillPanel = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SKillPanel", typeof(GameObject));
+            _skillPanel.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            for(int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].SkillData.Count; ++_i)
             {
-                int _skillId = -1;
-                if (int.TryParse(_str[_i], out _skillId))
-                {
-
-                }
+                GameObject _skillBtn = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SkillBtn", typeof(GameObject));
+                _skillBtn.transform.SetParent(_skillPanel.transform, false);
+                _skillBtn.GetComponent<SkillBtn>().Initial(
+                    m_config.SceneConfigList[GameManager.SceneConfigId].SkillData[_i].Id,
+                    m_config.SceneConfigList[GameManager.SceneConfigId].SkillData[_i].Count);
             }
 
-            return;
         }
 
-        private void DealMapData(ref string[] rowString)
+        private void LoadPlayer()
         {
-            float _minX = -((rowString.Length - 1) / 2.0f) * MapPrefabSizeX;
-            m_mapData = new List<List<int>>(rowString.Length);
-            for (int _i = 1; _i < rowString.Length; ++_i)
+            string _name = "Player";
+            GameObject _playerPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
+            m_player = _playerPrefab.GetComponent<Player>();
+            if(m_player != null)
             {
+                m_player.SetStartPosition(
+                m_config.SceneConfigList[GameManager.SceneConfigId].PlayerStartRow,
+                m_config.SceneConfigList[GameManager.SceneConfigId].PlayerStartCol);
+            }
+            else
+            {
+                Debug.Log("SceneModule | LoadPlayer Error");
+            }
+            
+        }
 
-                string[] _str = rowString[_i].Split(',');
-                float _minZ = -(_str.Length / 2.0f) * MapPrefabSizeZ;
-                List<int> _dataList = new List<int>(_str.Length);
-                for (int _j = 0; _j < _str.Length; ++_j)
+        private void LoadMap()
+        {
+            Transform _tsfMapDataRoot = m_mapRoot.transform.GetChild(0);
+            ClearMapData();
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            m_mapData = new List<List<MapDataType>>(_row);
+            for (int _i = 0; _i < _row; ++_i)
+            {
+                List<MapDataType> _list = new List<MapDataType>(_col);
+                for (int _j = 0; _j < _col; ++_j)
                 {
-                    int _mapPrefabId = -1;
-                    if (int.TryParse(_str[_j], out _mapPrefabId) && _mapPrefabId >= -1 && _mapPrefabId < PrefabName.Length)
-                    {
-                        if (_mapPrefabId != -1)
-                        {
-                            GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, PrefabName[_mapPrefabId], typeof(GameObject));
-                            obj.transform.SetParent(m_mapRoot.transform, false);
-                            obj.transform.position = new Vector3(_minX + _i * MapPrefabSizeX, obj.transform.position.y, _minZ + _j * MapPrefabSizeZ);
-                            _dataList.Add(obj.GetComponent<MapData>().Data);
-                        }
-                        _dataList.Add(-1);
-                    }
-                    else
-                    {
-
-                        Debug.Log(string.Format("SceneModule, DealMapData Error In row {0} col {1}", _i, _j));
-                    }
-
+                    _list.Add(MapDataType.NONE);
                 }
-                m_mapData.Add(_dataList);
+                m_mapData.Add(_list);
+            }
+
+            for (int _i = 0; _i < _tsfMapDataRoot.childCount; ++_i)
+            {
+                Transform _child = _tsfMapDataRoot.GetChild(_i);
+                MapData _mapData = _child.GetComponent<MapData>();
+                if(_mapData != null)
+                {
+                    int _r = _mapData.Pos.m_row;
+                    int _c = _mapData.Pos.m_col;
+                    m_mapData[_r][_c] = _mapData.Data;
+                }
             }
         }
 
         private void OnEnable()
         {
             //Debug.Log("SceneModule | OnEnable");
-            if(m_mapRoot != null)
+            if (m_mapRoot != null)
                 m_mapRoot.SetActive(true);
         }
 
@@ -137,13 +122,15 @@ namespace MiniProj
         private void OnDestroy()
         {
             //Debug.Log("SceneModule | OnDestroy");
+            //Resources.UnloadAsset(m_config);
+            m_config = null;
             if (m_mapRoot != null)
                 GameObject.Destroy(m_mapRoot);
         }
 
         public void ClearMap()
         {
-            if(m_mapRoot != null)
+            if (m_mapRoot != null)
             {
                 for (int _i = 0; _i < m_mapRoot.transform.childCount; _i++)
                 {
@@ -159,7 +146,7 @@ namespace MiniProj
 
         private void ClearMapData()
         {
-            if(m_mapData != null)
+            if (m_mapData != null)
             {
                 for (int _i = 0, _max = m_mapData.Count; _i < _max; _i++)
                 {
@@ -170,6 +157,15 @@ namespace MiniProj
             m_mapData = null;
         }
 
+        public int getMapDataRow()
+        {
+            return m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+        }
+
+        public int getMapDataCol()
+        {
+            return m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+        }
     }
 }
 

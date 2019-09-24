@@ -9,13 +9,11 @@ namespace MiniProj
         private GameObject m_mapRoot;
         private SceneConfig m_config;
         private Player m_player;
+        private List<Transform> m_tsfMapList;
 
         public SceneModule() : base("SceneModule")
         {
         }
-
-        private static float MapPrefabSizeX = 1;
-        private static float MapPrefabSizeZ = 1;
 
         private static string MapPrefabPath = "Prefabs/Map";
 
@@ -77,8 +75,9 @@ namespace MiniProj
 
         private void LoadMap()
         {
-            Transform _tsfMapDataRoot = m_mapRoot.transform.GetChild(0);
+            
             ClearMapData();
+            Transform _tsfMapDataRoot = m_mapRoot.transform.GetChild(0);
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
             m_mapData = new List<List<MapDataType>>(_row);
@@ -91,11 +90,12 @@ namespace MiniProj
                 }
                 m_mapData.Add(_list);
             }
-
+            m_tsfMapList = new List<Transform>();
             for (int _i = 0; _i < _tsfMapDataRoot.childCount; ++_i)
             {
                 Transform _child = _tsfMapDataRoot.GetChild(_i);
                 MapData _mapData = _child.GetComponent<MapData>();
+                m_tsfMapList.Add(_child);
                 if(_mapData != null)
                 {
                     int _r = _mapData.Pos.m_row;
@@ -154,6 +154,10 @@ namespace MiniProj
                 }
                 m_mapData.Clear();
             }
+            if(m_tsfMapList != null)
+            {
+                m_tsfMapList.Clear();
+            }
             m_mapData = null;
         }
 
@@ -165,6 +169,174 @@ namespace MiniProj
         public int getMapDataCol()
         {
             return m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+        }
+
+        public void ChangeMap(SkillId id, int playerRow, int playerCol)
+        {
+            int _mapRow = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _mapCol = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            switch (id)
+            {
+                case SkillId.JU:
+                    for(int _i = 0; _i < _mapRow; ++_i)
+                    {
+                        if(_i != playerRow)
+                        {
+                            if(m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
+                            {
+                                //m_tsfMapList[_i * _mapCol + playerCol].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+                    for(int _j = 0; _j < _mapCol; ++_j)
+                    {
+                        if(_j != playerCol)
+                        {
+                            if(m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
+                            {
+                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+
+                    break;
+                case SkillId.MA:
+                    if(playerRow >= 1)
+                    {
+                        if(playerCol >= 2)
+                        {
+                            if(m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                        if(playerCol + 2 < _mapCol)
+                        {
+                            if(m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+                    if(playerRow >= 2)
+                    {
+                        if (playerCol >= 1)
+                        {
+                            if (m_mapData[playerRow - 2][playerCol - 1] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                        if (playerCol + 2 < _mapCol)
+                        {
+                            if (m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+                    if(playerRow + 1 < _mapRow)
+                    {
+                        if(playerCol >= 2)
+                        {
+                            if (m_mapData[playerRow + 1][playerCol - 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                        if (playerCol + 2 < _mapCol)
+                        {
+                            if (m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+                    if(playerRow + 2 < _mapRow)
+                    {
+                        if (playerCol >= 1)
+                        {
+                            if (m_mapData[playerRow + 2][playerCol - 1] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                        if (playerCol + 2 < _mapCol)
+                        {
+                            if (m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
+                            {
+                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                            }
+                        }
+                    }
+                    break;
+                case SkillId.PAO:
+                    break;
+                case SkillId.XIANG:
+                    if(playerRow >= 2)
+                    {
+                        if(playerCol >= 2)
+                        {
+                            if (m_mapData[playerRow - 2][playerCol - 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow - 1][playerCol - 1] != MapDataType.GAOTAI)))
+                            {
+
+                            }
+                        }
+                        if(playerCol + 2 < _mapCol)
+                        {
+                            if (m_mapData[playerRow - 2][playerCol + 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow - 1][playerCol + 1] != MapDataType.GAOTAI)))
+                            {
+
+                            }
+                        }
+                    }
+                    if(playerRow + 2 < _mapCol)
+                    {
+                        if (playerCol >= 2)
+                        {
+                            if (m_mapData[playerRow + 2][playerCol - 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow + 1][playerCol - 1] != MapDataType.GAOTAI)))
+                            {
+
+                            }
+                        }
+                        if (playerCol + 2 < _mapCol)
+                        {
+                            if (m_mapData[playerRow + 2][playerCol + 2] != MapDataType.NONE
+                                && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
+                                (m_mapData[playerRow + 1][playerCol + 1] != MapDataType.GAOTAI)))
+                            {
+
+                            }
+                        }
+                    }
+                    break;
+                case SkillId.SHI:
+                    break;
+                case SkillId.BING:
+                    break;
+            }
         }
     }
 }

@@ -129,7 +129,8 @@ namespace MiniProj
                     {
                         if(targetCol == m_playerPos.m_col + 1 || targetCol == m_playerPos.m_col - 1)
                         {
-                            if(_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI)
+                            if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI)
                             {
                                 _ret = true;
                             }
@@ -139,7 +140,8 @@ namespace MiniProj
                     {
                         if (targetCol == m_playerPos.m_col + 1 || targetCol == m_playerPos.m_col - 1)
                         {
-                            if (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI)
+                            if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI)
                             {
                                 _ret = true;
                             }
@@ -150,7 +152,8 @@ namespace MiniProj
                     {
                         if(targetRow == m_playerPos.m_row + 1 || targetRow == m_playerPos.m_row - 1)
                         {
-                            if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                            if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                             {
                                 _ret = true;
                             }
@@ -160,7 +163,8 @@ namespace MiniProj
                     {
                         if (targetRow == m_playerPos.m_row + 1 || targetRow == m_playerPos.m_row - 1)
                         {
-                            if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                            if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                             {
                                 _ret = true;
                             }
@@ -172,28 +176,32 @@ namespace MiniProj
                 case SkillId.XIANG:
                     if(targetRow == m_playerPos.m_row + 2 && targetCol == m_playerPos.m_col + 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                         {
                             _ret = true;
                         }
                     }
                     else if(targetRow == m_playerPos.m_row + 2 && targetCol == m_playerPos.m_col - 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                         {
                             _ret = true;
                         }
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col + 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                         {
                             _ret = true;
                         }
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col - 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                         {
                             _ret = true;
                         }
@@ -221,6 +229,8 @@ namespace MiniProj
                         MapData _data = _hit.transform.GetComponent<MapData>();
                         if(CheckCanMove(_data.Pos.m_row, _data.Pos.m_col, _data.Data))
                         {
+                            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+                            _sceneModule.RefreshMap();
                             IntEventArgs args = new IntEventArgs((int)m_skillId);
                             EventManager.SendEvent(HLEventId.PLAYER_MOVE, args);
                             m_state = State.Move;

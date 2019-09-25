@@ -10,6 +10,8 @@ namespace MiniProj
         private SceneConfig m_config;
         private Player m_player;
         private List<Transform> m_tsfMapList;
+        private List<Material> m_matList;
+        private List<Color> m_originColorList;
 
         public SceneModule() : base("SceneModule")
         {
@@ -30,6 +32,8 @@ namespace MiniProj
             string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
             GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name , typeof(GameObject));
             _mapPrefab.transform.SetParent(m_mapRoot.transform, false);
+            m_matList = new List<Material>();
+            m_originColorList = new List<Color>();
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
@@ -124,6 +128,7 @@ namespace MiniProj
             //Debug.Log("SceneModule | OnDestroy");
             //Resources.UnloadAsset(m_config);
             m_config = null;
+            ClearMapData();
             if (m_mapRoot != null)
                 GameObject.Destroy(m_mapRoot);
         }
@@ -158,6 +163,14 @@ namespace MiniProj
             {
                 m_tsfMapList.Clear();
             }
+            if(m_matList != null)
+            {
+                m_matList.Clear();
+            }
+            if(m_originColorList != null)
+            {
+                m_originColorList.Clear();
+            }
             m_mapData = null;
         }
 
@@ -175,30 +188,67 @@ namespace MiniProj
         {
             int _mapRow = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _mapCol = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            RefreshMap();
             switch (id)
             {
                 case SkillId.JU:
-                    for(int _i = 0; _i < _mapRow; ++_i)
+                    for(int _i = playerRow + 1; _i < _mapRow; ++_i)
                     {
-                        if(_i != playerRow)
+                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
                         {
-                            if(m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
-                            {
-                                //m_tsfMapList[_i * _mapCol + playerCol].GetComponent<Renderer>().material.color = Color.red;
-                            }
+                            Material _material = m_tsfMapList[_i * _mapCol + playerCol].GetComponent<MeshRenderer>().material;
+                            m_originColorList.Add(_material.GetColor("_MainColor"));
+                            _material.SetColor("_MainColor", Color.red);
+                            m_matList.Add(_material);
+                            
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
-                    for(int _j = 0; _j < _mapCol; ++_j)
+                    for(int _i = playerRow - 1; _i >= 0; --_i)
                     {
-                        if(_j != playerCol)
+                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
                         {
-                            if(m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
-                            {
-                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
-                            }
+                            Material _material = m_tsfMapList[_i * _mapCol + playerCol].GetComponent<MeshRenderer>().material;
+                            m_originColorList.Add(_material.GetColor("_MainColor"));
+                            _material.SetColor("_MainColor", Color.red);
+                            m_matList.Add(_material);
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
-
+                    for(int _j = playerCol + 1; _j < _mapCol; ++_j)
+                    {
+                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
+                        {
+                            Material _material = m_tsfMapList[playerRow * _mapCol + _j].GetComponent<MeshRenderer>().material;
+                            m_originColorList.Add(_material.GetColor("_MainColor"));
+                            _material.SetColor("_MainColor", Color.red);
+                            m_matList.Add(_material);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    for(int _j = playerCol - 1; _j >= 0; --_j)
+                    {
+                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
+                        {
+                            Material _material = m_tsfMapList[playerRow * _mapCol + _j].GetComponent<MeshRenderer>().material;
+                            m_originColorList.Add(_material.GetColor("_MainColor"));
+                            _material.SetColor("_MainColor", Color.red);
+                            m_matList.Add(_material);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                     break;
                 case SkillId.MA:
                     if(playerRow >= 1)
@@ -209,7 +259,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                         if(playerCol + 2 < _mapCol)
@@ -218,7 +271,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
@@ -230,7 +286,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                         if (playerCol + 2 < _mapCol)
@@ -239,7 +298,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
@@ -251,7 +313,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                         if (playerCol + 2 < _mapCol)
@@ -260,7 +325,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
@@ -272,16 +340,22 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[playerRow * _mapCol + _j].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
-                        if (playerCol + 2 < _mapCol)
+                        if (playerCol + 1 < _mapCol)
                         {
                             if (m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                //m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<Renderer>().material.color = Color.red;
+                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
@@ -297,7 +371,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-
+                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                         if(playerCol + 2 < _mapCol)
@@ -306,11 +383,14 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-
+                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
-                    if(playerRow + 2 < _mapCol)
+                    if(playerRow + 2 < _mapRow)
                     {
                         if (playerCol >= 2)
                         {
@@ -318,7 +398,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-
+                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                         if (playerCol + 2 < _mapCol)
@@ -327,7 +410,10 @@ namespace MiniProj
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-
+                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                m_originColorList.Add(_material.GetColor("_MainColor"));
+                                _material.SetColor("_MainColor", Color.red);
+                                m_matList.Add(_material);
                             }
                         }
                     }
@@ -336,6 +422,18 @@ namespace MiniProj
                     break;
                 case SkillId.BING:
                     break;
+            }
+        }
+
+        public void RefreshMap()
+        {
+            if(m_matList != null)
+            {
+                for(int _i = 0; _i < m_matList.Count; ++_i)
+                {
+                    m_matList[_i].SetColor("_MainColor", m_originColorList[_i]);
+                }
+                m_matList.Clear();
             }
         }
     }

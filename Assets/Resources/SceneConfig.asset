@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Name: SceneConfig
   m_EditorClassIdentifier: 
   m_sceneConfigList:
+  - m_prefabName: map0
+    m_mapRow: 11
+    m_mapCol: 7
+    m_playerStartRow: 0
+    m_playerStartCol: 4
+    m_skillData: []
   - m_prefabName: map1
     m_mapRow: 8
     m_mapCol: 6
     m_playerStartRow: 0
-    m_playerStartCol: 0
+    m_playerStartCol: 3
     m_skillData:
     - m_id: 0
       m_count: 2

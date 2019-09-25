@@ -15,7 +15,7 @@ namespace MiniProj
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        private MapPos m_playerPos;
+        public MapPos m_playerPos;
 
         private SkillId m_skillId;
         private State m_state;
@@ -258,6 +258,8 @@ namespace MiniProj
         private void MoveEnd()
         {
             m_state = State.Idle;
+			SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+			_sceneModule.EnemyListUpdate();
         }
 
         private void UseSkill(EventArgs args)

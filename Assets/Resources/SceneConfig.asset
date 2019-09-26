@@ -24,6 +24,7 @@ MonoBehaviour:
       m_count: 1
     - m_id: 3
       m_count: 1
+    m_enemyData: []
   - m_prefabName: map1
     m_mapRow: 8
     m_mapCol: 6
@@ -36,3 +37,8 @@ MonoBehaviour:
       m_count: 2
     - m_id: 3
       m_count: 2
+    m_enemyData:
+    - m_type: 1
+      m_pos:
+        m_row: 2
+        m_col: 4

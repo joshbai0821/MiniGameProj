@@ -30,7 +30,7 @@ namespace MiniProj
             SResourceMgr = CreateInstance<ResourceManager>();
             m_moduleList = new List<Module>();
             m_freeModuleList = new List<Module>();
-            m_sceneConfigId = 1;
+            m_sceneConfigId = 0;
             LoadModule("SceneModule");
             //_test = 0;
         }

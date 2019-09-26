@@ -10,7 +10,12 @@ namespace MiniProj
         private static float DiffZ = 5.0f;
 
         private int m_id;
+        private bool m_active;
         private MapPos m_playerPos;
+        public MapPos Pos
+        {
+            get { return m_playerPos; }
+        }
 
         public void SetPosition(int row, int col)
         {
@@ -23,9 +28,20 @@ namespace MiniProj
         {
             SetPosition(m_playerPos.m_row - 1, m_playerPos.m_col);
         }
+
         public void SetId(int id)
         {
             m_id = id;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.tag == "Player")
+            {
+                RookieModule _rookieModule = (RookieModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("RookieModule");
+                _rookieModule.RemoveRookieEnemy(m_id);
+                GameObject.Destroy(gameObject);
+            }
         }
     }
 

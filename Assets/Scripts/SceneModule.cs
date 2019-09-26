@@ -17,7 +17,6 @@ namespace MiniProj
         private GameObject m_mapRoot;
         public SceneConfig m_config;
         public Player m_player;
-        private Enemy m_enemy;
         private List<Transform> m_tsfMapList;
         private List<Material> m_matList;
         private List<Color> m_originColorList;
@@ -30,16 +29,14 @@ namespace MiniProj
         private static string[] EnemyPrefabName =
         {
             "null",
-            "Cube 1",
-            "Cube 1",
-            "Cube 1",
+            "Enemy",
+            "Enemy",
+            "Enemy",
         };
 
         private static string MapPrefabPath = "Prefabs/Map";
 
-        private static float MapPrefabSizeX = 1;
-        private static float MapPrefabSizeZ = 1;
-        public List<List<Enemy>> m_EnemyList;
+        public List<List<Enemy>> m_enemyList;
         public List<List<MapDataType>> m_mapData;
         public List<List<MapDataType>> Data
         {
@@ -60,12 +57,17 @@ namespace MiniProj
             LoadPlayer();
             LoadSkillBtn();
             LoadRookieModule();
-            LoadEnemy("enemy");
+            LoadEnemy();
         }
 
         public bool isPlayerReady()
         {
             return m_player.IsReady();
+        }
+
+        public void GetPlayerPos(ref MapPos pos)
+        {
+            pos = m_player.Pos;
         }
 
         private void LoadRookieModule()
@@ -146,41 +148,41 @@ namespace MiniProj
         public void EnemyListUpdate()
         {
             //清空所有enemy change 标记
-            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
-                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
-                    if (m_EnemyList[_i][_j] != null)
+                    if (m_enemyList[_i][_j] != null)
                     {
-                        m_EnemyList[_i][_j].PosIsChange = 0;
+                        m_enemyList[_i][_j].PosIsChange = 0;
                     }
                 }
             }
             //找一个enemy
-            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
-                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
-                    if (m_EnemyList[_i][_j] != null && m_EnemyList[_i][_j].PosIsChange == 0)
+                    if (m_enemyList[_i][_j] != null && m_enemyList[_i][_j].PosIsChange == 0)
                     {
                         //找出离player最近的可走的点为最后的结果
-                        m_EnemyList[_i][_j].GetEnemyNextPos();
-                        Debug.Log(string.Format("111"));
+                        m_enemyList[_i][_j].GetEnemyNextPos();
+                        //Debug.Log(string.Format("111"));
                         //更新改变位置，ischange
-                        m_EnemyList[_i][_j].PosIsChange = 1;
+                        m_enemyList[_i][_j].PosIsChange = 1;
                     }
                 }
             }
 
 
             //遍历所有enemy,播位置变化的动画,update
-            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
-                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
-                    if (m_EnemyList[_i][_j] != null)
+                    if (m_enemyList[_i][_j] != null)
                     {
-                        m_EnemyList[_i][_j].Update();
+                        m_enemyList[_i][_j].Update();
                     }
                 }
             }
@@ -188,61 +190,39 @@ namespace MiniProj
 
         }
 
-
-        private void DealEnemyData(ref string[] rowString)
-        {
-            m_EnemyList = new List<List<Enemy>>(rowString.Length);
-            for (int _i = 0; _i < rowString.Length; ++_i)
-            {
-                string[] _str = rowString[_i].Split(',');
-                float _minZ = -(_str.Length / 2.0f) * MapPrefabSizeZ;
-                List<Enemy> _dataList = new List<Enemy>(_str.Length);
-                for (int _j = 0; _j < _str.Length; ++_j)
-                {
-                    int _mapPrefabId = 0;
-                    if (int.TryParse(_str[_j], out _mapPrefabId) && _mapPrefabId >= -1 && _mapPrefabId < EnemyPrefabName.Length)
-                    {
-                        Debug.Log(string.Format("i={0},j={1},id={2}", _i, _j, _mapPrefabId));
-                        if (_mapPrefabId != 0)
-                        {
-                            GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, EnemyPrefabName[_mapPrefabId], typeof(GameObject));
-                            m_enemy = obj.GetComponent<Enemy>();
-                            if (m_enemy != null)
-                            {
-                                m_enemy.SetType(_mapPrefabId);
-                                m_enemy.SetStartPos(_i, _j);
-                                _dataList.Add(m_enemy);
-                            }
-                            else
-                            {
-                                Debug.Log("load enemy error");
-                            }
-                        }
-                        else
-                        {
-                            _dataList.Add(null);
-                        }
-
-                    }
-                    else
-                    {
-
-                        Debug.Log(string.Format("SceneModule, DealMapData Error In row {0} col {1}", _i, _j));
-                    }
-
-                }
-                m_EnemyList.Add(_dataList);
-            }
-
-        }
-
-        private void LoadEnemy(string name)
+        private void LoadEnemy()
         {
             ClearEnemyData();
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            m_enemyList = new List<List<Enemy>>(_row);
+            for(int _i = 0; _i < _row; ++_i)
+            {
+                List<Enemy> _lst = new List<Enemy>(_col);
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    _lst.Add(null);
+                }
+                m_enemyList.Add(_lst);
+            }
+            for(int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData.Count; ++_j)
+            {
+                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Pos.m_row;
+                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Pos.m_col;
+                int _type = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Type;
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
+                m_enemyList[_r][_c] = _obj.GetComponent<Enemy>();
+                if (m_enemyList[_r][_c] != null)
+                {
+                    m_enemyList[_r][_c].SetType(_type);
+                    m_enemyList[_r][_c].SetStartPos(_r, _c);
+                }
+                else
+                {
+                    Debug.Log("SceneModule | LoadEnemy Error");
+                }
+            }
 
-            TextAsset _textAsset = Resources.Load<TextAsset>(name);
-            string[] _rowString = _textAsset.text.Trim().Split('\n');
-            DealEnemyData(ref _rowString);
         }
 
         private void OnEnable()
@@ -287,13 +267,13 @@ namespace MiniProj
 
         private void ClearEnemyData()
         {
-            if (m_EnemyList != null)
+            if (m_enemyList != null)
             {
-                for (int _i = 0, _max = m_EnemyList.Count; _i < _max; _i++)
+                for (int _i = 0, _max = m_enemyList.Count; _i < _max; _i++)
                 {
-                    m_EnemyList[_i].Clear();
+                    m_enemyList[_i].Clear();
                 }
-                m_EnemyList.Clear();
+                m_enemyList.Clear();
             }
 
         }
@@ -584,6 +564,17 @@ namespace MiniProj
                 }
                 m_matList.Clear();
             }
+        }
+
+        public Transform GetTsfMapData(int row, int col)
+        {
+            int _mapRow = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _mapCol = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            if(row > _mapRow || row < 0 || col > _mapCol || col < 0)
+            {
+                return null;
+            }
+            return m_tsfMapList[(row) * _mapCol + col];
         }
     }
 }

@@ -57,12 +57,15 @@ namespace MiniProj
 		private bool PosExitChess(int row, int col)
         {
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-			if(_sceneModule.m_EnemyList[row][col] != null )
+			if(_sceneModule.m_enemyList[row][col] != null )
 			{
 				return true;
 			}
 
-			if(row == _sceneModule.m_player.m_playerPos.m_row && col == _sceneModule.m_player.m_playerPos.m_col)
+            MapPos _pos = new MapPos();
+            _sceneModule.GetPlayerPos(ref _pos);
+
+            if (row == _pos.m_row && col == _pos.m_col)
 			{
 				return true;
 			}
@@ -85,9 +88,11 @@ namespace MiniProj
 			int temprow;
 			int tempcol;
 
-			//player的位置
-			int PRow = _sceneModule.m_player.m_playerPos.m_row;
-			int PCol = _sceneModule.m_player.m_playerPos.m_col;
+            MapPos _pos = new MapPos();
+            _sceneModule.GetPlayerPos(ref _pos);
+            //player的位置
+            int PRow = _pos.m_row;
+			int PCol = _pos.m_col;
 
 			//enemy当前的位置
 			int playerRow = m_EnemyPosNew.m_row;
@@ -435,7 +440,7 @@ namespace MiniProj
                     }
                     break;
                 case 3:
-						if(playerCol >= 1 && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.NONE && _sceneModule.m_EnemyList[playerRow][playerCol - 1] == null)
+						if(playerCol >= 1 && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol - 1] == null)
 						{
 							temprow = playerRow;
 							tempcol = playerCol - 1;
@@ -454,7 +459,7 @@ namespace MiniProj
 							}
 						}
 						
-						if(playerCol + 1 < _mapCol && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.NONE && _sceneModule.m_EnemyList[playerRow][playerCol + 1] == null)
+						if(playerCol + 1 < _mapCol && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol + 1] == null)
 						{
 							temprow = playerRow;
 							tempcol = playerCol + 1;
@@ -475,7 +480,7 @@ namespace MiniProj
 						}
 
 						
-						if(playerRow >= 1 && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.NONE && _sceneModule.m_EnemyList[playerRow - 1][playerCol] == null)
+						if(playerRow >= 1 && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow - 1][playerCol] == null)
 						{
 							temprow = playerRow - 1;
 							tempcol = playerCol;
@@ -495,7 +500,7 @@ namespace MiniProj
 
 						}
 
-						if(playerRow + 1 < _mapRow && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.NONE && _sceneModule.m_EnemyList[playerRow + 1][playerCol] == null)
+						if(playerRow + 1 < _mapRow && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow + 1][playerCol] == null)
 						{
 							temprow = playerRow + 1;
 							tempcol = playerCol;
@@ -518,17 +523,17 @@ namespace MiniProj
                     break;
             }
 
-			Debug.Log(string.Format("minx:{0}, miny:{1}",minrow, mincol));
+			//Debug.Log(string.Format("minx:{0}, miny:{1}",minrow, mincol));
 			if(DistancePlayer == -1)
 			{
 				//没有点可以走
-				MovePos(m_EnemyPosNew.m_row, m_EnemyPosNew.m_col);
+				MovePos(m_EnemyPosNew.m_row, m_EnemyPosNew.m_col);
 			}
 			else
 			{
-				_sceneModule.m_EnemyList[minrow][mincol] = _sceneModule.m_EnemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
-				_sceneModule.m_EnemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
-				MovePos(minrow, mincol);
+				_sceneModule.m_enemyList[minrow][mincol] = _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
+				_sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
+				MovePos(minrow, mincol);
 			}
 
         }

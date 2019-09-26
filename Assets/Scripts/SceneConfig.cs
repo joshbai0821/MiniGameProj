@@ -31,6 +31,26 @@ namespace MiniProj
     }
 
     [System.Serializable]
+    public class EnemyConfig
+    {
+        [SerializeField]
+        private int m_type;
+
+        [SerializeField]
+        private MapPos m_pos;
+
+        public int Type
+        {
+            get { return m_type; }
+        }
+
+        public MapPos Pos
+        {
+            get { return m_pos; }
+        }
+    }
+
+    [System.Serializable]
     public class SingleSceneConfig
     {
         [SerializeField]
@@ -45,6 +65,8 @@ namespace MiniProj
         private int m_playerStartCol;
         [SerializeField]
         private List<SkillData> m_skillData;
+        [SerializeField]
+        private List<EnemyConfig> m_enemyData;
 
         public string PrefabName
         {
@@ -69,6 +91,10 @@ namespace MiniProj
         public List<SkillData> SkillData
         {
             get { return m_skillData; }
+        }
+        public List<EnemyConfig> EnemyData
+        {
+            get { return m_enemyData; }
         }
     }
 

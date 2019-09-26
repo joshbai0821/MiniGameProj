@@ -41,7 +41,7 @@ namespace MiniProj
             m_skillCountText = _tranCount.GetComponent<Text>();
             Transform _tranName = this.transform.Find("SkillName");
             m_skillNameText = _tranName.GetComponent<Text>();
-            EventManager.RegisterEvent(HLEventId.PLAYER_MOVE, this.GetHashCode(), PlayerMove);
+            EventManager.RegisterEvent(HLEventId.PLAYER_START_MOVE, this.GetHashCode(), PlayerMove);
         }
 
         public void Initial(SkillId id, int count)

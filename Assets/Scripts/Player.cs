@@ -15,7 +15,11 @@ namespace MiniProj
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        public MapPos m_playerPos;
+        private MapPos m_playerPos;
+        public MapPos Pos
+        {
+            get { return m_playerPos; }
+        }
 
         private SkillId m_skillId;
         private State m_state;
@@ -229,10 +233,19 @@ namespace MiniProj
                         MapData _data = _hit.transform.GetComponent<MapData>();
                         if(CheckCanMove(_data.Pos.m_row, _data.Pos.m_col, _data.Data))
                         {
-                            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-                            _sceneModule.RefreshMap();
+                            if(GameManager.SceneConfigId == 0)
+                            {
+                                RookieModule _rookieModule = (RookieModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("RookieModule");
+                                _rookieModule.RefreshMap();
+                            }
+                            else
+                            {
+                                SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+                                _sceneModule.RefreshMap();
+                            }
+                            
                             IntEventArgs args = new IntEventArgs((int)m_skillId);
-                            EventManager.SendEvent(HLEventId.PLAYER_MOVE, args);
+                            EventManager.SendEvent(HLEventId.PLAYER_START_MOVE, args);
                             m_state = State.Move;
                             
                             float _diffZ = (_data.Pos.m_row - m_playerPos.m_row) * DiffZ;
@@ -269,7 +282,9 @@ namespace MiniProj
 
         private void MoveEnd()
         {
+            EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
             m_state = State.Idle;
+            
 			SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
 			_sceneModule.EnemyListUpdate();
         }
@@ -278,8 +293,16 @@ namespace MiniProj
         {
             m_state = State.UseSkill;
             m_skillId = (SkillId)((IntEventArgs)args).m_args;
-            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-            _sceneModule.ChangeMap(m_skillId, m_playerPos.m_row, m_playerPos.m_col);
+            if(GameManager.SceneConfigId == 0)
+            {
+                RookieModule _rookieModule = (RookieModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("RookieModule");
+                _rookieModule.ChangeMap(m_skillId);
+            }
+            else
+            {
+                SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+                _sceneModule.ChangeMap(m_skillId, m_playerPos.m_row, m_playerPos.m_col);
+            }
         }
     }
 

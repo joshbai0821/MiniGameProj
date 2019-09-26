@@ -142,6 +142,7 @@ namespace MiniProj
                 if(_item.Status != TimerStatus.DEAD && _item.Loop)
                 {
                     _item.ResetCallTime();
+                    AddTimerItem(_item);
                 }
                 else
                 {

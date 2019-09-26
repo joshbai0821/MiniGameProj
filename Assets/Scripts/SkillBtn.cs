@@ -24,7 +24,10 @@ namespace MiniProj
         };
 
         private SkillId m_id;
-
+        public SkillId Id
+        {
+            get { return m_id; }
+        }
         private int m_count;
 
         private Text m_skillCountText;
@@ -54,7 +57,6 @@ namespace MiniProj
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
             if (_sceneModule.isPlayerReady() && m_count > 0)
             {
-                
                 IntEventArgs args = new IntEventArgs((int)m_id);
                 EventManager.SendEvent(HLEventId.USE_SKILL, args);
             }

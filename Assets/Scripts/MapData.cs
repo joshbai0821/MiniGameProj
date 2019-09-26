@@ -10,6 +10,12 @@ namespace MiniProj
     {
         public int m_row;
         public int m_col;
+
+        public MapPos(int row, int col)
+        {
+            m_row = row;
+            m_col = col;
+        }
     }
 
     public enum MapDataType

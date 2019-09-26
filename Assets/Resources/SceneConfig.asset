@@ -16,8 +16,14 @@ MonoBehaviour:
     m_mapRow: 11
     m_mapCol: 7
     m_playerStartRow: 0
-    m_playerStartCol: 4
-    m_skillData: []
+    m_playerStartCol: 3
+    m_skillData:
+    - m_id: 0
+      m_count: 1
+    - m_id: 1
+      m_count: 1
+    - m_id: 3
+      m_count: 1
   - m_prefabName: map1
     m_mapRow: 8
     m_mapCol: 6

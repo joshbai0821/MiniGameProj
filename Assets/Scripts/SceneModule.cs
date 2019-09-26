@@ -29,6 +29,7 @@ namespace MiniProj
         {
             m_config = Resources.Load<SceneConfig>("SceneConfig");
             m_mapRoot = new GameObject("MapRoot");
+            m_mapRoot.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
             string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
             GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name , typeof(GameObject));
             _mapPrefab.transform.SetParent(m_mapRoot.transform, false);
@@ -37,11 +38,20 @@ namespace MiniProj
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
+            LoadRookieModule();
         }
 
         public bool isPlayerReady()
         {
             return m_player.IsReady();
+        }
+
+        private void LoadRookieModule()
+        {
+            if(GameManager.SceneConfigId == 0)
+            {
+                GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("RookieModule");
+            }
         }
 
         private void LoadSkillBtn()
@@ -63,6 +73,7 @@ namespace MiniProj
         {
             string _name = "Player";
             GameObject _playerPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
+            _playerPrefab.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
             m_player = _playerPrefab.GetComponent<Player>();
             if(m_player != null)
             {

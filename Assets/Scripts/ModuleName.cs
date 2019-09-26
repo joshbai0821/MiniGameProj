@@ -7,6 +7,7 @@ namespace MiniProj
         LoginModule = 0,
         MainMenuModule = 1,
         SceneModule = 2,
+        RookieModule = 3,
     }
     public class ModuleName
     {
@@ -16,6 +17,7 @@ namespace MiniProj
             {"LoginModule", ModuleId.LoginModule},
             {"MainMenuModule", ModuleId.MainMenuModule},
             {"SceneModule", ModuleId.SceneModule },
+            {"RookieModule", ModuleId.RookieModule },
         };
     }
 }

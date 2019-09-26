@@ -21,6 +21,7 @@ namespace MiniProj
             get { return m_sceneConfigId; }
         }
         public Transform UILayer;
+        public Transform SceneLayer;
         //private int _test;
 
         private void Awake()
@@ -34,7 +35,7 @@ namespace MiniProj
             //_test = 0;
         }
 
-        private void LoadModule(string name)
+        public void LoadModule(string name)
         {
             for(int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {
@@ -61,7 +62,7 @@ namespace MiniProj
             LoadModuleByName(_id);
         }
 
-        private void UnloadModule(string name)
+        public void UnloadModule(string name)
         {
             
             for (int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
@@ -110,6 +111,10 @@ namespace MiniProj
                 case ModuleId.SceneModule:
                     SceneModule _sceneModule = CreateInstance<SceneModule>();
                     m_moduleList.Add(_sceneModule);
+                    break;
+                case ModuleId.RookieModule:
+                    RookieModule _rookieModule = CreateInstance<RookieModule>();
+                    m_moduleList.Add(_rookieModule);
                     break;
                 default:
                     break;
@@ -167,6 +172,7 @@ namespace MiniProj
             //    _module.ClearMap();
             //    UnloadModule("SceneModule");
             //}
+            TimerManager.UpdateTimerList();
             for (int _i = 0; _i < m_freeModuleList.Count; ++_i)
             {
                 m_freeModuleList[_i].UpdateFreeTime(Time.deltaTime);

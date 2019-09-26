@@ -23,8 +23,6 @@ namespace MiniProj
         NONE = -1,
         PINGDI = 0,
         GAOTAI = 1,
-        DIREN = 2,
-        BUXIA = 3,
     }
 
     public class MapData : MonoBehaviour

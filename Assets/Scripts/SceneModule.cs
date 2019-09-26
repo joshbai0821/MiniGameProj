@@ -6,9 +6,18 @@ namespace MiniProj
 {
     public class SceneModule : Module
     {
+        /*
+			MA = 1,
+			XIANG = 2,
+			SHI = 3,
+			JU = 4,
+			PAO = 5,
+		*/
+
         private GameObject m_mapRoot;
-        private SceneConfig m_config;
-        private Player m_player;
+        public SceneConfig m_config;
+        public Player m_player;
+        private Enemy m_enemy;
         private List<Transform> m_tsfMapList;
         private List<Material> m_matList;
         private List<Color> m_originColorList;
@@ -17,9 +26,21 @@ namespace MiniProj
         {
         }
 
+        //1 马   2 象  3 士
+        private static string[] EnemyPrefabName =
+        {
+            "null",
+            "Cube 1",
+            "Cube 1",
+            "Cube 1",
+        };
+
         private static string MapPrefabPath = "Prefabs/Map";
 
-        private List<List<MapDataType>> m_mapData;
+        private static float MapPrefabSizeX = 1;
+        private static float MapPrefabSizeZ = 1;
+        public List<List<Enemy>> m_EnemyList;
+        public List<List<MapDataType>> m_mapData;
         public List<List<MapDataType>> Data
         {
             get { return m_mapData; }
@@ -31,7 +52,7 @@ namespace MiniProj
             m_mapRoot = new GameObject("MapRoot");
             m_mapRoot.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
             string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
-            GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name , typeof(GameObject));
+            GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
             _mapPrefab.transform.SetParent(m_mapRoot.transform, false);
             m_matList = new List<Material>();
             m_originColorList = new List<Color>();
@@ -39,6 +60,7 @@ namespace MiniProj
             LoadPlayer();
             LoadSkillBtn();
             LoadRookieModule();
+            LoadEnemy("enemy");
         }
 
         public bool isPlayerReady()
@@ -48,7 +70,7 @@ namespace MiniProj
 
         private void LoadRookieModule()
         {
-            if(GameManager.SceneConfigId == 0)
+            if (GameManager.SceneConfigId == 0)
             {
                 GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("RookieModule");
             }
@@ -58,7 +80,7 @@ namespace MiniProj
         {
             GameObject _skillPanel = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SKillPanel", typeof(GameObject));
             _skillPanel.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
-            for(int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].SkillData.Count; ++_i)
+            for (int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].SkillData.Count; ++_i)
             {
                 GameObject _skillBtn = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SkillBtn", typeof(GameObject));
                 _skillBtn.transform.SetParent(_skillPanel.transform, false);
@@ -75,7 +97,7 @@ namespace MiniProj
             GameObject _playerPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
             _playerPrefab.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
             m_player = _playerPrefab.GetComponent<Player>();
-            if(m_player != null)
+            if (m_player != null)
             {
                 m_player.SetStartPosition(
                 m_config.SceneConfigList[GameManager.SceneConfigId].PlayerStartRow,
@@ -85,12 +107,12 @@ namespace MiniProj
             {
                 Debug.Log("SceneModule | LoadPlayer Error");
             }
-            
+
         }
 
         private void LoadMap()
         {
-            
+
             ClearMapData();
             Transform _tsfMapDataRoot = m_mapRoot.transform.GetChild(0);
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
@@ -111,13 +133,116 @@ namespace MiniProj
                 Transform _child = _tsfMapDataRoot.GetChild(_i);
                 MapData _mapData = _child.GetComponent<MapData>();
                 m_tsfMapList.Add(_child);
-                if(_mapData != null)
+                if (_mapData != null)
                 {
                     int _r = _mapData.Pos.m_row;
                     int _c = _mapData.Pos.m_col;
                     m_mapData[_r][_c] = _mapData.Data;
                 }
             }
+        }
+
+
+        public void EnemyListUpdate()
+        {
+            //清空所有enemy change 标记
+            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            {
+                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                {
+                    if (m_EnemyList[_i][_j] != null)
+                    {
+                        m_EnemyList[_i][_j].PosIsChange = 0;
+                    }
+                }
+            }
+            //找一个enemy
+            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            {
+                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                {
+                    if (m_EnemyList[_i][_j] != null && m_EnemyList[_i][_j].PosIsChange == 0)
+                    {
+                        //找出离player最近的可走的点为最后的结果
+                        m_EnemyList[_i][_j].GetEnemyNextPos();
+                        Debug.Log(string.Format("111"));
+                        //更新改变位置，ischange
+                        m_EnemyList[_i][_j].PosIsChange = 1;
+                    }
+                }
+            }
+
+
+            //遍历所有enemy,播位置变化的动画,update
+            for (int _i = 0; _i < m_EnemyList.Count; _i++)
+            {
+                for (int _j = 0; _j < m_EnemyList[_i].Count; _j++)
+                {
+                    if (m_EnemyList[_i][_j] != null)
+                    {
+                        m_EnemyList[_i][_j].Update();
+                    }
+                }
+            }
+
+
+        }
+
+
+        private void DealEnemyData(ref string[] rowString)
+        {
+            m_EnemyList = new List<List<Enemy>>(rowString.Length);
+            for (int _i = 0; _i < rowString.Length; ++_i)
+            {
+                string[] _str = rowString[_i].Split(',');
+                float _minZ = -(_str.Length / 2.0f) * MapPrefabSizeZ;
+                List<Enemy> _dataList = new List<Enemy>(_str.Length);
+                for (int _j = 0; _j < _str.Length; ++_j)
+                {
+                    int _mapPrefabId = 0;
+                    if (int.TryParse(_str[_j], out _mapPrefabId) && _mapPrefabId >= -1 && _mapPrefabId < EnemyPrefabName.Length)
+                    {
+                        Debug.Log(string.Format("i={0},j={1},id={2}", _i, _j, _mapPrefabId));
+                        if (_mapPrefabId != 0)
+                        {
+                            GameObject obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, EnemyPrefabName[_mapPrefabId], typeof(GameObject));
+                            m_enemy = obj.GetComponent<Enemy>();
+                            if (m_enemy != null)
+                            {
+                                m_enemy.SetType(_mapPrefabId);
+                                m_enemy.SetStartPos(_i, _j);
+                                _dataList.Add(m_enemy);
+                            }
+                            else
+                            {
+                                Debug.Log("load enemy error");
+                            }
+                        }
+                        else
+                        {
+                            _dataList.Add(null);
+                        }
+
+                    }
+                    else
+                    {
+
+                        Debug.Log(string.Format("SceneModule, DealMapData Error In row {0} col {1}", _i, _j));
+                    }
+
+                }
+                m_EnemyList.Add(_dataList);
+            }
+
+        }
+
+        private void LoadEnemy(string name)
+        {
+            ClearEnemyData();
+
+            TextAsset _textAsset = Resources.Load<TextAsset>(name);
+            string[] _rowString = _textAsset.text.Trim().Split('\n');
+            DealEnemyData(ref _rowString);
         }
 
         private void OnEnable()
@@ -160,6 +285,19 @@ namespace MiniProj
             ClearMapData();
         }
 
+        private void ClearEnemyData()
+        {
+            if (m_EnemyList != null)
+            {
+                for (int _i = 0, _max = m_EnemyList.Count; _i < _max; _i++)
+                {
+                    m_EnemyList[_i].Clear();
+                }
+                m_EnemyList.Clear();
+            }
+
+        }
+
         private void ClearMapData()
         {
             if (m_mapData != null)
@@ -170,15 +308,15 @@ namespace MiniProj
                 }
                 m_mapData.Clear();
             }
-            if(m_tsfMapList != null)
+            if (m_tsfMapList != null)
             {
                 m_tsfMapList.Clear();
             }
-            if(m_matList != null)
+            if (m_matList != null)
             {
                 m_matList.Clear();
             }
-            if(m_originColorList != null)
+            if (m_originColorList != null)
             {
                 m_originColorList.Clear();
             }
@@ -203,7 +341,7 @@ namespace MiniProj
             switch (id)
             {
                 case SkillId.JU:
-                    for(int _i = playerRow + 1; _i < _mapRow; ++_i)
+                    for (int _i = playerRow + 1; _i < _mapRow; ++_i)
                     {
                         if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
                         {
@@ -211,14 +349,14 @@ namespace MiniProj
                             m_originColorList.Add(_material.GetColor("_MainColor"));
                             _material.SetColor("_MainColor", Color.red);
                             m_matList.Add(_material);
-                            
+
                         }
                         else
                         {
                             break;
                         }
                     }
-                    for(int _i = playerRow - 1; _i >= 0; --_i)
+                    for (int _i = playerRow - 1; _i >= 0; --_i)
                     {
                         if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
                         {
@@ -232,7 +370,7 @@ namespace MiniProj
                             break;
                         }
                     }
-                    for(int _j = playerCol + 1; _j < _mapCol; ++_j)
+                    for (int _j = playerCol + 1; _j < _mapCol; ++_j)
                     {
                         if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
                         {
@@ -246,7 +384,7 @@ namespace MiniProj
                             break;
                         }
                     }
-                    for(int _j = playerCol - 1; _j >= 0; --_j)
+                    for (int _j = playerCol - 1; _j >= 0; --_j)
                     {
                         if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
                         {
@@ -262,11 +400,11 @@ namespace MiniProj
                     }
                     break;
                 case SkillId.MA:
-                    if(playerRow >= 1)
+                    if (playerRow >= 1)
                     {
-                        if(playerCol >= 2)
+                        if (playerCol >= 2)
                         {
-                            if(m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
+                            if (m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
@@ -276,9 +414,9 @@ namespace MiniProj
                                 m_matList.Add(_material);
                             }
                         }
-                        if(playerCol + 2 < _mapCol)
+                        if (playerCol + 2 < _mapCol)
                         {
-                            if(m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
+                            if (m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
@@ -289,7 +427,7 @@ namespace MiniProj
                             }
                         }
                     }
-                    if(playerRow >= 2)
+                    if (playerRow >= 2)
                     {
                         if (playerCol >= 1)
                         {
@@ -316,9 +454,9 @@ namespace MiniProj
                             }
                         }
                     }
-                    if(playerRow + 1 < _mapRow)
+                    if (playerRow + 1 < _mapRow)
                     {
-                        if(playerCol >= 2)
+                        if (playerCol >= 2)
                         {
                             if (m_mapData[playerRow + 1][playerCol - 2] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
@@ -343,7 +481,7 @@ namespace MiniProj
                             }
                         }
                     }
-                    if(playerRow + 2 < _mapRow)
+                    if (playerRow + 2 < _mapRow)
                     {
                         if (playerCol >= 1)
                         {
@@ -374,9 +512,9 @@ namespace MiniProj
                 case SkillId.PAO:
                     break;
                 case SkillId.XIANG:
-                    if(playerRow >= 2)
+                    if (playerRow >= 2)
                     {
-                        if(playerCol >= 2)
+                        if (playerCol >= 2)
                         {
                             if (m_mapData[playerRow - 2][playerCol - 2] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
@@ -388,7 +526,7 @@ namespace MiniProj
                                 m_matList.Add(_material);
                             }
                         }
-                        if(playerCol + 2 < _mapCol)
+                        if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow - 2][playerCol + 2] != MapDataType.NONE
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
@@ -401,7 +539,7 @@ namespace MiniProj
                             }
                         }
                     }
-                    if(playerRow + 2 < _mapRow)
+                    if (playerRow + 2 < _mapRow)
                     {
                         if (playerCol >= 2)
                         {
@@ -438,9 +576,9 @@ namespace MiniProj
 
         public void RefreshMap()
         {
-            if(m_matList != null)
+            if (m_matList != null)
             {
-                for(int _i = 0; _i < m_matList.Count; ++_i)
+                for (int _i = 0; _i < m_matList.Count; ++_i)
                 {
                     m_matList[_i].SetColor("_MainColor", m_originColorList[_i]);
                 }

@@ -69,7 +69,6 @@ namespace MiniProj
                 _rookieMa.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 _rookieMa.GetComponent<Follower>().SetPosition(m_maPosList[_i].m_row, m_maPosList[_i].m_col);
                 m_followList.Add(_rookieMa);
-                _sceneModule.Data[m_maPosList[_i].m_row][m_maPosList[_i].m_col] = MapDataType.BUXIA;
             }
             
             

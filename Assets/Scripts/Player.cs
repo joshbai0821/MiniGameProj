@@ -244,6 +244,7 @@ namespace MiniProj
                                 Sequence _sequence = DOTween.Sequence();
                                 _sequence.Append(transform.DOMove(new Vector3(_targetPosX, this.transform.position.y, _targetPosZ), 2));
                                 _sequence.AppendCallback(MoveEnd);
+                                _sequence.SetAutoKill(true);
                             }
                             else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO || m_skillId == SkillId.XIANG)
                             {
@@ -255,6 +256,7 @@ namespace MiniProj
                                 Sequence _sequence = DOTween.Sequence();
                                 _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 1.5f * _targetPosY, 1, 2));
                                 _sequence.AppendCallback(MoveEnd);
+                                _sequence.SetAutoKill(true);
                             }
                             m_skillId = SkillId.NONE;
                             m_playerPos.m_row = _data.Pos.m_row;

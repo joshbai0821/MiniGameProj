@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 public class ResourceExporter {
-    protected readonly string m_exportPath;
+    protected static string m_exportPath;
 
     [MenuItem("Assets/Export AssetBundle")]
     public static void ExportAssetBundleResource()
@@ -43,6 +43,7 @@ public class ResourceExporter {
             }
             _buildMap[_count].assetBundleName = _item.Key;
             _buildMap[_count].assetNames = _assets;
+            ++_count;
         }
 
         if(!Directory.Exists(m_exportPath))
@@ -80,16 +81,21 @@ public class ResourceExporter {
                     && !_dir.EndsWith(".mm") && !_dir.EndsWith(".m")
                         && !_dir.EndsWith(".h") && !_dir.EndsWith(".DS_Store"))
                 {
-                    string _relativePath = path.Substring(Application.dataPath.Length);
-                    string _abName = _relativePath.Replace('/', '_');
+                    string _relativePath = path.Substring(Application.dataPath.Length + 1);
+                    string _abName = _relativePath.Replace('\\', '_');
                     List<string> _assetsList;
                     if(abResDic.TryGetValue(_abName, out _assetsList))
                     {
-                        _assetsList.Add(_relativePath + _dir);
+                        string _path = _dir.Substring(Application.dataPath.Length + 1);
+                        string _str = _path.Replace('\\', '/');
+                        _assetsList.Add("Assets/" + _str);
                     }
                     else
                     {
                         _assetsList = new List<string>(8);
+                        string _path = _dir.Substring(Application.dataPath.Length + 1);
+                        string _str = _path.Replace('\\', '/');
+                        _assetsList.Add("Assets/" + _str);
                         abResDic.Add(_abName, _assetsList);
                     }
                 }
@@ -99,7 +105,7 @@ public class ResourceExporter {
                 //文件夹
                 if(!_dir.Contains(".svn"))
                 {
-                    _ret = _ret && CollectBuildMap(path + _dir, ref abResDic);
+                    _ret = _ret && CollectBuildMap(_dir, ref abResDic);
                 }
             }
         }

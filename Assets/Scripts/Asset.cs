@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System;
 using System.Text;
 using Object = UnityEngine.Object;
@@ -70,8 +72,11 @@ namespace MiniProj
             m_strBuilder.Append("/");
             m_strBuilder.Append(m_name);
             m_strBuilder.Append(".prefab");
-
+#if UNITY_EDITOR
             m_asset = AssetDatabase.LoadAssetAtPath(m_strBuilder.ToString(), m_assetType);
+#elif UNITY_ANDROID
+            m_asset = Resources.Load(m_strBuilder.ToString(), m_assetType);
+#endif
         }
 
         internal virtual void Unload()

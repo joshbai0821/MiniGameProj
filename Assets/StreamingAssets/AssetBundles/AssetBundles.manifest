@@ -1,0 +1,11 @@
+ManifestFileVersion: 0
+CRC: 1271500215
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: prefabs_map_material
+      Dependencies: {}
+    Info_1:
+      Name: prefabs_map
+      Dependencies:
+        Dependency_0: prefabs_map_material

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace MiniProj
 {
@@ -10,6 +12,29 @@ namespace MiniProj
         {
 
         }
+
+		private GameObject m_obj;
+
+		private static string MainPrefabPath = "Prefabs/MainMenu";
+
+		private void Awake()
+        {
+			m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "ScrollRectPanel", typeof(GameObject));
+			m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+
+			
+			
+			m_obj.transform.Find("child/Button1").GetComponent<Button>().onClick.AddListener(mainmenu);
+		}
+
+		public void mainmenu()
+        {
+        	Debug.Log("mainmenu");
+        	GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
+        	GameObject.Destroy(m_obj);
+
+		}
+
     }
 }
 

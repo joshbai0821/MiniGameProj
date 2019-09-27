@@ -19,7 +19,7 @@ namespace MiniProj
 
 		private void Awake()
         {
-			m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(LoginPrefabPath, "bg", typeof(GameObject));
+			m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(LoginPrefabPath, "LoginPanel", typeof(GameObject));
 			m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
 			m_obj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(login);
 		}

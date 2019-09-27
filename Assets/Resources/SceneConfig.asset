@@ -25,6 +25,7 @@ MonoBehaviour:
     - m_id: 3
       m_count: 1
     m_enemyData: []
+    m_npcPosData: []
   - m_prefabName: map1
     m_mapRow: 8
     m_mapCol: 6
@@ -32,7 +33,7 @@ MonoBehaviour:
     m_playerStartCol: 3
     m_skillData:
     - m_id: 0
-      m_count: 2
+      m_count: 10
     - m_id: 1
       m_count: 2
     - m_id: 3
@@ -42,3 +43,6 @@ MonoBehaviour:
       m_pos:
         m_row: 2
         m_col: 4
+    m_npcPosData:
+    - m_row: 0
+      m_col: 1

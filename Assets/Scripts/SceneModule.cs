@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace MiniProj
 {
@@ -15,6 +16,9 @@ namespace MiniProj
 		*/
 
         private GameObject m_mapRoot;
+        private int m_waitCount;
+        private int m_npcCount;
+        
         public SceneConfig m_config;
         public Player m_player;
         private List<Transform> m_tsfMapList;
@@ -37,6 +41,7 @@ namespace MiniProj
         private static string MapPrefabPath = "Prefabs/Map";
 
         public List<List<Enemy>> m_enemyList;
+        public List<List<FixedRouteNpc>> m_npcList;
         public List<List<MapDataType>> m_mapData;
         public List<List<MapDataType>> Data
         {
@@ -58,6 +63,9 @@ namespace MiniProj
             LoadSkillBtn();
             LoadRookieModule();
             LoadEnemy();
+            LoadNpc();
+
+            EventManager.RegisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode(), NpcComplete);
         }
 
         public bool isPlayerReady()
@@ -68,6 +76,39 @@ namespace MiniProj
         public void GetPlayerPos(ref MapPos pos)
         {
             pos = m_player.Pos;
+        }
+
+        private void LoadNpc()
+        {
+            ClearNpcData();
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            m_npcList = new List<List<FixedRouteNpc>>(_row);
+            for (int _i = 0; _i < _row; ++_i)
+            {
+                List<FixedRouteNpc> _lst = new List<FixedRouteNpc>(_col);
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    _lst.Add(null);
+                }
+                m_npcList.Add(_lst);
+            }
+            for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count; ++_j)
+            {
+                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_row;
+                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_col;
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "Npc", typeof(GameObject));
+                m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
+                if (m_npcList[_r][_c] != null)
+                {
+                    m_npcList[_r][_c].SetPosition(_r, _c);
+                }
+                else
+                {
+                    Debug.Log("SceneModule | LoadEnemy Error");
+                }
+            }
+            m_npcCount = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count;
         }
 
         private void LoadRookieModule()
@@ -109,8 +150,8 @@ namespace MiniProj
             {
                 Debug.Log("SceneModule | LoadPlayer Error");
             }
-
         }
+
 
         private void LoadMap()
         {
@@ -144,6 +185,20 @@ namespace MiniProj
             }
         }
 
+        public void WaitNpc()
+        {
+            m_waitCount = m_npcCount;
+        }
+
+        public void NpcComplete(EventArgs args)
+        {
+            --m_waitCount;
+            if(m_waitCount == 0)
+            {
+                m_player.SetCanMove();
+                EnemyListUpdate(); 
+            }
+        }
 
         public void EnemyListUpdate()
         {
@@ -278,6 +333,18 @@ namespace MiniProj
 
         }
 
+        private void ClearNpcData()
+        {
+            if(m_npcList != null)
+            {
+                for (int _i = 0, _max = m_npcList.Count; _i < _max; _i++)
+                {
+                    m_npcList[_i].Clear();
+                }
+                m_npcList.Clear();
+            }
+        }
+
         private void ClearMapData()
         {
             if (m_mapData != null)
@@ -313,8 +380,26 @@ namespace MiniProj
             return m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
         }
 
+        private bool PosExitChess(int row, int col)
+        {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (_sceneModule.m_enemyList[row][col] != null)
+            {
+                return true;
+            }
+            if(_sceneModule.m_npcList[row][col] != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void ChangeMap(SkillId id, int playerRow, int playerCol)
         {
+            if(m_waitCount > 0)
+            {
+                return;
+            }
             int _mapRow = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _mapCol = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
             RefreshMap();
@@ -323,13 +408,17 @@ namespace MiniProj
                 case SkillId.JU:
                     for (int _i = playerRow + 1; _i < _mapRow; ++_i)
                     {
-                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
+                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE
+                            && m_npcList[_i][playerCol] == null)
                         {
                             Material _material = m_tsfMapList[_i * _mapCol + playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_MainColor"));
                             _material.SetColor("_MainColor", Color.red);
                             m_matList.Add(_material);
-
+                            if(m_enemyList[_i][playerCol] != null)
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -338,12 +427,17 @@ namespace MiniProj
                     }
                     for (int _i = playerRow - 1; _i >= 0; --_i)
                     {
-                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE)
+                        if (m_mapData[_i][playerCol] != MapDataType.GAOTAI && m_mapData[_i][playerCol] != MapDataType.NONE
+                              && m_npcList[_i][playerCol] == null)
                         {
                             Material _material = m_tsfMapList[_i * _mapCol + playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_MainColor"));
                             _material.SetColor("_MainColor", Color.red);
                             m_matList.Add(_material);
+                            if(m_enemyList[_i][playerCol] != null)
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -352,12 +446,17 @@ namespace MiniProj
                     }
                     for (int _j = playerCol + 1; _j < _mapCol; ++_j)
                     {
-                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
+                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE
+                              && m_npcList[playerRow][_j] == null)
                         {
                             Material _material = m_tsfMapList[playerRow * _mapCol + _j].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_MainColor"));
                             _material.SetColor("_MainColor", Color.red);
                             m_matList.Add(_material);
+                            if(m_enemyList[playerRow][_j] != null)
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -366,12 +465,17 @@ namespace MiniProj
                     }
                     for (int _j = playerCol - 1; _j >= 0; --_j)
                     {
-                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE)
+                        if (m_mapData[playerRow][_j] != MapDataType.GAOTAI && m_mapData[playerRow][_j] != MapDataType.NONE
+                              && m_npcList[playerRow][_j] == null)
                         {
                             Material _material = m_tsfMapList[playerRow * _mapCol + _j].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_MainColor"));
                             _material.SetColor("_MainColor", Color.red);
                             m_matList.Add(_material);
+                            if(m_enemyList[playerRow][_j] != null)
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -384,26 +488,35 @@ namespace MiniProj
                     {
                         if (playerCol >= 2)
                         {
-                            if (m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
+                            if (m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE 
+                                && m_npcList[playerRow - 1][playerCol - 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow, playerCol - 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
+                                && m_npcList[playerRow - 1][playerCol + 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if (!PosExitChess(playerRow, playerCol + 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }                                 
                             }
                         }
                     }
@@ -412,25 +525,34 @@ namespace MiniProj
                         if (playerCol >= 1)
                         {
                             if (m_mapData[playerRow - 2][playerCol - 1] != MapDataType.NONE
+                                && m_npcList[playerRow - 2][playerCol - 1] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow - 1, playerCol))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
                             }
                         }
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
+                                && m_npcList[playerRow - 2][playerCol + 1] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow - 1, playerCol))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                     }
@@ -439,25 +561,34 @@ namespace MiniProj
                         if (playerCol >= 2)
                         {
                             if (m_mapData[playerRow + 1][playerCol - 2] != MapDataType.NONE
+                                && m_npcList[playerRow + 1][playerCol - 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow, playerCol - 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
+                                && m_npcList[playerRow + 1][playerCol - 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow, playerCol + 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 1) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
                             }
                         }
                     }
@@ -466,25 +597,34 @@ namespace MiniProj
                         if (playerCol >= 1)
                         {
                             if (m_mapData[playerRow + 2][playerCol - 1] != MapDataType.NONE
+                                && m_npcList[playerRow + 2][playerCol - 1] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow + 1, playerCol))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 1].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                         if (playerCol + 1 < _mapCol)
                         {
                             if (m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
+                                && m_npcList[playerRow + 2][playerCol + 1] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow + 1, playerCol))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 1].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
                             }
                         }
                     }
@@ -497,25 +637,35 @@ namespace MiniProj
                         if (playerCol >= 2)
                         {
                             if (m_mapData[playerRow - 2][playerCol - 2] != MapDataType.NONE
+                                && m_npcList[playerRow - 2][playerCol - 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow-1, playerCol -1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow - 2][playerCol + 2] != MapDataType.NONE
+                                && m_npcList[playerRow - 2][playerCol + 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow - 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow - 1, playerCol + 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow - 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                     }
@@ -524,25 +674,34 @@ namespace MiniProj
                         if (playerCol >= 2)
                         {
                             if (m_mapData[playerRow + 2][playerCol - 2] != MapDataType.NONE
+                                && m_npcList[playerRow + 2][playerCol - 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow + 1, playerCol - 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol - 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
+                                
                             }
                         }
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow + 2][playerCol + 2] != MapDataType.NONE
+                                && m_npcList[playerRow + 2][playerCol + 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow + 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
-                                m_originColorList.Add(_material.GetColor("_MainColor"));
-                                _material.SetColor("_MainColor", Color.red);
-                                m_matList.Add(_material);
+                                if(!PosExitChess(playerRow + 1, playerCol + 1))
+                                {
+                                    Material _material = m_tsfMapList[(playerRow + 2) * _mapCol + playerCol + 2].GetComponent<MeshRenderer>().material;
+                                    m_originColorList.Add(_material.GetColor("_MainColor"));
+                                    _material.SetColor("_MainColor", Color.red);
+                                    m_matList.Add(_material);
+                                }
                             }
                         }
                     }

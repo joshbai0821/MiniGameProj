@@ -71,7 +71,6 @@ namespace MiniProj
             m_matList.Clear();
             m_originColorList.Clear();
             m_followList.Clear();
-            m_followList.Clear();
             m_btnList.Clear();
             m_rookieEnemyDic.Clear();
         }

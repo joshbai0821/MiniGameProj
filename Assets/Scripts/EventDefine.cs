@@ -6,6 +6,7 @@
         USE_SKILL,       // 点击按钮使用技能
         PLAYER_START_MOVE,        // 玩家开始移动
         PLAYER_END_MOVE,          // 玩家结束运动
+        NPC_END_MOVE,     //NPC结束运动
         MAX_EVENT,       // 最大事件数量
     }
 }

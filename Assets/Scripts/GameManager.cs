@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MiniProj
 {
@@ -30,9 +31,12 @@ namespace MiniProj
             SResourceMgr = CreateInstance<ResourceManager>();
             m_moduleList = new List<Module>();
             m_freeModuleList = new List<Module>();
-            m_sceneConfigId = 0;
-            LoadModule("SceneModule");
-            //_test = 0;
+
+            m_sceneConfigId = 1;
+            LoadModule("LoginModule");
+			//Application.LoadLevel("login");
+			//LoadModule("SceneModule");
+
         }
 
         public void LoadModule(string name)

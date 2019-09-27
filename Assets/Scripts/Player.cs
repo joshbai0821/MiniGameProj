@@ -23,12 +23,14 @@ namespace MiniProj
 
         private SkillId m_skillId;
         private State m_state;
+        private bool m_move;
 
         private static float DiffX = 3.5f;
         private static float DiffZ = 5.0f;
 
         private void Awake()
         {
+            m_move = true;
             m_skillId = SkillId.NONE;
             m_state = State.Idle;
             EventManager.RegisterEvent(HLEventId.USE_SKILL, this.GetHashCode(), UseSkill);
@@ -46,6 +48,19 @@ namespace MiniProj
             return m_state != State.Move    ;
         }
 
+        private bool PosExitChess(int row, int col)
+        {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (_sceneModule.m_enemyList[row][col] != null)
+            {
+                return true;
+            }
+            if (_sceneModule.m_npcList[row][col] != null)
+            {
+                return true;
+            }
+            return false;
+        }
 
         private bool CheckCanMove(int targetRow, int targetCol, MapDataType targetData)
         {
@@ -75,9 +90,17 @@ namespace MiniProj
                             for (int _i = m_playerPos.m_col + 1; _i <= targetCol; _i++)
                             {
                                 if(_sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.GAOTAI 
-                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE)
+                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE
+                                    || _sceneModule.m_npcList[m_playerPos.m_row][_i] != null)
                                 {
-                                    return _ret; ;
+                                    return _ret;
+                                }
+                                else
+                                {
+                                    if (_sceneModule.m_enemyList[m_playerPos.m_row][_i] != null && _i != targetCol)
+                                    {
+                                        return _ret;
+                                    }
                                 }
                             }
                             _ret = true;
@@ -85,10 +108,12 @@ namespace MiniProj
                         }
                         else if(targetCol < m_playerPos.m_col)
                         {
-                            for (int _i = m_playerPos.m_col - 1; _i >= targetCol; _i--)
+                            for (int _i = m_playerPos.m_col - 1; _i > targetCol; _i--)
                             {
                                 if (_sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.GAOTAI
-                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE)
+                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE
+                                    || _sceneModule.m_enemyList[m_playerPos.m_row][_i] != null
+                                    || _sceneModule.m_npcList[m_playerPos.m_row][_i] != null)
                                 {
                                     return _ret; ;
                                 }
@@ -105,9 +130,17 @@ namespace MiniProj
                             for (int _i = m_playerPos.m_row + 1; _i <= targetRow; _i++)
                             {
                                 if (_sceneModule.Data[_i][targetCol] == MapDataType.GAOTAI
-                                    || _sceneModule.Data[_i][targetCol] == MapDataType.NONE)
+                                    || _sceneModule.Data[_i][targetCol] == MapDataType.NONE
+                                    || _sceneModule.m_npcList[_i][targetCol] != null)
                                 {
-                                    return _ret; ;
+                                    return _ret;
+                                }
+                                else
+                                {
+                                    if (_sceneModule.m_enemyList[_i][targetCol] != null && _i != targetRow)
+                                    {
+                                        return _ret;
+                                    }
                                 }
                             }
                             _ret = true;
@@ -115,10 +148,12 @@ namespace MiniProj
                         }
                         else if (targetRow < m_playerPos.m_row)
                         {
-                            for (int _i = m_playerPos.m_row - 1; _i >= targetRow; _i--)
+                            for (int _i = m_playerPos.m_row - 1; _i > targetRow; _i--)
                             {
                                 if (_sceneModule.Data[_i][targetCol] == MapDataType.GAOTAI
-                                    || _sceneModule.Data[_i][targetCol] == MapDataType.NONE)
+                                    || _sceneModule.Data[_i][targetCol] == MapDataType.NONE
+                                    || _sceneModule.m_enemyList[_i][targetCol] != null
+                                    || _sceneModule.m_npcList[_i][targetCol] != null)
                                 {
                                     return _ret; ;
                                 }
@@ -136,7 +171,10 @@ namespace MiniProj
                             if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                                 _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI)
                             {
-                                _ret = true;
+                                if(_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col))
+                                {
+                                    _ret = true;
+                                }
                             }
                         }
                     }
@@ -147,7 +185,10 @@ namespace MiniProj
                             if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                                 _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI)
                             {
-                                _ret = true;
+                                if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col))
+                                {
+                                    _ret = true;
+                                }
                             }
                         }
                     }
@@ -159,7 +200,10 @@ namespace MiniProj
                             if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                                 _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                             {
-                                _ret = true;
+                                if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col + 1))
+                                {
+                                    _ret = true;
+                                }
                             }
                         }
                     }
@@ -170,7 +214,10 @@ namespace MiniProj
                             if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                                 _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                             {
-                                _ret = true;
+                                if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col - 1))
+                                {
+                                    _ret = true;
+                                }
                             }
                         }
                     }
@@ -183,7 +230,10 @@ namespace MiniProj
                         if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                             _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                         {
-                            _ret = true;
+                            if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col + 1))
+                            {
+                                _ret = true;
+                            }
                         }
                     }
                     else if(targetRow == m_playerPos.m_row + 2 && targetCol == m_playerPos.m_col - 2)
@@ -191,7 +241,10 @@ namespace MiniProj
                         if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                             _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                         {
-                            _ret = true;
+                            if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col - 1))
+                            {
+                                _ret = true;
+                            }
                         }
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col + 2)
@@ -199,7 +252,10 @@ namespace MiniProj
                         if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                             _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
                         {
-                            _ret = true;
+                            if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col + 1))
+                            {
+                                _ret = true;
+                            }
                         }
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col - 2)
@@ -207,7 +263,10 @@ namespace MiniProj
                         if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
                             _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
                         {
-                            _ret = true;
+                            if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col - 1))
+                            {
+                                _ret = true;
+                            }
                         }
                     }
                     break;
@@ -221,7 +280,7 @@ namespace MiniProj
 
         private void Update()
         {
-            if (Input.GetMouseButton(0) && m_skillId != SkillId.NONE)
+            if (Input.GetMouseButton(0) && m_move && m_skillId != SkillId.NONE)
             {
                 Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit _hit;
@@ -282,11 +341,11 @@ namespace MiniProj
 
         private void MoveEnd()
         {
-            EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
             m_state = State.Idle;
-            
-			SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-			_sceneModule.EnemyListUpdate();
+            m_move = false;
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            _sceneModule.WaitNpc();
+            EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null); 
         }
 
         private void UseSkill(EventArgs args)
@@ -303,6 +362,11 @@ namespace MiniProj
                 SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
                 _sceneModule.ChangeMap(m_skillId, m_playerPos.m_row, m_playerPos.m_col);
             }
+        }
+
+        public void SetCanMove()
+        {
+            m_move = true;
         }
     }
 

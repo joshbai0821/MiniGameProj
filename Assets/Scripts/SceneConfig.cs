@@ -67,6 +67,8 @@ namespace MiniProj
         private List<SkillData> m_skillData;
         [SerializeField]
         private List<EnemyConfig> m_enemyData;
+        [SerializeField]
+        private List<MapPos> m_npcPosData;
 
         public string PrefabName
         {
@@ -95,6 +97,10 @@ namespace MiniProj
         public List<EnemyConfig> EnemyData
         {
             get { return m_enemyData; }
+        }
+        public List<MapPos> NpcPosData
+        {
+            get { return m_npcPosData; }
         }
     }
 

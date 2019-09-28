@@ -36,6 +36,11 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.USE_SKILL, this.GetHashCode(), UseSkill);
         }
 
+        public void DestroyObj()
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+
         public void SetStartPosition(int row, int col)
         {
             m_playerPos.m_row = row;

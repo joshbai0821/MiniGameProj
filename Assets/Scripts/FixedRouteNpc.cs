@@ -26,6 +26,11 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
 
+        private void DestroyObj()
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+
         public void SetPosition(int row, int col)
         {
             m_playerPos.m_row = row;

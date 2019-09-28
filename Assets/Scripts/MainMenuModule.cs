@@ -19,21 +19,36 @@ namespace MiniProj
 
 		private void Awake()
         {
-			m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "MainMenuPanel", typeof(GameObject));
-			m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            int _enterGame = PlayerPrefs.GetInt("EnterGame", 0);
+            if(_enterGame == 0)
+            {
+                m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "MainMenuFirst", typeof(GameObject));
+                m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+                m_obj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(EnterScene);
+                PlayerPrefs.SetInt("EnterGame", 1);
+            }
+            else
+            {
+                m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "MainMenuFirst", typeof(GameObject));
+                m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+                m_obj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(LoadChooseScene);
+            }
+            
+        }
 
-			
-			
-			m_obj.transform.Find("Scroll View/Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(mainmenu);
-		}
-
-		public void mainmenu()
+        //进入第一关
+		private void EnterScene()
         {
-        	Debug.Log("mainmenu");
+            GameManager.SceneConfigId = 0;
         	GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
         	GameObject.Destroy(m_obj);
-
 		}
+
+        //加载选关卡界面
+        private void LoadChooseScene()
+        {
+
+        }
 
     }
 }

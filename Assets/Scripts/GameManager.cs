@@ -20,6 +20,7 @@ namespace MiniProj
         public static int SceneConfigId
         {
             get { return m_sceneConfigId; }
+            set { m_sceneConfigId = value; }
         }
         public Transform UILayer;
         public Transform SceneLayer;
@@ -33,7 +34,7 @@ namespace MiniProj
             m_freeModuleList = new List<Module>();
 
             m_sceneConfigId = 1;
-            LoadModule("LoginModule");
+            LoadModule("MainMenuModule");
 			//Application.LoadLevel("login");
 			//LoadModule("SceneModule");
 

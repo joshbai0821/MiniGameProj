@@ -14,16 +14,17 @@ namespace MiniProj
 			JU = 4,
 			PAO = 5,
 		*/
-
-        private GameObject m_mapRoot;
         private int m_waitCount;
         private int m_npcCount;
-        
+        private GameObject m_sceneObj;
+        private GameObject m_skillPanelObj;
+
         public SceneConfig m_config;
-        public Player m_player;
+        private Player m_player;
         private List<Transform> m_tsfMapList;
         private List<Material> m_matList;
         private List<Color> m_originColorList;
+        private List<SkillBtn> m_skillBtnList;
 
         public SceneModule() : base("SceneModule")
         {
@@ -50,14 +51,11 @@ namespace MiniProj
 
         private void Awake()
         {
-            m_config = Resources.Load<SceneConfig>("SceneConfig");
-            m_mapRoot = new GameObject("MapRoot");
-            m_mapRoot.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-            string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
-            GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
-            _mapPrefab.transform.SetParent(m_mapRoot.transform, false);
+            m_tsfMapList = new List<Transform>();
             m_matList = new List<Material>();
             m_originColorList = new List<Color>();
+            m_skillBtnList = new List<SkillBtn>();
+
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
@@ -66,6 +64,7 @@ namespace MiniProj
             LoadNpc();
 
             EventManager.RegisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode(), NpcComplete);
+            EventManager.RegisterEvent(HLEventId.ROUND_FAIL, this.GetHashCode(), RoundFail);
         }
 
         public bool isPlayerReady()
@@ -98,6 +97,7 @@ namespace MiniProj
                 int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_row;
                 int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_col;
                 GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "Npc", typeof(GameObject));
+                _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
                 if (m_npcList[_r][_c] != null)
                 {
@@ -121,15 +121,19 @@ namespace MiniProj
 
         private void LoadSkillBtn()
         {
+            ClearSkillBtnData();
             GameObject _skillPanel = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SKillPanel", typeof(GameObject));
             _skillPanel.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_skillPanelObj = _skillPanel;
             for (int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].SkillData.Count; ++_i)
             {
-                GameObject _skillBtn = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SkillBtn", typeof(GameObject));
-                _skillBtn.transform.SetParent(_skillPanel.transform, false);
-                _skillBtn.GetComponent<SkillBtn>().Initial(
+                GameObject _skillBtnObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SkillBtn", typeof(GameObject));
+                _skillBtnObj.transform.SetParent(_skillPanel.transform, false);
+                SkillBtn _skillBtn = _skillBtnObj.GetComponent<SkillBtn>();
+                _skillBtn.Initial(
                     m_config.SceneConfigList[GameManager.SceneConfigId].SkillData[_i].Id,
                     m_config.SceneConfigList[GameManager.SceneConfigId].SkillData[_i].Count);
+                m_skillBtnList.Add(_skillBtn);
             }
 
         }
@@ -152,25 +156,18 @@ namespace MiniProj
             }
         }
 
-
+        //加载地图数据
         private void LoadMap()
         {
-
             ClearMapData();
-            Transform _tsfMapDataRoot = m_mapRoot.transform.GetChild(0);
-            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
-            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
-            m_mapData = new List<List<MapDataType>>(_row);
-            for (int _i = 0; _i < _row; ++_i)
-            {
-                List<MapDataType> _list = new List<MapDataType>(_col);
-                for (int _j = 0; _j < _col; ++_j)
-                {
-                    _list.Add(MapDataType.NONE);
-                }
-                m_mapData.Add(_list);
-            }
-            m_tsfMapList = new List<Transform>();
+            m_config = Resources.Load<SceneConfig>("SceneConfig");
+            string _name = m_config.SceneConfigList[GameManager.SceneConfigId].PrefabName;
+            GameObject _mapPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
+            _mapPrefab.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer, false);
+            m_sceneObj = _mapPrefab;
+
+            Transform _tsfMapDataRoot = _mapPrefab.transform;
+            InitialMapData();
             for (int _i = 0; _i < _tsfMapDataRoot.childCount; ++_i)
             {
                 Transform _child = _tsfMapDataRoot.GetChild(_i);
@@ -182,6 +179,22 @@ namespace MiniProj
                     int _c = _mapData.Pos.m_col;
                     m_mapData[_r][_c] = _mapData.Data;
                 }
+            }
+        }
+
+        private void InitialMapData()
+        {
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            m_mapData = new List<List<MapDataType>>(_row);
+            for (int _i = 0; _i < _row; ++_i)
+            {
+                List<MapDataType> _list = new List<MapDataType>(_col);
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    _list.Add(MapDataType.NONE);
+                }
+                m_mapData.Add(_list);
             }
         }
 
@@ -197,7 +210,30 @@ namespace MiniProj
             {
                 m_player.SetCanMove();
                 EnemyListUpdate(); 
+
             }
+        }
+
+        private void CheckSkillCount()
+        {
+            bool _ret = false;
+            for (int _i = 0; _i < m_skillBtnList.Count; ++_i)
+            {
+                if (m_skillBtnList[_i].Count != 0)
+                {
+                    _ret = true;
+                    break;
+                }
+            }
+            if(!_ret)
+            {
+                RoundFail(null);
+            }
+        }
+
+        public void RoundFail(EventArgs args)
+        {
+           
         }
 
         public void EnemyListUpdate()
@@ -266,6 +302,7 @@ namespace MiniProj
                 int _c = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Pos.m_col;
                 int _type = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Type;
                 GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
+                _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 m_enemyList[_r][_c] = _obj.GetComponent<Enemy>();
                 if (m_enemyList[_r][_c] != null)
                 {
@@ -283,15 +320,12 @@ namespace MiniProj
         private void OnEnable()
         {
             //Debug.Log("SceneModule | OnEnable");
-            if (m_mapRoot != null)
-                m_mapRoot.SetActive(true);
         }
 
         private void OnDisable()
         {
             //Debug.Log("SceneModule | Disable");
-            if (m_mapRoot != null)
-                m_mapRoot.SetActive(false);
+
         }
 
         private void OnDestroy()
@@ -299,24 +333,6 @@ namespace MiniProj
             //Debug.Log("SceneModule | OnDestroy");
             //Resources.UnloadAsset(m_config);
             m_config = null;
-            ClearMapData();
-            if (m_mapRoot != null)
-                GameObject.Destroy(m_mapRoot);
-        }
-
-        public void ClearMap()
-        {
-            if (m_mapRoot != null)
-            {
-                for (int _i = 0; _i < m_mapRoot.transform.childCount; _i++)
-                {
-                    GameObject.Destroy(m_mapRoot.transform.GetChild(_i).gameObject);
-                }
-            }
-            else
-            {
-                Debug.Log("SceneModule | m_mapRoot is Null");
-            }
             ClearMapData();
         }
 
@@ -368,6 +384,18 @@ namespace MiniProj
                 m_originColorList.Clear();
             }
             m_mapData = null;
+            m_tsfMapList = null;
+            m_matList = null;
+            m_originColorList = null;
+        }
+
+        private void ClearSkillBtnData()
+        {
+            if (m_skillBtnList != null)
+            {
+                m_skillBtnList.Clear();
+            }
+            m_skillBtnList = null;
         }
 
         public int getMapDataRow()

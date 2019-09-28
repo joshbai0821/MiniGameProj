@@ -29,6 +29,10 @@ namespace MiniProj
             get { return m_id; }
         }
         private int m_count;
+        public int Count
+        {
+            get { return m_count; }
+        }
 
         private Text m_skillCountText;
         private Text m_skillNameText;

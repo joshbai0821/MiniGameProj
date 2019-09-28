@@ -41,6 +41,7 @@ namespace MiniProj
 
         private static string MapPrefabPath = "Prefabs/Map";
 
+        public MapPos YuJiPos;
         public List<List<Enemy>> m_enemyList;
         public List<List<FixedRouteNpc>> m_npcList;
         public List<List<MapDataType>> m_mapData;
@@ -206,15 +207,39 @@ namespace MiniProj
         public void NpcComplete(EventArgs args)
         {
             --m_waitCount;
-            if(m_waitCount == 0)
+            if (m_waitCount == 0)
             {
                 m_player.SetCanMove();
-                EnemyListUpdate(); 
+                EnemyListUpdate();
 
             }
         }
 
-        private void CheckSkillCount()
+        //返回0 没有虞姬 ，返回1 有虞姬，已经更新位置
+        private bool UpdateYuJiPos()
+        {
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+
+            for (int _i = 0; _i < _row; ++_i)
+            {
+
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    if (m_npcList[_i][_j] != null)
+                    {
+                        YuJiPos.m_row = _i;
+                        YuJiPos.m_col = _j;
+                        return true;
+                    }
+                }
+                
+            }
+            return false;
+        }
+
+
+		private void CheckSkillCount()
         {
             bool _ret = false;
             for (int _i = 0; _i < m_skillBtnList.Count; ++_i)
@@ -238,6 +263,7 @@ namespace MiniProj
 
         public void EnemyListUpdate()
         {
+            bool YuJiExist = UpdateYuJiPos();
             //清空所有enemy change 标记
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
@@ -249,6 +275,8 @@ namespace MiniProj
                     }
                 }
             }
+
+            int GameOver = 0;
             //找一个enemy
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
@@ -257,14 +285,15 @@ namespace MiniProj
                     if (m_enemyList[_i][_j] != null && m_enemyList[_i][_j].PosIsChange == 0)
                     {
                         //找出离player最近的可走的点为最后的结果
-                        m_enemyList[_i][_j].GetEnemyNextPos();
-                        //Debug.Log(string.Format("111"));
+                        if ((GameOver = m_enemyList[_i][_j].GetEnemyNextPos(YuJiExist)) != 0)
+                        {
+                            //吃子特效写在这，1副子， 2主子**
+                        }
                         //更新改变位置，ischange
                         m_enemyList[_i][_j].PosIsChange = 1;
                     }
                 }
             }
-
 
             //遍历所有enemy,播位置变化的动画,update
             for (int _i = 0; _i < m_enemyList.Count; _i++)
@@ -278,7 +307,16 @@ namespace MiniProj
                 }
             }
 
+            //触发本局游戏结束
+            if (GameOver != 0)
+            {
+                if (YuJiExist && GameOver == 1)
+                {
+                    //虞姬死了
+                }
+                //项羽死了
 
+            }
         }
 
         private void LoadEnemy()

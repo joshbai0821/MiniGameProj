@@ -53,8 +53,8 @@ namespace MiniProj
 			transform.position = new Vector3(m_EnemyPosNew.m_col * DiffX, 1.6f, m_EnemyPosNew.m_row * DiffZ);
 		}
 
-				//卡马腿，象腿用的
-		private bool PosExitChess(int row, int col)
+		//卡马腿，象腿用的
+		private bool PosExitChess(int row, int col, bool YuJiExist)
         {
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
 			if(_sceneModule.m_enemyList[row][col] != null )
@@ -70,10 +70,18 @@ namespace MiniProj
 				return true;
 			}
 
+            if (YuJiExist && _sceneModule.YuJiPos.m_row == row && _sceneModule.YuJiPos.m_col == col)
+            {
+                return true;
+            }
+
 			return false;
 		}
 
-		public void GetEnemyNextPos()
+        //敌人能否走的时候加入判断虞姬是否卡住了
+        //敌人吃的时候，吃虞姬项羽优先级一样高，但是靠近虞姬
+        //1 吃主子， 2吃副子， 0都没被吃
+		public int GetEnemyNextPos(bool YuJiExist)
         {
         	SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
 			//判断,是否是可走的点
@@ -85,14 +93,38 @@ namespace MiniProj
 			int minrow = 0;
 			int mincol = 0;
 
+            //可能要走的位置
 			int temprow;
 			int tempcol;
 
             MapPos _pos = new MapPos();
             _sceneModule.GetPlayerPos(ref _pos);
-            //player的位置
-            int PRow = _pos.m_row;
-			int PCol = _pos.m_col;
+
+            //主棋子
+            int PRow = -1;
+            int PCol = -1;
+
+            //副棋子：有虞姬时候的项羽
+            int SecondRow = -1;
+            int SecondCol = -1;
+
+            int RetValue = 0;
+
+            if (YuJiExist)
+            {
+                PRow = _sceneModule.YuJiPos.m_row;
+                PCol = _sceneModule.YuJiPos.m_col;
+
+                SecondRow = _pos.m_row;
+                SecondCol = _pos.m_col;
+            }
+            else
+            {
+                //主player的位置
+                PRow = _pos.m_row;
+			    PCol = _pos.m_col;
+            }
+
 
 			//enemy当前的位置
 			int playerRow = m_EnemyPosNew.m_row;
@@ -110,13 +142,23 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                            	if(PosExitChess(playerRow,playerCol - 1) == false)
+                            	if(PosExitChess(playerRow,playerCol - 1, YuJiExist) == false)
                             	{
                             		temprow = playerRow - 1;
 									tempcol = playerCol - 2;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+									else if(DistancePlayer == -1)
 									{
+                                        //找一个最近的点
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
 										mincol = tempcol;
@@ -137,12 +179,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow,playerCol + 1) == false)
+                                if(PosExitChess(playerRow,playerCol + 1, YuJiExist) == false)
 								{
 									temprow = playerRow - 1;
 									tempcol = playerCol + 2;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -166,12 +217,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow - 1,playerCol) == false)
+                                if(PosExitChess(playerRow - 1,playerCol, YuJiExist) == false)
 								{
 									temprow = playerRow - 2;
 									tempcol = playerCol - 1;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -186,18 +246,27 @@ namespace MiniProj
 								}
                             }
                         }
-                        if (playerCol + 2 < _mapCol)
+                        if (playerCol + 1 < _mapCol)
                         {
                             if (_sceneModule.m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
-								if(PosExitChess(playerRow - 1,playerCol) == false)
+								if(PosExitChess(playerRow - 1,playerCol, YuJiExist) == false)
 								{
 									temprow = playerRow - 2;
 									tempcol = playerCol + 1;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -221,12 +290,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow,playerCol - 1) == false)
+                                if(PosExitChess(playerRow,playerCol - 1, YuJiExist) == false)
 								{
 									temprow = playerRow + 1;
 									tempcol = playerCol - 2;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -241,18 +319,27 @@ namespace MiniProj
 								}
                             }
                         }
-                        if (playerCol + 2 < _mapCol)
+                        if (playerCol + 1 < _mapCol)
                         {
                             if (_sceneModule.m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow,playerCol + 1) == false)
+                                if(PosExitChess(playerRow,playerCol + 1, YuJiExist) == false)
 								{
 									temprow = playerRow + 1;
 									tempcol = playerCol + 2;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -276,12 +363,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow + 1,playerCol) == false)
+                                if(PosExitChess(playerRow + 1,playerCol, YuJiExist) == false)
 								{
 									temprow = playerRow + 2;
 									tempcol = playerCol - 1;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -296,18 +392,27 @@ namespace MiniProj
 								}
                             }
                         }
-                        if (playerCol + 2 < _mapCol)
+                        if (playerCol + 1 < _mapCol)
                         {
                             if (_sceneModule.m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow + 1,playerCol) == false)
+                                if(PosExitChess(playerRow + 1,playerCol, YuJiExist) == false)
 								{
 									temprow = playerRow + 2;
 									tempcol = playerCol + 1;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -333,12 +438,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-                                if(PosExitChess(playerRow - 1,playerCol -1) == false)
+                                if(PosExitChess(playerRow - 1,playerCol -1, YuJiExist) == false)
 								{
 									temprow = playerRow - 2;
 									tempcol = playerCol - 2;
-                            		//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -359,12 +473,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-								if(PosExitChess(playerRow - 1,playerCol + 1) == false)
+								if(PosExitChess(playerRow - 1,playerCol + 1, YuJiExist) == false)
 								{
 									temprow = playerRow - 2;
 									tempcol = playerCol + 2;
-									//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -389,12 +512,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
-								if(PosExitChess(playerRow + 1,playerCol -1) == false)
+								if(PosExitChess(playerRow + 1,playerCol -1, YuJiExist) == false)
 								{
 									temprow = playerRow + 2;
 									tempcol = playerCol - 2;
-									//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -416,12 +548,21 @@ namespace MiniProj
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
-								if(PosExitChess(playerRow + 1,playerCol + 1) == false)
+								if(PosExitChess(playerRow + 1,playerCol + 1, YuJiExist) == false)
 								{
 									temprow = playerRow + 2;
 									tempcol = playerCol + 2;
-									//找一个最近的点
-									if(DistancePlayer == -1)
+                                    //找一个最近的点
+                                    //能否吃副子
+                                    if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                                    {
+                                        RetValue = 2;
+                                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                        minrow = temprow;
+                                        mincol = tempcol;
+                                        break;
+                                    }
+                                    else if (DistancePlayer == -1)
 									{
 										DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 										minrow = temprow;
@@ -444,8 +585,17 @@ namespace MiniProj
 						{
 							temprow = playerRow;
 							tempcol = playerCol - 1;
-							//找一个最近的点
-							if(DistancePlayer == -1)
+                        //找一个最近的点
+                        //能否吃副子
+                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                            {
+                                RetValue = 2;
+                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                minrow = temprow;
+                                mincol = tempcol;
+                                break;
+                            }
+                            else if (DistancePlayer == -1)
 							{
 								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 								minrow = temprow;
@@ -463,8 +613,17 @@ namespace MiniProj
 						{
 							temprow = playerRow;
 							tempcol = playerCol + 1;
-							//找一个最近的点
-							if(DistancePlayer == -1)
+                        //找一个最近的点
+                        //能否吃副子
+                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                            {
+                                RetValue = 2;
+                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                minrow = temprow;
+                                mincol = tempcol;
+                                break;
+                            }
+                            else if (DistancePlayer == -1)
 							{
 								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 								minrow = temprow;
@@ -484,8 +643,17 @@ namespace MiniProj
 						{
 							temprow = playerRow - 1;
 							tempcol = playerCol;
-							//找一个最近的点
-							if(DistancePlayer == -1)
+                        //找一个最近的点
+                        //能否吃副子
+                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                            {
+                                RetValue = 2;
+                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                minrow = temprow;
+                                mincol = tempcol;
+                                break;
+                            }
+                            else if (DistancePlayer == -1)
 							{
 								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 								minrow = temprow;
@@ -504,8 +672,17 @@ namespace MiniProj
 						{
 							temprow = playerRow + 1;
 							tempcol = playerCol;
-							//找一个最近的点
-							if(DistancePlayer == -1)
+                            //找一个最近的点
+                            //能否吃副子
+                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                            {
+                                RetValue = 2;
+                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                                minrow = temprow;
+                                mincol = tempcol;
+                                break;
+                            }
+                            else if (DistancePlayer == -1)
 							{
 								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
 								minrow = temprow;
@@ -523,18 +700,28 @@ namespace MiniProj
                     break;
             }
 
-			//Debug.Log(string.Format("minx:{0}, miny:{1}",minrow, mincol));
-			if(DistancePlayer == -1)
-			{
-				//没有点可以走
-				MovePos(m_EnemyPosNew.m_row, m_EnemyPosNew.m_col);
-			}
-			else
-			{
-				_sceneModule.m_enemyList[minrow][mincol] = _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
-				_sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
-				MovePos(minrow, mincol);
-			}
+            //Debug.Log(string.Format("minx:{0}, miny:{1}",minrow, mincol));
+            if (DistancePlayer == -1)
+            {
+                //没有点可以走
+                MovePos(m_EnemyPosNew.m_row, m_EnemyPosNew.m_col);
+            }
+            else
+            {
+                _sceneModule.m_enemyList[minrow][mincol] = _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
+                _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
+                MovePos(minrow, mincol);
+                if (RetValue == 2)
+                {
+                    return 2;
+                }
+                else if (DistancePlayer == 0)
+                {
+                    return 1;
+                }
+            }
+
+            return 0;
 
         }
 		

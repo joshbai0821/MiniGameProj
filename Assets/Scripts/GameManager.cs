@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace MiniProj
@@ -33,11 +34,16 @@ namespace MiniProj
             m_moduleList = new List<Module>();
             m_freeModuleList = new List<Module>();
 
-            m_sceneConfigId = 1;
+            m_sceneConfigId = 0;
             LoadModule("MainMenuModule");
 			//Application.LoadLevel("login");
 			//LoadModule("SceneModule");
 
+        }
+
+        public void OnMapSceneLoad(Scene arg0, LoadSceneMode arg1)
+        {
+            LoadModule("SceneModule");
         }
 
         public void LoadModule(string name)

@@ -25,8 +25,8 @@ namespace MiniProj
         private State m_state;
         private bool m_move;
 
-        private static float DiffX = 3.5f;
-        private static float DiffZ = 5.0f;
+        private static float DiffX = 1f;
+        private static float DiffZ = -1f;
 
         private void Awake()
         {
@@ -45,7 +45,7 @@ namespace MiniProj
         {
             m_playerPos.m_row = row;
             m_playerPos.m_col = col;
-            transform.position = new Vector3(col * DiffX, 1.6f, row * DiffZ);
+            transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
         }
 
         public bool IsReady()
@@ -289,7 +289,7 @@ namespace MiniProj
             {
                 Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit _hit;
-                int _layerMask = 1 << 8;
+                int _layerMask = 1 << 9;
                 if (Physics.Raycast(_ray, out _hit, 100, _layerMask))
                 {
                     if (_hit.collider.gameObject.tag.Equals("Plane"))
@@ -312,10 +312,8 @@ namespace MiniProj
                             EventManager.SendEvent(HLEventId.PLAYER_START_MOVE, args);
                             m_state = State.Move;
                             
-                            float _diffZ = (_data.Pos.m_row - m_playerPos.m_row) * DiffZ;
-                            float _diffX = (_data.Pos.m_col - m_playerPos.m_col) * DiffX;
-                            float _targetPosX = this.transform.position.x + _diffX;
-                            float _targetPosZ = this.transform.position.z + _diffZ;
+                            float _targetPosX = _data.Pos.m_row * DiffX;
+                            float _targetPosZ = _data.Pos.m_col * DiffZ;
                             if(m_skillId == SkillId.JU)
                             {
                                 Sequence _sequence = DOTween.Sequence();
@@ -325,10 +323,10 @@ namespace MiniProj
                             }
                             else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO || m_skillId == SkillId.XIANG)
                             {
-                                float _targetPosY = 1.6f;
+                                float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
                                 {
-                                    _targetPosY = 3.2f;
+                                    _targetPosY = 1.0f;
                                 }
                                 Sequence _sequence = DOTween.Sequence();
                                 _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 1.5f * _targetPosY, 1, 2));
@@ -369,9 +367,9 @@ namespace MiniProj
             }
         }
 
-        public void SetCanMove()
+        public void SetCanMove(bool bState)
         {
-            m_move = true;
+            m_move = bState;
         }
     }
 

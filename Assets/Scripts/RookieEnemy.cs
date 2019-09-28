@@ -6,8 +6,8 @@ namespace MiniProj
 {
     public class RookieEnemy : MonoBehaviour
     {
-        private static float DiffX = 3.5f;
-        private static float DiffZ = 5.0f;
+        private static float DiffX = 1.0f;
+        private static float DiffZ = -1.0f;
 
         private int m_id;
         private bool m_active;
@@ -17,11 +17,16 @@ namespace MiniProj
             get { return m_playerPos; }
         }
 
+        public void DestroyObj()
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+
         public void SetPosition(int row, int col)
         {
             m_playerPos.m_row = row;
             m_playerPos.m_col = col;
-            transform.position = new Vector3(col * DiffX, 1f, row * DiffZ);
+            transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
         }
 
         public void Execute()

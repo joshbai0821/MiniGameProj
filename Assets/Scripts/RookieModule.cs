@@ -8,7 +8,7 @@ namespace MiniProj
 {
     public class RookieModule : Module
     {
-        private static string MapPrefabPath = "Prefabs/Map";
+        private static string PlayerPrefabPath = "Prefabs/Player";
         private int m_step = 0;
 
         private MapPos m_playerPos;
@@ -45,8 +45,10 @@ namespace MiniProj
         {
         }
 
-        private void Awake()
+        private void OnEnable()
         {
+            
+
             m_matList = new List<Material>();
             m_originColorList = new List<Color>();
             m_followList = new List<GameObject>();
@@ -54,7 +56,7 @@ namespace MiniProj
             m_rookieEnemyDic = new Dictionary<int, RookieEnemy>();
             Transform _tsfUIRoot = GameManager.GameManagerObj.GetComponent<GameManager>().UILayer;
             Transform _tsfPanel = _tsfUIRoot.Find("SkillPanel(Clone)");
-            for(int _i = 0; _i < _tsfPanel.childCount; ++_i)
+            for (int _i = 0; _i < _tsfPanel.childCount; ++_i)
             {
                 GameObject _btnObj = _tsfPanel.GetChild(_i).gameObject;
                 m_btnList.Add(_btnObj);
@@ -66,13 +68,49 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
 
+        private void OnDisable()
+        {
+            if(m_matList != null)
+            {
+                m_matList.Clear();
+                m_matList = null;
+            }
+            if(m_originColorList != null)
+            {
+                m_originColorList.Clear();
+                m_originColorList = null;
+            }
+            if(m_followList != null)
+            {
+                for(int _i = 0; _i < m_followList.Count; ++_i)
+                {
+                    GameObject.Destroy(m_followList[_i]);
+                }
+                m_followList.Clear();
+                m_followList = null;
+            }
+            if(m_btnList != null)
+            {
+                m_btnList.Clear();
+                m_btnList = null;
+            }
+            if(m_rookieEnemyDic != null)
+            {
+                Dictionary<int, RookieEnemy>.Enumerator _enumerator = m_rookieEnemyDic.GetEnumerator();
+                while (_enumerator.MoveNext())
+                {
+                    _enumerator.Current.Value.DestroyObj();
+
+                }
+                _enumerator.Dispose();
+                m_rookieEnemyDic.Clear();
+                m_rookieEnemyDic = null;
+            }
+            EventManager.UnregisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode());
+        }
+
         private void OnDestroy()
         {
-            m_matList.Clear();
-            m_originColorList.Clear();
-            m_followList.Clear();
-            m_btnList.Clear();
-            m_rookieEnemyDic.Clear();
         }
 
         private void DelayExecuteRookieEnemies(EventArgs args)
@@ -152,7 +190,7 @@ namespace MiniProj
             ActiveBtn(SkillId.JU);
             for (int _i = 0; _i < m_juPosList.Length; ++_i)
             {
-                GameObject _rookieJu = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "RookieJu", typeof(GameObject));
+                GameObject _rookieJu = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, "woChe", typeof(GameObject));
                 _rookieJu.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 Follower _follower = _rookieJu.GetComponent<Follower>();
                 _follower.SetType(FollowerType.JU);
@@ -167,7 +205,7 @@ namespace MiniProj
             ActiveBtn(SkillId.XIANG);
             for (int _i = 0; _i < m_xiangPosList.Length; ++_i)
             {
-                GameObject _rookieXiang = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "RookieXiang", typeof(GameObject));
+                GameObject _rookieXiang = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, "woXiang", typeof(GameObject));
                 _rookieXiang.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 Follower _follower = _rookieXiang.GetComponent<Follower>();
                 _follower.SetType(FollowerType.XIANG);
@@ -183,13 +221,13 @@ namespace MiniProj
             {
                 Transform _tsf1 = _sceneModule.GetTsfMapData(2, 2);
                 Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material1.GetColor("_MainColor"));
-                _material1.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material1.GetColor("_Color"));
+                _material1.SetColor("_Color", Color.red);
                 m_matList.Add(_material1);
                 Transform _tsf2 = _sceneModule.GetTsfMapData(2, 4);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material2.GetColor("_MainColor"));
-                _material2.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material2.GetColor("_Color"));
+                _material2.SetColor("_Color", Color.red);
                 m_matList.Add(_material2);
             }
             if(id == SkillId.JU)
@@ -197,20 +235,20 @@ namespace MiniProj
                 //
                 Transform _tsf1 = _sceneModule.GetTsfMapData(0, 4);
                 Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material1.GetColor("_MainColor"));
-                _material1.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material1.GetColor("_Color"));
+                _material1.SetColor("_Color", Color.red);
                 m_matList.Add(_material1);
                 //
                 Transform _tsf2 = _sceneModule.GetTsfMapData(1, 4);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material2.GetColor("_MainColor"));
-                _material2.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material2.GetColor("_Color"));
+                _material2.SetColor("_Color", Color.red);
                 m_matList.Add(_material2);
                 //
                 Transform _tsf3 = _sceneModule.GetTsfMapData(3, 4);
                 Material _material3 = _tsf3.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material3.GetColor("_MainColor"));
-                _material3.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material3.GetColor("_Color"));
+                _material3.SetColor("_Color", Color.red);
                 m_matList.Add(_material3);
             }
             if(id == SkillId.XIANG)
@@ -218,26 +256,26 @@ namespace MiniProj
                 //
                 Transform _tsf1 = _sceneModule.GetTsfMapData(1, 2);
                 Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material1.GetColor("_MainColor"));
-                _material1.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material1.GetColor("_Color"));
+                _material1.SetColor("_Color", Color.red);
                 m_matList.Add(_material1);
                 //
                 Transform _tsf2 = _sceneModule.GetTsfMapData(1, 6);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material2.GetColor("_MainColor"));
-                _material2.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material2.GetColor("_Color"));
+                _material2.SetColor("_Color", Color.red);
                 m_matList.Add(_material2);
                 //
                 Transform _tsf3 = _sceneModule.GetTsfMapData(5, 2);
                 Material _material3 = _tsf3.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material3.GetColor("_MainColor"));
-                _material3.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material3.GetColor("_Color"));
+                _material3.SetColor("_Color", Color.red);
                 m_matList.Add(_material3);
                 //
                 Transform _tsf4 = _sceneModule.GetTsfMapData(5, 6);
                 Material _material4 = _tsf4.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material4.GetColor("_MainColor"));
-                _material4.SetColor("_MainColor", Color.red);
+                m_originColorList.Add(_material4.GetColor("_Color"));
+                _material4.SetColor("_Color", Color.red);
                 m_matList.Add(_material4);
             }
         }
@@ -246,7 +284,7 @@ namespace MiniProj
         {
             for (int _i = 0; _i < m_maPosList.Length; ++_i)
             {
-                GameObject _rookieMa = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "RookieMa", typeof(GameObject));
+                GameObject _rookieMa = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, "woHorse", typeof(GameObject));
                 _rookieMa.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 Follower _follower = _rookieMa.GetComponent<Follower>();
                 _follower.SetType(FollowerType.MA);
@@ -271,8 +309,8 @@ namespace MiniProj
         {
             for(int _i = 0; _i < m_enemyPosList.Length; ++_i)
             {
-                string _name = "RookieEnemy";
-                GameObject _rookieEnemyObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, _name, typeof(GameObject));
+                string _name = "RookieDiBing";
+                GameObject _rookieEnemyObj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, _name, typeof(GameObject));
                 _rookieEnemyObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 RookieEnemy _rookieEnemy = _rookieEnemyObj.GetComponent<RookieEnemy>();
                 _rookieEnemy.SetId(_i);
@@ -303,7 +341,7 @@ namespace MiniProj
             {
                 for (int _i = 0; _i < m_matList.Count; ++_i)
                 {
-                    m_matList[_i].SetColor("_MainColor", m_originColorList[_i]);
+                    m_matList[_i].SetColor("_Color", m_originColorList[_i]);
                 }
                 m_matList.Clear();
             }

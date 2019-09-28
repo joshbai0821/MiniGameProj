@@ -1,0 +1,227 @@
+fileFormatVersion: 2
+guid: fd219cfb837fd524eade526da4f20f4c
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: body
+    100002: Bone001
+    100004: Bone001(mirrored)
+    100006: Bone002
+    100008: Bone002(mirrored)
+    100010: Bone003
+    100012: Bone003(mirrored)
+    100014: Bone004
+    100016: Bone004(mirrored)
+    100018: Bone005
+    100020: Bone005(mirrored)
+    100022: Bone007
+    100024: Bone007(mirrored)
+    100026: Bone008
+    100028: Bone008(mirrored)
+    100030: Box003
+    100032: dabaojian
+    100034: eyeball
+    100036: face
+    100038: finger_end
+    100040: finger_end(mirrored)
+    100042: hair
+    100044: hat1
+    100046: hudang
+    100048: huzi
+    100050: jiemao
+    100052: leg1
+    100054: leg2
+    100056: Object
+    100058: Object002
+    100060: pilian
+    100062: thumb_end
+    100064: thumb_end(mirrored)
+    100066: yachi
+    100068: yaodai1
+    100070: zhiyu
+    100072: //RootNode
+    400000: body
+    400002: Bone001
+    400004: Bone001(mirrored)
+    400006: Bone002
+    400008: Bone002(mirrored)
+    400010: Bone003
+    400012: Bone003(mirrored)
+    400014: Bone004
+    400016: Bone004(mirrored)
+    400018: Bone005
+    400020: Bone005(mirrored)
+    400022: Bone007
+    400024: Bone007(mirrored)
+    400026: Bone008
+    400028: Bone008(mirrored)
+    400030: Box003
+    400032: dabaojian
+    400034: eyeball
+    400036: face
+    400038: finger_end
+    400040: finger_end(mirrored)
+    400042: hair
+    400044: hat1
+    400046: hudang
+    400048: huzi
+    400050: jiemao
+    400052: leg1
+    400054: leg2
+    400056: Object
+    400058: Object002
+    400060: pilian
+    400062: thumb_end
+    400064: thumb_end(mirrored)
+    400066: yachi
+    400068: yaodai1
+    400070: zhiyu
+    400072: //RootNode
+    2100000: 'Material #17'
+    2100002: 'Material #29'
+    2100004: 'Material #15'
+    2100006: 'Material #4'
+    2100008: 'Material #42'
+    2100010: 01 - Default
+    2100012: 'Material #2'
+    2100014: 'Material #0'
+    2100016: 'Material #1'
+    2100018: 07 - Default
+    2100020: 'Material #3'
+    2100022: 'Material #30'
+    2100024: 'Material #330'
+    2300000: Box003
+    2300002: dabaojian
+    2300004: eyeball
+    2300006: face
+    2300008: hair
+    2300010: hat1
+    2300012: hudang
+    2300014: huzi
+    2300016: jiemao
+    2300018: leg1
+    2300020: leg2
+    2300022: Object
+    2300024: Object002
+    2300026: pilian
+    2300028: yachi
+    2300030: yaodai1
+    2300032: zhiyu
+    3300000: Box003
+    3300002: dabaojian
+    3300004: eyeball
+    3300006: face
+    3300008: hair
+    3300010: hat1
+    3300012: hudang
+    3300014: huzi
+    3300016: jiemao
+    3300018: leg1
+    3300020: leg2
+    3300022: Object
+    3300024: Object002
+    3300026: pilian
+    3300028: yachi
+    3300030: yaodai1
+    3300032: zhiyu
+    4300000: eyeball
+    4300002: hair
+    4300004: huzi
+    4300006: body
+    4300008: hat1
+    4300010: leg1
+    4300012: pilian
+    4300014: leg2
+    4300016: yaodai1
+    4300018: hudang
+    4300020: yachi
+    4300022: zhiyu
+    4300024: jiemao
+    4300026: Box003
+    4300028: Object
+    4300030: Object002
+    4300032: face
+    4300034: dabaojian
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: body
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

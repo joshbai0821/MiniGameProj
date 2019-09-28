@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4106262305107990}
   - component: {fileID: 33002105105627762}
   - component: {fileID: 23984328596402370}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: horse_skin04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4505255711686306}
-  m_Layer: 0
+  - component: {fileID: 136957083471393280}
+  - component: {fileID: 54573628955011982}
+  m_Layer: 9
   m_Name: diHorse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +55,7 @@ GameObject:
   - component: {fileID: 4753602397215286}
   - component: {fileID: 33154003038781788}
   - component: {fileID: 23330080326647676}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +72,7 @@ GameObject:
   - component: {fileID: 4542829577705914}
   - component: {fileID: 33733663949200418}
   - component: {fileID: 23882904810894626}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: qibing_skin07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +87,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4409666415662930}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,3 +286,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566216532307128}
   m_Mesh: {fileID: 4300002, guid: 9eafe40e3ae58cb42b1ae083419f13b9, type: 3}
+--- !u!54 &54573628955011982
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1242049573871564}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &136957083471393280
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1242049573871564}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 5.19, y: 1.25, z: -0.25}

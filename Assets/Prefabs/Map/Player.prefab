@@ -19,6 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4106980300147680}
+  - component: {fileID: 114761723752585140}
+  - component: {fileID: 136780348758502948}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -35,9 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4317689413666684}
   - component: {fileID: 33753253182280326}
-  - component: {fileID: 136583071505367570}
   - component: {fileID: 23600613176353208}
-  - component: {fileID: 114832820137891364}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1433335949724086}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4317689413666684}
@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788442642175046}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.67, y: -0.44, z: -5.12}
+  m_LocalPosition: {x: 0.67, y: 1.19, z: -5.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4106980300147680}
@@ -113,12 +113,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788442642175046}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114832820137891364
+--- !u!114 &114761723752585140
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1788442642175046}
+  m_GameObject: {fileID: 1433335949724086}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
@@ -127,16 +127,16 @@ MonoBehaviour:
   m_playerPos:
     m_row: 0
     m_col: 0
---- !u!136 &136583071505367570
+--- !u!136 &136780348758502948
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1788442642175046}
+  m_GameObject: {fileID: 1433335949724086}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.66, y: 1.22, z: -5.12}

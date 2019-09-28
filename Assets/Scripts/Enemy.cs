@@ -27,8 +27,12 @@ namespace MiniProj
 			EnemyType = iType;
 		}
 
-		
-		public void SetStartPos(int row, int col)
+        public void DestroyObj()
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+
+        public void SetStartPos(int row, int col)
 		{
 			m_EnemyPosOld.m_row = row;
 			m_EnemyPosOld.m_col = col;

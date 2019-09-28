@@ -26,7 +26,7 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
 
-        private void DestroyObj()
+        public void DestroyObj()
         {
             GameObject.Destroy(this.gameObject);
         }
@@ -35,7 +35,7 @@ namespace MiniProj
         {
             m_playerPos.m_row = row;
             m_playerPos.m_col = col;
-            transform.position = new Vector3(col * DiffX, 1f, row * DiffZ);
+            transform.position = new Vector3(row * DiffX, 1f, col * DiffZ);
         }
 
         private void FollowPlayer(EventArgs args)
@@ -64,7 +64,7 @@ namespace MiniProj
                     m_playerPos.m_row = _row;
                     m_playerPos.m_col = _col;
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(_col * DiffX, 1f, _row * DiffZ), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 1f, _col * DiffZ), 2));
                     _sequence.onComplete += DoOneStep;
                     _sequence.SetAutoKill(true);
                     ++m_curRoundStep;
@@ -91,7 +91,7 @@ namespace MiniProj
                     m_playerPos.m_col = _col;
                     m_curRoundStep = 0;
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(_col * DiffX, 1f, _row * DiffZ), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 1f, _col * DiffZ), 2));
                     _sequence.SetAutoKill(true);
                     _sequence.onComplete += NpcEndMoveCallBack;
                     ++m_curStep;

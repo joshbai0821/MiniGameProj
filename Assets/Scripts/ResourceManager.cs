@@ -60,7 +60,7 @@ namespace MiniProj
                 item.Retain();
                 return item;
             }
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
             Asset asset = new Asset(path, name, type);
             m_assetList.Add(asset);
             asset.Load();

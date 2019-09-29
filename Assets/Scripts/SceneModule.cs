@@ -277,7 +277,7 @@ namespace MiniProj
             {
                 m_player.SetCanMove(true);
                 EnemyListUpdate();
-
+                CheckSkillCount();
             }
         }
 
@@ -324,7 +324,7 @@ namespace MiniProj
 
         public void RoundFail(EventArgs args)
         {
-           
+            ReplayScene();
         }
 
         public void EnemyListUpdate()

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1123894266
+CRC: 57917955
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f2051db39085fd6f0fa291cfc943fd26
+    Hash: de74e8526d46be0f8c7ff5d41bf8c3fa
   TypeTreeHash:
     serializedVersion: 2
-    Hash: eecacfd0a967a46d2e053a3927127408
+    Hash: ac794ceef167d1e0318f5b5a26415a10
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -55,6 +55,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 37901c3ea7ca0c6448e16d69bc737cc0, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -72,14 +74,16 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Map/RookieXiang.prefab
 - Assets/Prefabs/Map/RookieMa.prefab
+- Assets/Prefabs/Map/Npc.prefab
 - Assets/Prefabs/Map/Enemy.prefab
-- Assets/Prefabs/Map/Map1.prefab
+- Assets/Prefabs/Map/Map1Test.prefab
 - Assets/Prefabs/Map/M_Cube.mat
 - Assets/Prefabs/Map/RookieEnemy.prefab
 - Assets/Prefabs/Map/Cube.prefab
 - Assets/Prefabs/Map/Player.prefab
 - Assets/Prefabs/Map/RookieJu.prefab
 - Assets/Prefabs/Map/Map0.prefab
+- Assets/Prefabs/Map/Map0Test.prefab
 - Assets/Prefabs/Map/SkillPanel.prefab
 - Assets/Prefabs/Map/SkillBtn.prefab
 Dependencies:

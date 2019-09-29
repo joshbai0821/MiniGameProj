@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 1553617089
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bc4b73b6d19133ed299c6cffed48d9bc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c73412a662fd4e4f36af34cbdf078b85
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Player/Tex/CH_jojo_d.tga
+- Assets/Prefabs/Player/Tex/bankv-jufks.jpg
+- Assets/Prefabs/Player/Tex/hair_d.dds
+- Assets/Prefabs/Player/Tex/b2pci-3yagt.jpg
+- Assets/Prefabs/Player/Tex/flg1.png
+- Assets/Prefabs/Player/Tex/ma.jpg
+- Assets/Prefabs/Player/Tex/huzi_d.dds
+- Assets/Prefabs/Player/Tex/xiang2.jpg
+- Assets/Prefabs/Player/Tex/Bing2.jpg
+- Assets/Prefabs/Player/Tex/che.jpg
+- Assets/Prefabs/Player/Tex/bbiuz-ec2co.jpg
+- Assets/Prefabs/Player/Tex/bz6yi-mkrwr.jpg
+- Assets/Prefabs/Player/Tex/yj.dds
+- Assets/Prefabs/Player/Tex/Bing.jpg
+- Assets/Prefabs/Player/Tex/xiang.jpg
+- Assets/Prefabs/Player/Tex/flg2.jpg
+- Assets/Prefabs/Player/Tex/mutou.jpg
+Dependencies: []

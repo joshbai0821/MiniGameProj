@@ -297,6 +297,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1.8870966
+      outSlope: 1.8870966
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1.9218757
+      outSlope: 1.9218757
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!136 &136022978081664040
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 3795725312
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3a78f3dd1064c7253264e7cb5f8329d8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 15a1fdc6cc7495098af12f377c53d870
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6b248ffcf9fd88141852326113f3eb8a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Player/diChe.prefab
+- Assets/Prefabs/Player/woChe.prefab
+- Assets/Prefabs/Player/woBing.prefab
+- Assets/Prefabs/Player/RookieDiBing.prefab
+- Assets/Prefabs/Player/woHorse.prefab
+- Assets/Prefabs/Player/xiangyu.prefab
+- Assets/Prefabs/Player/diHorse.prefab
+- Assets/Prefabs/Player/woXiang.prefab
+- Assets/Prefabs/Player/yuji.prefab
+- Assets/Prefabs/Player/diXiang.prefab
+Dependencies:
+- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material

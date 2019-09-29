@@ -27,7 +27,7 @@ namespace MiniProj
 
         private void Awake()
         {
-            AssetBundlePath = Application.streamingAssetsPath + "/AssetBundles";
+            AssetBundlePath = Application.streamingAssetsPath + "/AssetBundles/";
         }
 
         public UnityEngine.Object LoadPrefabSync(string path, string name, Type type, string abName = null)
@@ -60,7 +60,7 @@ namespace MiniProj
                 item.Retain();
                 return item;
             }
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
             Asset asset = new Asset(path, name, type);
             m_assetList.Add(asset);
             asset.Load();

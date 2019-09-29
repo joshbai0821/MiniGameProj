@@ -14,15 +14,18 @@ namespace MiniProj
     }
     public class Follower : MonoBehaviour
     {
+
         private static float DiffX = 1.0f;
         private static float DiffZ = -1.0f;
         private FollowerType m_type;
+        private bool m_initial = false;
         private MapPos m_playerPos;
         public MapPos Pos
         {
             get { return m_playerPos; }
         }
-        private bool m_initial = false;
+        public AnimationCurve m_curve;
+        
 
         public void SetType(FollowerType type)
         {
@@ -37,7 +40,7 @@ namespace MiniProj
                 {
                     transform.position = new Vector3(row * DiffX, 10f, col * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 1));
                     _sequence.onComplete += CompleteInitialAni;
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
@@ -48,7 +51,7 @@ namespace MiniProj
                 {
                     transform.position = new Vector3((row - 3) * DiffX, 0f, col * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, this.transform.position.z), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, this.transform.position.z), 1));
                     _sequence.onComplete += CompleteInitialAni;
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
@@ -59,8 +62,8 @@ namespace MiniProj
                 {
                     transform.position = new Vector3((row - 2) * DiffX, 10f, (col - 2) * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 2));
-                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0, col * DiffZ), 1.5f, 1, 2.0f));
+                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 1));
+                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 1.5f, 1, 1.0f).SetEase(m_curve));
                     _sequence.onComplete += CompleteInitialAni;
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
@@ -70,9 +73,20 @@ namespace MiniProj
             }
             else
             {
-                m_playerPos.m_row = row;
-                m_playerPos.m_col = col;
-                transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
+                if(m_type == FollowerType.MA || m_type == FollowerType.XIANG)
+                {
+                    m_playerPos.m_row = row;
+                    m_playerPos.m_col = col;
+                    Sequence _sequence = DOTween.Sequence();
+                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 1.5f, 1, 1.0f).SetEase(m_curve));
+                    _sequence.SetAutoKill(true);
+                }
+                else
+                {
+                    m_playerPos.m_row = row;
+                    m_playerPos.m_col = col;
+                    transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
+                }
             }
         }
 

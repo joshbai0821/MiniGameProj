@@ -1,0 +1,44 @@
+ManifestFileVersion: 0
+CRC: 2287967403
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f0eac3dba69936cfd2c276ee37ff7c1b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 6f165f44e4778b6c9d85e7a145a54cb1
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Player/Material/dz2.mat
+- Assets/Prefabs/Player/Material/yj3.mat
+- Assets/Prefabs/Player/Material/yj.mat
+- Assets/Prefabs/Player/Material/woXiang.mat
+- Assets/Prefabs/Player/Material/xy_pf.mat
+- Assets/Prefabs/Player/Material/dz_xy.mat
+- Assets/Prefabs/Player/Material/yj2.mat
+- Assets/Prefabs/Player/Material/diBing.mat
+- Assets/Prefabs/Player/Material/xy_body.mat
+- Assets/Prefabs/Player/Material/xy_toukui.mat
+- Assets/Prefabs/Player/Material/diHorse.mat
+- Assets/Prefabs/Player/Material/jian.mat
+- Assets/Prefabs/Player/Material/diXiang.mat
+- Assets/Prefabs/Player/Material/xy_leg.mat
+- Assets/Prefabs/Player/Material/diChe.mat
+- Assets/Prefabs/Player/Material/woBing.mat
+- Assets/Prefabs/Player/Material/woChe.mat
+- Assets/Prefabs/Player/Material/dz_yj.mat
+- Assets/Prefabs/Player/Material/triangularFlag.mat
+- Assets/Prefabs/Player/Material/xy_h.mat
+- Assets/Prefabs/Player/Material/xy_hir.mat
+- Assets/Prefabs/Player/Material/dz.mat
+- Assets/Prefabs/Player/Material/woHorse.mat
+- Assets/Prefabs/Player/Material/xy_fce.mat
+Dependencies:
+- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_tex

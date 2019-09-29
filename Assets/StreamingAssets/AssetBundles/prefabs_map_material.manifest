@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1925837723
+CRC: 3357807365
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8bc3c226e865519314024159bdbaa6f3
+    Hash: 417ccfd8dd912b45adb441d968634ce3
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6f165f44e4778b6c9d85e7a145a54cb1
@@ -17,13 +17,18 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Prefabs/Map/Material/M_Plane2.mat
+- Assets/Prefabs/Map/Material/CubeV1_2.mat
+- Assets/Prefabs/Map/Material/TEST.mat
 - Assets/Prefabs/Map/Material/T_FloorLine.tga
 - Assets/Prefabs/Map/Material/M_Plane.mat
 - Assets/Prefabs/Map/Material/M_PlaneMiddle2.mat
 - Assets/Prefabs/Map/Material/Blue.mat
+- Assets/Prefabs/Map/Material/Concrete_Albedo.tga
 - Assets/Prefabs/Map/Material/Red.mat
 - Assets/Prefabs/Map/Material/Green.mat
 - Assets/Prefabs/Map/Material/M_PlaneCorner.mat
+- Assets/Prefabs/Map/Material/CubeV1_3.mat
 - Assets/Prefabs/Map/Material/M_PlaneCorner2.mat
 - Assets/Prefabs/Map/Material/M_PlaneMiddle.mat
+- Assets/Prefabs/Map/Material/CubeV1.mat
 Dependencies: []

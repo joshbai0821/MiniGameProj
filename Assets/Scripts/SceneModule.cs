@@ -690,7 +690,7 @@ namespace MiniProj
                                 }
                             }
                         }
-                        if (playerCol + 2 < _mapCol)
+                        if (playerCol + 1 < _mapCol)
                         {
                             if (m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
                                 && m_npcList[playerRow - 2][playerCol + 1] == null
@@ -730,7 +730,7 @@ namespace MiniProj
                         if (playerCol + 2 < _mapCol)
                         {
                             if (m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
-                                && m_npcList[playerRow + 1][playerCol - 2] == null
+                                && m_npcList[playerRow + 1][playerCol + 2] == null
                                 && (m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {

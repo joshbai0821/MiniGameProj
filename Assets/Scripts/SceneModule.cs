@@ -6,6 +6,14 @@ using UnityEngine.SceneManagement;
 
 namespace MiniProj
 {
+    public enum ChessType
+    {
+		MA = 1,
+		XIANG = 2,
+		SHI = 3,
+		JU = 4,
+		PAO = 5,
+    }
     public class SceneModule : Module
     {
         /*
@@ -35,6 +43,8 @@ namespace MiniProj
         private static string[] EnemyPrefabName =
         {
             "null",
+            "Enemy",
+            "Enemy",
             "Enemy",
             "Enemy",
             "Enemy",

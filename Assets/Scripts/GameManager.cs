@@ -14,6 +14,7 @@ namespace MiniProj
         private static ResourceManager SResourceMgr = null;
         public static GameObject GameManagerObj { get { return SGameManagerObj; } }
         public static ResourceManager ResManager { get { return SResourceMgr; } }
+        public AudioSource m_audioSource;
 
         private List<Module> m_moduleList;
         private List<Module> m_freeModuleList;
@@ -35,7 +36,7 @@ namespace MiniProj
             m_freeModuleList = new List<Module>();
 
             m_sceneConfigId = 0;
-            LoadModule("MainMenuModule");
+            LoadModule("LoginModule");
 			//Application.LoadLevel("login");
 			//LoadModule("SceneModule");
 

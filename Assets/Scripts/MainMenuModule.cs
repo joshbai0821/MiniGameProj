@@ -70,8 +70,8 @@ namespace MiniProj
                 m_chooseSceneObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "ChooseScene", typeof(GameObject));
                 m_chooseSceneObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
                 m_chooseSceneObj.transform.Find("Viewport/Content/Button").GetComponent<Button>().onClick.AddListener(()=> { LoadOneMapScene(0); });
-                m_chooseSceneObj.transform.Find("Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(0); });
-                m_chooseSceneObj.transform.Find("Viewport/Content/Button2").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(0); });
+                m_chooseSceneObj.transform.Find("Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(1); });
+                m_chooseSceneObj.transform.Find("Viewport/Content/Button2").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(2); });
             }
             else
             {
@@ -89,7 +89,7 @@ namespace MiniProj
             {
                 GameObject.Destroy(m_chooseSceneObj);
             }
-            GameManager.SceneConfigId = 0;
+            GameManager.SceneConfigId = id;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
             SceneManager.LoadScene(id + 1);
         }

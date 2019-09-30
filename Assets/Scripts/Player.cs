@@ -28,6 +28,11 @@ namespace MiniProj
         private static float DiffX = 1f;
         private static float DiffZ = -1f;
 
+        public AnimationCurve m_juCurve;
+        public AnimationCurve m_maCurve1;
+        public AnimationCurve m_maCurve2;
+        public AnimationCurve m_xiangCurve;
+
         private void Awake()
         {
             m_move = true;
@@ -90,6 +95,10 @@ namespace MiniProj
                 case SkillId.JU:
                     if(targetRow == m_playerPos.m_row)
                     {
+                        if (_sceneModule.Data[targetRow][targetCol] == MapDataType.NEWMODE)
+                        {
+                            return _ret;
+                        }
                         if(targetCol > m_playerPos.m_col)
                         {
                             for (int _i = m_playerPos.m_col + 1; _i <= targetCol; _i++)
@@ -130,7 +139,11 @@ namespace MiniProj
                     }
                     else if (targetCol == m_playerPos.m_col)
                     {
-                        if(targetRow > m_playerPos.m_row)
+                        if (_sceneModule.Data[targetRow][targetCol] == MapDataType.NEWMODE)
+                        {
+                            return _ret;
+                        }
+                        if (targetRow > m_playerPos.m_row)
                         {
                             for (int _i = m_playerPos.m_row + 1; _i <= targetRow; _i++)
                             {
@@ -173,8 +186,9 @@ namespace MiniProj
                     {
                         if(targetCol == m_playerPos.m_col + 1 || targetCol == m_playerPos.m_col - 1)
                         {
-                            if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI)
+                            if(_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI))
                             {
                                 if(_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col))
                                 {
@@ -187,8 +201,9 @@ namespace MiniProj
                     {
                         if (targetCol == m_playerPos.m_col + 1 || targetCol == m_playerPos.m_col - 1)
                         {
-                            if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI)
+                            if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col))
                                 {
@@ -202,8 +217,9 @@ namespace MiniProj
                     {
                         if(targetRow == m_playerPos.m_row + 1 || targetRow == m_playerPos.m_row - 1)
                         {
-                            if(_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                            if(_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col + 1))
                                 {
@@ -216,8 +232,9 @@ namespace MiniProj
                     {
                         if (targetRow == m_playerPos.m_row + 1 || targetRow == m_playerPos.m_row - 1)
                         {
-                            if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                            if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col - 1))
                                 {
@@ -232,8 +249,9 @@ namespace MiniProj
                 case SkillId.XIANG:
                     if(targetRow == m_playerPos.m_row + 2 && targetCol == m_playerPos.m_col + 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                            (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col + 1))
                             {
@@ -243,8 +261,9 @@ namespace MiniProj
                     }
                     else if(targetRow == m_playerPos.m_row + 2 && targetCol == m_playerPos.m_col - 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                            (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col - 1))
                             {
@@ -254,8 +273,9 @@ namespace MiniProj
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col + 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                            (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col + 1))
                             {
@@ -265,8 +285,9 @@ namespace MiniProj
                     }
                     else if(targetRow == m_playerPos.m_row - 2 && targetCol == m_playerPos.m_col - 2)
                     {
-                        if (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI)
+                        if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
+                            (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
+                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col - 1))
                             {
@@ -289,7 +310,7 @@ namespace MiniProj
             {
                 Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit _hit;
-                int _layerMask = 1 << 9;
+                int _layerMask = 1 << 8;
                 if (Physics.Raycast(_ray, out _hit, 100, _layerMask))
                 {
                     if (_hit.collider.gameObject.tag.Equals("Plane"))
@@ -317,11 +338,46 @@ namespace MiniProj
                             if(m_skillId == SkillId.JU)
                             {
                                 Sequence _sequence = DOTween.Sequence();
-                                _sequence.Append(transform.DOMove(new Vector3(_targetPosX, this.transform.position.y, _targetPosZ), 2));
+                                _sequence.Append(transform.DOMove(new Vector3(_targetPosX, this.transform.position.y, _targetPosZ), 0.4f).SetEase(m_juCurve));
                                 _sequence.AppendCallback(MoveEnd);
                                 _sequence.SetAutoKill(true);
                             }
-                            else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO || m_skillId == SkillId.XIANG)
+                            else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO)
+                            {
+                                float _targetPosY = 0f;
+                                if (_data.Data == MapDataType.GAOTAI)
+                                {
+                                    _targetPosY = 1.0f;
+                                }
+                                float _midTargetPosX = 0.0f;
+                                float _midTargetPosZ = 0.0f;
+                                if(_data.Pos.m_row == m_playerPos.m_row + 2)
+                                {
+                                    _midTargetPosX = (m_playerPos.m_row + 1) * DiffX;
+                                    _midTargetPosZ = this.transform.position.z;
+                                }
+                                else if(_data.Pos.m_row == m_playerPos.m_row - 2)
+                                {
+                                    _midTargetPosX = (m_playerPos.m_row - 1) * DiffX;
+                                    _midTargetPosZ = this.transform.position.z;
+                                }
+                                else if(_data.Pos.m_col == m_playerPos.m_col + 2)
+                                {
+                                    _midTargetPosX = this.transform.position.x;
+                                    _midTargetPosZ = (m_playerPos.m_col + 1) * DiffZ;
+                                }
+                                else if(_data.Pos.m_col == m_playerPos.m_col - 2)
+                                {
+                                    _midTargetPosX = this.transform.position.x;
+                                    _midTargetPosZ = (m_playerPos.m_col - 1) * DiffZ;
+                                }
+                                Sequence _sequence = DOTween.Sequence();
+                                _sequence.Append(transform.DOMove(new Vector3(_midTargetPosX, this.transform.position.y, _midTargetPosZ), 0.3f).SetEase(m_maCurve1));
+                                _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.3f).SetEase(m_maCurve2));
+                                _sequence.AppendCallback(MoveEnd);
+                                _sequence.SetAutoKill(true);
+                            }
+                            else if(m_skillId == SkillId.XIANG)
                             {
                                 float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
@@ -329,7 +385,7 @@ namespace MiniProj
                                     _targetPosY = 1.0f;
                                 }
                                 Sequence _sequence = DOTween.Sequence();
-                                _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 1.5f * _targetPosY, 1, 2));
+                                _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(m_xiangCurve));
                                 _sequence.AppendCallback(MoveEnd);
                                 _sequence.SetAutoKill(true);
                             }

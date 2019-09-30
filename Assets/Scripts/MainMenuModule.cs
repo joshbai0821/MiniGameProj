@@ -67,8 +67,7 @@ namespace MiniProj
             {
                 m_mainMenuObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "MainMenuPanel", typeof(GameObject));
                 m_mainMenuObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
-                m_mainMenuObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(EnterFirstScene);
-                m_mainMenuObj.transform.Find("Button1").GetComponent<Button>().onClick.AddListener(LoadChooseScene);
+                m_mainMenuObj.transform.Find("Button").GetComponent<Button>().onClick.AddListener(LoadChooseScene);
             }
             else
             {
@@ -85,11 +84,12 @@ namespace MiniProj
             }
             if(m_chooseSceneObj == null)
             {
-                m_chooseSceneObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "ChooseScene", typeof(GameObject));
-                m_chooseSceneObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
-                m_chooseSceneObj.transform.Find("Viewport/Content/Button").GetComponent<Button>().onClick.AddListener(()=> { LoadOneMapScene(0); });
-                m_chooseSceneObj.transform.Find("Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(1); });
-                m_chooseSceneObj.transform.Find("Viewport/Content/Button2").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(2); });
+                m_chooseSceneObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "ChooseMenuCamera", typeof(GameObject));
+                //m_chooseSceneObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+                //m_chooseSceneObj.transform.Find("Viewport/Content/Button").GetComponent<Button>().onClick.AddListener(()=> { LoadOneMapScene(0); });
+                //m_chooseSceneObj.transform.Find("Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(1); });
+                //m_chooseSceneObj.transform.Find("Viewport/Content/Button2").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(2); });
+                Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = true;
             }
             else
             {
@@ -97,7 +97,7 @@ namespace MiniProj
             }
         }
 
-        private void LoadOneMapScene(int id)
+        public void LoadOneMapScene(int id)
         {
             if (m_mainMenuObj != null)
             {
@@ -111,6 +111,7 @@ namespace MiniProj
             GameManager.SceneConfigId = id;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
             SceneManager.LoadScene(id + 1);
+            Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = false;
         }
 
     }

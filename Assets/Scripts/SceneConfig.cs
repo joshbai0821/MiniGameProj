@@ -56,6 +56,8 @@ namespace MiniProj
         [SerializeField]
         private string m_prefabName;
         [SerializeField]
+        private string m_backgroundName;
+        [SerializeField]
         private int m_mapRow;
         [SerializeField]
         private int m_mapCol;
@@ -73,6 +75,10 @@ namespace MiniProj
         public string PrefabName
         {
             get { return m_prefabName; }
+        }
+        public string BackGroundName
+        {
+            get { return m_backgroundName; }
         }
         public int MapRow
         {

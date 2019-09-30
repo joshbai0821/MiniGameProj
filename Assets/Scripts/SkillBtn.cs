@@ -48,6 +48,16 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_START_MOVE, this.GetHashCode(), PlayerMove);
         }
 
+        //public void UnregisterEvents()
+        //{
+
+        //}
+
+        private void OnDestroy()
+        {
+            EventManager.UnregisterEvent(HLEventId.PLAYER_START_MOVE, this.GetHashCode());
+        }
+
         public void Initial(SkillId id, int count)
         {
             m_id = id;

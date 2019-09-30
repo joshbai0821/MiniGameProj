@@ -82,7 +82,7 @@ namespace MiniProj
             if(EventPool.TryGetValue(id, out _eventHandler))
             {
                 EventHandleFun _handleFun;
-                if(!EventPool[id].TryGetValue(objHashId, out _handleFun))
+                if(EventPool[id].TryGetValue(objHashId, out _handleFun))
                 {
                     EventPool[id].Remove(objHashId);
                 }

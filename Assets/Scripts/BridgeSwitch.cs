@@ -17,10 +17,14 @@ namespace MiniProj
             {
                 m_plane1.SetActive(true);
                 m_plane2.SetActive(true);
-                int _row1 = m_plane1.GetComponent<MapData>().Pos.m_row;
-                int _col1 = m_plane1.GetComponent<MapData>().Pos.m_col;
-                int _row2 = m_plane2.GetComponent<MapData>().Pos.m_row;
-                int _col2 = m_plane2.GetComponent<MapData>().Pos.m_col;
+                MapData _mapData1 = m_plane1.GetComponent<MapData>();
+                MapData _mapData2 = m_plane2.GetComponent<MapData>();
+                int _row1 = _mapData1.Pos.m_row;
+                int _col1 = _mapData1.Pos.m_col;
+                _mapData1.Data = MapDataType.PINGDI;
+                int _row2 = _mapData2.Pos.m_row;
+                int _col2 = _mapData2.Pos.m_col;
+                _mapData2.Data = MapDataType.PINGDI;
                 SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
                 _sceneModule.Data[_row1][_col1] = MapDataType.PINGDI;
                 _sceneModule.Data[_row2][_col2] = MapDataType.PINGDI;

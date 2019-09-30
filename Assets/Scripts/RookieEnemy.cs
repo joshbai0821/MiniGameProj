@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace MiniProj
 {
@@ -9,13 +10,16 @@ namespace MiniProj
         private static float DiffX = 1.0f;
         private static float DiffZ = -1.0f;
 
+
         private int m_id;
-        private bool m_active;
+        private bool m_initial = false;
         private MapPos m_playerPos;
         public MapPos Pos
         {
             get { return m_playerPos; }
         }
+
+        public AnimationCurve m_curve;
 
         public void DestroyObj()
         {
@@ -26,7 +30,17 @@ namespace MiniProj
         {
             m_playerPos.m_row = row;
             m_playerPos.m_col = col;
-            transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
+            if (!m_initial)
+            {
+                transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
+                m_initial = true;
+            }
+            else
+            {
+                Sequence _sequence = DOTween.Sequence();
+                _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, col * DiffZ), 1.0f).SetEase(m_curve));
+                _sequence.SetAutoKill(true);
+            }
         }
 
         public void Execute()

@@ -23,6 +23,7 @@ namespace MiniProj
         NONE = -1,
         PINGDI = 0,
         GAOTAI = 1,
+        NEWMODE = 2,
     }
 
     public class MapData : MonoBehaviour
@@ -36,6 +37,7 @@ namespace MiniProj
         public MapDataType Data
         {
             get { return m_data; }
+            set { m_data = value; }
         }
 
         public MapPos Pos

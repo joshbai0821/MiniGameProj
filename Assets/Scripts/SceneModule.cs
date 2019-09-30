@@ -50,8 +50,9 @@ namespace MiniProj
             "Enemy",
         };
 
-        private static string MapPrefabPath = "Prefabs/Map";
+        private const string MapPrefabPath = "Prefabs/Map";
         private const string PlayerPrefabPath = "Prefabs/Player";
+        private const string BcakGroundPath = "Prefabs/BackGround";
 
         public MapPos YuJiPos;
         public List<List<Enemy>> m_enemyList;
@@ -65,13 +66,15 @@ namespace MiniProj
 
         private void Awake()
         {
+            
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
             LoadNpc();
             LoadArrow();
             LoadEnemy();
-            LoadRookieModule();
+            LoadBackground();
+            //LoadRookieModule();
 
             EventManager.RegisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode(), NpcComplete);
             EventManager.RegisterEvent(HLEventId.ROUND_FAIL, this.GetHashCode(), RoundFail);
@@ -94,6 +97,7 @@ namespace MiniProj
             {
                 GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
             }
+            m_player.DestroyObj();
             GameObject.Destroy(m_sceneObj);
             GameObject.Destroy(m_skillPanelObj);
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
@@ -112,18 +116,25 @@ namespace MiniProj
                     }
                 }
             }
+            //LoadBackground();
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
             LoadNpc();
             LoadEnemy();
-            LoadRookieModule();
+            //LoadRookieModule();
         }
 
         //进入下一关
         private void GotoNextScene()
         {
             //SceneManager.LoadScene(0);
+        }
+
+        private void LoadBackground()
+        {
+            GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(BcakGroundPath, m_config.SceneConfigList[GameManager.SceneConfigId].BackGroundName, typeof(GameObject));
+            _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
         }
 
         private void LoadNpc()
@@ -380,11 +391,18 @@ namespace MiniProj
         public void WaitNpc()
         {
             m_waitCount = m_npcCount;
+            if(m_npcCount == 0)
+            {
+                NpcComplete(null);
+            }
         }
 
         public void NpcComplete(EventArgs args)
         {
-            --m_waitCount;
+            if(m_waitCount > 0)
+            {
+                --m_waitCount;
+            }
             if (m_waitCount == 0)
             {
                 m_player.SetCanMove(true);
@@ -983,9 +1001,10 @@ namespace MiniProj
             {
                 for (int _i = 0; _i < m_matList.Count; ++_i)
                 {
-                    m_matList[_i].SetColor("_MainColor", m_originColorList[_i]);
+                    m_matList[_i].SetColor("_Color", m_originColorList[_i]);
                 }
                 m_matList.Clear();
+                m_originColorList.Clear();
             }
         }
 

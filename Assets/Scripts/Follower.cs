@@ -40,8 +40,7 @@ namespace MiniProj
                 {
                     transform.position = new Vector3(row * DiffX, 10f, col * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 1));
-                    _sequence.onComplete += CompleteInitialAni;
+                    _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 0.5f));
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
                     m_playerPos.m_col = col;
@@ -51,8 +50,7 @@ namespace MiniProj
                 {
                     transform.position = new Vector3((row - 3) * DiffX, 0f, col * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, this.transform.position.z), 1));
-                    _sequence.onComplete += CompleteInitialAni;
+                    _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, this.transform.position.z), 1).SetEase(m_curve));
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
                     m_playerPos.m_col = col;
@@ -63,8 +61,7 @@ namespace MiniProj
                     transform.position = new Vector3((row - 2) * DiffX, 10f, (col - 2) * DiffZ);
                     Sequence _sequence = DOTween.Sequence();
                     _sequence.Append(transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), 1));
-                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 1.5f, 1, 1.0f).SetEase(m_curve));
-                    _sequence.onComplete += CompleteInitialAni;
+                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 0.75f, 1,0.5f).SetEase(m_curve));
                     _sequence.SetAutoKill(true);
                     m_playerPos.m_row = row;
                     m_playerPos.m_col = col;
@@ -78,22 +75,18 @@ namespace MiniProj
                     m_playerPos.m_row = row;
                     m_playerPos.m_col = col;
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 1.5f, 1, 1.0f).SetEase(m_curve));
+                    _sequence.Append(transform.DOJump(new Vector3(row * DiffX, 0f, col * DiffZ), 0.4f, 1, 0.3f).SetEase(m_curve));
                     _sequence.SetAutoKill(true);
                 }
                 else
                 {
                     m_playerPos.m_row = row;
                     m_playerPos.m_col = col;
-                    transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
+                    Sequence _sequence = DOTween.Sequence();
+                    _sequence.Append(transform.DOMove(new Vector3(row * DiffX, 0, col * DiffZ), 0.4f).SetEase(m_curve));
+                    _sequence.SetAutoKill(true);
                 }
             }
-        }
-
-        private void CompleteInitialAni()
-        {
-            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-            _sceneModule.SetPlayerCanMove(true);
         }
 
         public void BeKilled()

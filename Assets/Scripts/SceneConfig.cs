@@ -51,6 +51,38 @@ namespace MiniProj
     }
 
     [System.Serializable]
+    public class NpcConfig
+    {
+        [SerializeField]
+        public List<MapPos> m_npcPosData;
+    }
+
+    [System.Serializable]
+    public class ArrowConfig
+    {
+        //攻击区域
+        [SerializeField]
+        public List<MapPos> m_AttackArea;
+
+        //触发区域
+        [SerializeField]
+        public List<MapPos> m_TriggerArea;
+
+        //触发角色
+        [SerializeField]
+        public List<PlayerType> m_Trigger;
+    }
+
+    [System.Serializable]
+    public class RockConfig
+    {
+        [SerializeField]
+        public MapPos m_RockPos;
+        [SerializeField]
+        public int dir;
+    }
+
+    [System.Serializable]
     public class SingleSceneConfig
     {
         [SerializeField]
@@ -68,7 +100,11 @@ namespace MiniProj
         [SerializeField]
         private List<EnemyConfig> m_enemyData;
         [SerializeField]
-        private List<MapPos> m_npcPosData;
+        private List<NpcConfig> m_npcPosData;
+        [SerializeField]
+        private List<ArrowConfig> m_Arrow;
+        [SerializeField]
+        private List<RockConfig> m_Rock;
 
         public string PrefabName
         {
@@ -98,9 +134,19 @@ namespace MiniProj
         {
             get { return m_enemyData; }
         }
-        public List<MapPos> NpcPosData
+        public List<NpcConfig> NpcPosData
         {
             get { return m_npcPosData; }
+        }
+
+        public List<ArrowConfig> ArrowData
+        {
+            get { return m_Arrow; }
+        }
+
+        public List<RockConfig> RockData
+        {
+            get { return m_Rock; }
         }
     }
 

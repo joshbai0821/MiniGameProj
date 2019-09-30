@@ -11,11 +11,7 @@ namespace MiniProj
         private static float DiffX = 3.5f;
         private static float DiffZ = 5.0f;
         private MapPos m_playerPos;
-        public MapPos[] m_routePosList =
-        {
-            new MapPos(0, 2), new MapPos(1, 2), new MapPos(2, 2), new MapPos(2, 3), new MapPos(2, 4),
-            new MapPos(2 ,5), new MapPos(3, 5), new MapPos(4, 5),
-        };
+        public List<MapPos> m_routePosList;
 
         public int m_stepPerRound = 2;
         public int m_curStep = 0;
@@ -45,7 +41,7 @@ namespace MiniProj
 
         private void DoOneStep()
         {
-            if(m_curStep == m_routePosList.Length)
+            if(m_curStep == m_routePosList.Count)
             {
                 m_curRoundStep = 0;
                 EventManager.SendEvent(HLEventId.NPC_END_MOVE, null);

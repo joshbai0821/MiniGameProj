@@ -55,6 +55,7 @@ namespace MiniProj
 
         public MapPos YuJiPos;
         public List<List<Enemy>> m_enemyList;
+        private List<Arrow> m_ArrowList;
         public List<List<FixedRouteNpc>> m_npcList;
         public List<List<MapDataType>> m_mapData;
         public List<List<MapDataType>> Data
@@ -68,6 +69,7 @@ namespace MiniProj
             LoadPlayer();
             LoadSkillBtn();
             LoadNpc();
+            LoadArrow();
             LoadEnemy();
             LoadRookieModule();
 
@@ -128,23 +130,123 @@ namespace MiniProj
         {
             ClearNpcData();
             InitialNpcData();
-            for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count; ++_j)
+            //只加载一个虞姬的路线
+            bool Retry = false;
+            int _npcr = -1;
+            int _npcc = -1;
+
+            for (int _j = 0; m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count > 0 && _j < m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData.Count; ++_j)
             {
-                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_row;
-                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_col;
-                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "Npc", typeof(GameObject));
-                _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
-                if (m_npcList[_r][_c] != null)
+                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[_j].m_row;
+                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[_j].m_col;
+
+                if (Retry == false)
                 {
-                    m_npcList[_r][_c].SetPosition(_r, _c);
+                    //加载虞姬的第一步
+                    Retry = true;
+                    _npcr = _r;
+                    _npcc = _c;
+                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "Npc", typeof(GameObject));
+                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                    m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
+                    if (m_npcList[_r][_c] != null)
+                    {
+                        m_npcList[_r][_c].SetPosition(_r, _c);
+                    }
+                    else
+                    {
+                        Debug.Log("SceneModule | LoadEnemy Error");
+                    }
                 }
                 else
                 {
-                    Debug.Log("SceneModule | LoadEnemy Error");
+                    //加载虞姬的其他步数
+                    m_npcList[_npcr][_npcc].m_routePosList.Add(new MapPos(0, 2));
                 }
             }
             m_npcCount = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count;
+        }
+
+        private void LoadArrow()
+        {
+            Arrow arrow = new Arrow();
+            arrow.SetType(ArrowStatus.WAIT);
+
+            for (int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData.Count; _i++)
+            {
+                //加载攻击区域
+                
+                for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea.Count; _j++)
+                {
+                    arrow.m_AttackArea.Add(new MapPos(m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea[_j].m_row, m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea[_j].m_col));
+                }
+                //加载触发区域
+                for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_TriggerArea.Count; _j++)
+                {
+                    arrow.m_TriggerArea.Add(new MapPos(m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_TriggerArea[_j].m_row, m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_TriggerArea[_j].m_col));
+                }
+
+                //加载触发角色
+                for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_Trigger.Count; _j++)
+                {
+                    arrow.m_Trigger.Add(m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_Trigger[_j]);
+                }
+
+                m_ArrowList.Add(arrow);
+            }
+
+        }
+
+        private void ArrowTrigger()
+        {
+            //所有角色移动后调用触发函数打开开关
+            for (int _i = 0; _i < m_ArrowList.Count; _i++)
+            {
+                if (m_ArrowList[_i].ArrowTrigger())
+                {
+
+                    //这个弓箭提示，下回合开始攻击
+
+                    //攻击区域
+                    //m_ArrowList[_i].m_AttackArea
+
+                }
+            }
+
+        }
+
+        private void ArrowAttack()
+        {
+            for (int _i = 0; _i < m_ArrowList.Count; _i++)
+            {
+                PlayerD Ret = m_ArrowList[_i].ArrowAttack();
+                //删掉arrow
+                m_ArrowList[_i].DestroyObj();
+
+
+                //是否删掉项羽虞姬，游戏是否结束
+                if (Ret == PlayerD.NONE)
+                {
+                    //游戏继续
+                }
+                else if (Ret == PlayerD.ALL)
+                {
+                    m_player.DestroyObj();
+                    //游戏结束
+                }
+                else if (Ret == PlayerD.YUJI)
+                {
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    //游戏结束
+                }
+                else if(Ret == PlayerD.XIANGYU)
+                {
+                    m_player.DestroyObj();
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    //游戏结束
+                }
+
+            }
         }
 
         private void InitialNpcData()
@@ -292,7 +394,7 @@ namespace MiniProj
         }
 
         //返回0 没有虞姬 ，返回1 有虞姬，已经更新位置
-        private bool UpdateYuJiPos()
+        public bool UpdateYuJiPos()
         {
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;

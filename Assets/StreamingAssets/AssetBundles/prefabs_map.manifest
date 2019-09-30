@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 57917955
+CRC: 302709164
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: de74e8526d46be0f8c7ff5d41bf8c3fa
+    Hash: 28a94b7bd8d7e9962d77a7574229726f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ac794ceef167d1e0318f5b5a26415a10
+    Hash: aa7fa7960e325e9fd0c87874d562bd69
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -78,7 +78,9 @@ Assets:
 - Assets/Prefabs/Map/Enemy.prefab
 - Assets/Prefabs/Map/Map1Test.prefab
 - Assets/Prefabs/Map/M_Cube.mat
+- Assets/Prefabs/Map/Map2.prefab
 - Assets/Prefabs/Map/RookieEnemy.prefab
+- Assets/Prefabs/Map/Map1.prefab
 - Assets/Prefabs/Map/Cube.prefab
 - Assets/Prefabs/Map/Player.prefab
 - Assets/Prefabs/Map/RookieJu.prefab

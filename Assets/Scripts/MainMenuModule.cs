@@ -20,11 +20,28 @@ namespace MiniProj
 
 		private void Awake()
         {
+            //LoadMainMenu();
+        }
+
+        private void OnEnable()
+        {
             LoadMainMenu();
         }
 
+        private void OnDisable()
+        {
+            if (m_mainMenuObj != null)
+            {
+                GameObject.Destroy(m_mainMenuObj);
+            }
+            if (m_chooseSceneObj != null)
+            {
+                GameObject.Destroy(m_chooseSceneObj);
+            }
+        }
+
         //进入第一关
-		private void EnterFirstScene()
+        private void EnterFirstScene()
         {
             if (m_mainMenuObj != null)
             {
@@ -34,6 +51,7 @@ namespace MiniProj
             {
                 GameObject.Destroy(m_chooseSceneObj);
             }
+            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("MainMenuModule");
             GameManager.SceneConfigId = 0;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
             SceneManager.LoadScene(1);
@@ -89,6 +107,7 @@ namespace MiniProj
             {
                 GameObject.Destroy(m_chooseSceneObj);
             }
+            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("MainMenuModule");
             GameManager.SceneConfigId = id;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
             SceneManager.LoadScene(id + 1);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace MiniProj
 {
@@ -27,6 +28,8 @@ namespace MiniProj
         private int m_npcCount;
         private GameObject m_sceneObj;
         private GameObject m_skillPanelObj;
+        private GameObject m_sceneTargetObj;
+        private GameObject m_sceneMenuObject;
 
         public SceneConfig m_config;
         private Player m_player;
@@ -34,6 +37,7 @@ namespace MiniProj
         private List<Material> m_matList;
         private List<Color> m_originColorList;
         private List<SkillBtn> m_skillBtnList;
+        private bool m_sceneWin = false;
 
         public SceneModule() : base("SceneModule")
         {
@@ -66,9 +70,16 @@ namespace MiniProj
         private void Awake()
         {
             
+            
+        }
+
+        private void OnEnable()
+        {
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
+            LoadSceneTarget();
+            LoadSceneMenu();
             LoadNpc();
             LoadEnemy();
             LoadBackground();
@@ -76,6 +87,37 @@ namespace MiniProj
 
             EventManager.RegisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode(), NpcComplete);
             EventManager.RegisterEvent(HLEventId.ROUND_FAIL, this.GetHashCode(), RoundFail);
+        }
+
+        private void OnDisable()
+        {
+            m_player.DestroyObj();
+            int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
+            int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
+            for (int _i = 0; _i < _row; ++_i)
+            {
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    if(m_npcList[_i][_j] != null)
+                    m_npcList[_i][_j].DestroyObj();
+                }
+            }
+            for (int _i = 0; _i < _row; ++_i)
+            {
+                for (int _j = 0; _j < _col; ++_j)
+                {
+                    if(m_enemyList[_i][_j] != null)
+                    {
+                        m_enemyList[_i][_j].DestroyObj();
+                    }
+                }
+            }
+            GameObject.Destroy(m_sceneObj);
+            GameObject.Destroy(m_skillPanelObj);
+            GameObject.Destroy(m_sceneTargetObj);
+            GameObject.Destroy(m_sceneMenuObject);
+            EventManager.UnregisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode());
+            EventManager.UnregisterEvent(HLEventId.ROUND_FAIL, this.GetHashCode());
         }
 
         public bool isPlayerReady()
@@ -98,6 +140,8 @@ namespace MiniProj
             m_player.DestroyObj();
             GameObject.Destroy(m_sceneObj);
             GameObject.Destroy(m_skillPanelObj);
+            GameObject.Destroy(m_sceneTargetObj);
+            GameObject.Destroy(m_sceneMenuObject);
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
             for (int _i = 0; _i < _row; ++_i)
@@ -118,14 +162,24 @@ namespace MiniProj
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
+            LoadSceneTarget();
+            LoadSceneMenu();
             LoadNpc();
             LoadEnemy();
+            LoadBackground();
             //LoadRookieModule();
         }
 
         //进入下一关
-        private void GotoNextScene()
+        private void GotoMainMenu()
         {
+            if(GameManager.SceneConfigId == 0)
+            {
+                GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
+            }
+            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
+            SceneManager.LoadScene(0);
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("MainMenuModule");
             //SceneManager.LoadScene(0);
         }
 
@@ -202,6 +256,23 @@ namespace MiniProj
                 m_skillBtnList.Add(_skillBtn);
             }
 
+        }
+
+        private void LoadSceneTarget()
+        {
+            GameObject _sceneTargetObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SceneTarget", typeof(GameObject));
+            _sceneTargetObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_sceneTargetObj = _sceneTargetObj;
+        }
+
+        private void LoadSceneMenu()
+        {
+            GameObject _sceneMenuObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "SceneMenu", typeof(GameObject));
+            _sceneMenuObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_sceneMenuObject = _sceneMenuObj;
+            m_sceneMenuObject.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ReplayScene);
+            m_sceneMenuObject.transform.Find("Button1").GetComponent<Button>().onClick.AddListener(GotoMainMenu);
+            m_sceneMenuObject.transform.Find("Button2").GetComponent<Button>().onClick.AddListener(ArriveSceneFinal);
         }
 
         private void InitialSkillBtnData()
@@ -335,6 +406,10 @@ namespace MiniProj
 
 		private void CheckSkillCount()
         {
+            if(GameManager.SceneConfigId == 0)
+            {
+                return;
+            }
             bool _ret = false;
             for (int _i = 0; _i < m_skillBtnList.Count; ++_i)
             {
@@ -454,23 +529,11 @@ namespace MiniProj
             }
         }
 
-        private void OnEnable()
-        {
-            //Debug.Log("SceneModule | OnEnable");
-        }
-
-        private void OnDisable()
-        {
-            //Debug.Log("SceneModule | Disable");
-
-        }
-
         private void OnDestroy()
         {
             //Debug.Log("SceneModule | OnDestroy");
             //Resources.UnloadAsset(m_config);
             m_config = null;
-            ClearMapData();
         }
 
         private void ClearEnemyData()
@@ -920,6 +983,18 @@ namespace MiniProj
         public void SetPlayerCanMove(bool bState)
         {
             m_player.SetCanMove(bState);
+        }
+
+        public void ArriveSceneFinal()
+        {
+            if (GameManager.SceneConfigId == 0)
+            {
+                GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
+            }
+            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
+            ++GameManager.SceneConfigId;
+            SceneManager.LoadScene(GameManager.SceneConfigId + 1);
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
         }
     }
 }

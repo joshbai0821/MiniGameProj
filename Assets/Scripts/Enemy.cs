@@ -18,7 +18,20 @@ namespace MiniProj
 		private static float DiffX = 3.5f;
         private static float DiffZ = 5.0f;
 
-		private void Awake()
+        private struct JuUse
+        {
+            public JuUse(int begin, int bround, int change)
+            {
+                m_BeginPos = begin;
+                m_BroundPos = bround;
+                m_Change = change;
+            }
+            public int m_BeginPos;
+            public int m_BroundPos;
+            public int m_Change;
+        }
+
+        private void Awake()
 		{
 		}
 
@@ -137,7 +150,7 @@ namespace MiniProj
             switch (EnemyType)
             {
             	//马
-                case 1:
+                case (int)ChessType.MA:
                     if(playerRow >= 1)
                     {
                         if(playerCol >= 2)
@@ -433,7 +446,7 @@ namespace MiniProj
                         }
                     }
                     break;
-                case 2:
+                case (int)ChessType.XIANG:
                     if(playerRow >= 2)
                     {
                         if(playerCol >= 2)
@@ -584,7 +597,7 @@ namespace MiniProj
                         }
                     }
                     break;
-                case 3:
+                case (int)ChessType.SHI:
 						if(playerCol >= 1 && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol - 1] == null)
 						{
 							temprow = playerRow;
@@ -701,6 +714,96 @@ namespace MiniProj
 
 						}
 						
+                    break;
+                case (int)ChessType.JU:
+                    //可走的边界点
+                    JuUse TempJu1 = new JuUse(m_EnemyPosNew.m_row, 0, -1);
+                    JuUse TempJu2 = new JuUse(m_EnemyPosNew.m_row, _mapRow - 1, 1);
+                    JuUse TempJu3 = new JuUse(m_EnemyPosNew.m_col, 0, -1);
+                    JuUse TempJu4 = new JuUse(m_EnemyPosNew.m_col, _mapCol - 1, 1);
+
+                    List<JuUse> Pos = new List<JuUse>();
+                    Pos.Add(TempJu1);
+                    Pos.Add(TempJu2);
+                    Pos.Add(TempJu3);
+                    Pos.Add(TempJu4);
+                    //根据敌方棋子和地形判断row，col的最值,把4种情况合一起了
+                    for (int _i = 0; _i < Pos.Count; _i++)
+                    {
+                        JuUse temp = Pos[_i];
+                        for (temp.m_BeginPos += temp.m_Change; temp.m_BeginPos * temp.m_Change <= temp.m_BroundPos; temp.m_BeginPos += temp.m_Change)
+                        {
+                            //row变，col不变的情况
+                            if (_i < 2 && (_sceneModule.m_enemyList[temp.m_BeginPos][m_EnemyPosNew.m_col] != null || _sceneModule.m_mapData[temp.m_BeginPos][m_EnemyPosNew.m_col] != _sceneModule.m_mapData[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col]))
+                            {
+                                //被地图或者敌人阻挡的情况，改变row
+                                temp.m_BeginPos -= temp.m_Change;
+                                break;
+                            }
+                            //col变，row不变的情况
+                            if (_i >= 2 && (_sceneModule.m_enemyList[m_EnemyPosNew.m_row][temp.m_BeginPos] != null || _sceneModule.m_mapData[m_EnemyPosNew.m_row][temp.m_BeginPos] != _sceneModule.m_mapData[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col]))
+                            {
+                                //被地图或者敌人阻挡的情况，改变col
+                                temp.m_BeginPos -= temp.m_Change;
+                                break;
+                            }
+                        }
+                        //边界可以走的情况
+                        if (temp.m_BeginPos * temp.m_Change > temp.m_BroundPos)
+                        {
+                            temp.m_BeginPos = temp.m_BroundPos;
+                        }
+                        Pos[_i] = temp;
+                    }
+
+                    //虞姬存在能吃副子的情况，col方向能走或者  row方向能走
+                    if (YuJiExist && ((SecondRow == m_EnemyPosNew.m_row && SecondCol >= Pos[2].m_BeginPos && SecondCol <= Pos[3].m_BeginPos) || (SecondCol == m_EnemyPosNew.m_col && SecondRow >= Pos[0].m_BeginPos && SecondRow <= Pos[1].m_BeginPos)))
+                    {
+                        temprow = SecondRow;
+                        tempcol = SecondCol;
+                        RetValue = 2;
+                        DistancePlayer = 0;
+                        minrow = temprow;
+                        mincol = tempcol;
+                        break;
+                    }
+                    else
+                    {
+                        //不吃副子的情况找一个和主子最近的位置
+                        //1 改变row的情况下找一个最近的
+                        temprow = PRow;
+                        tempcol = m_EnemyPosNew.m_col;
+                        if (temprow >= m_EnemyPosNew.m_row)
+                        {
+                            temprow = temprow > Pos[1].m_BeginPos ? Pos[1].m_BeginPos : temprow;
+                        }
+                        else
+                        {
+                            temprow = temprow < Pos[0].m_BeginPos ? Pos[0].m_BeginPos : temprow;
+                        }
+                        DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                        minrow = temprow;
+                        mincol = tempcol;
+                        //2 改变col的情况下找一个最近的
+                        temprow = m_EnemyPosNew.m_row;
+                        tempcol = PCol;
+                        if (tempcol >= m_EnemyPosNew.m_col)
+                        {
+                            tempcol = tempcol > Pos[3].m_BeginPos ? Pos[3].m_BeginPos : tempcol;
+                        }
+                        else
+                        {
+                            tempcol = tempcol < Pos[2].m_BeginPos ? Pos[2].m_BeginPos : tempcol;
+                        }
+
+                        if (DistancePlayer > (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol))
+                        {
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                        }
+                    }
+                   
                     break;
             }
 

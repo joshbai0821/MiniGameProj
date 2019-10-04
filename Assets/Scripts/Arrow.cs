@@ -7,21 +7,6 @@ using System;
 
 namespace MiniProj
 {
-    //¹­¼ýµÄ×´Ì¬
-    public enum ArrowStatus
-    {
-        WAIT = 1,
-        ATTACK = 2,
-        END = 3,
-    }
-
-    //ÈË
-    public enum PlayerType
-    {
-        XIANGYU = 1,
-        YUJI = 2,
-        ENEMY = 3,
-    }
 
     public enum PlayerD
     {
@@ -30,9 +15,17 @@ namespace MiniProj
         YUJI = 2,
         ALL = 3,
     }
+
+    //¹­¼ýµÄ×´Ì¬
+    public enum ArrowStatus
+    {
+        WAIT = 1,
+        ATTACK = 2,
+        END = 3,
+    }
+
     public class Arrow : MonoBehaviour
     {
-
 
         public List<MapPos> m_AttackArea;
         public List<MapPos> m_TriggerArea;
@@ -42,6 +35,7 @@ namespace MiniProj
 
         public Arrow()
         {
+            m_status = ArrowStatus.WAIT;
         }
 
         private void Awake()

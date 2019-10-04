@@ -13,10 +13,11 @@ namespace MiniProj
 		public int EnemyType;     //敌人的类型
 		public int PosIsChange;   //位置在本轮是否已经改变过了
 		public MapPos m_EnemyPosOld;   //老的位置
-		public MapPos m_EnemyPosNew;	//新的位置
+		public MapPos m_EnemyPosNew;    //新的位置
+        public bool m_EnemyIsMove;   //播放动画
 
-		private static float DiffX = 3.5f;
-        private static float DiffZ = 5.0f;
+        private static float DiffX = 1f;
+        private static float DiffZ = -1f;
 
         private struct JuUse
         {
@@ -53,7 +54,7 @@ namespace MiniProj
 			m_EnemyPosNew.m_row = row;
 			m_EnemyPosNew.m_col = col;
 
-			transform.position = new Vector3(col * DiffX, 1.6f, row * DiffZ);
+			transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
 		}
 
 		public void MovePos(int row, int col)
@@ -67,7 +68,7 @@ namespace MiniProj
 
 		public void Update()
 		{
-			transform.position = new Vector3(m_EnemyPosNew.m_col * DiffX, 1.6f, m_EnemyPosNew.m_row * DiffZ);
+			//transform.position = new Vector3(m_EnemyPosNew.m_row * DiffX, 0f, m_EnemyPosNew.m_col * DiffZ);
 		}
 
 		//卡马腿，象腿用的
@@ -95,10 +96,81 @@ namespace MiniProj
 			return false;
 		}
 
+        public void EnemyMove(int row, int col)
+        {
+            m_EnemyIsMove = true;
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            float DiffX = 1f;
+            float DiffZ = -1f;
+            float _targetPosX = m_EnemyPosNew.m_row * DiffX;
+            float _targetPosZ = m_EnemyPosNew.m_col * DiffZ;
+            float _targetPosY = 0f;
+            Sequence _sequence = DOTween.Sequence();
+
+            switch (EnemyType)
+            {
+                case (int)ChessType.MA:
+                    {
+                        _targetPosY = 0f;
+                        if (_sceneModule.m_mapData[row][col] == MapDataType.GAOTAI)
+                        {
+                            _targetPosY = 1.0f;
+                        }
+                        float _midTargetPosX = 0.0f;
+                        float _midTargetPosZ = 0.0f;
+                        if (m_EnemyPosNew.m_row == m_EnemyPosOld.m_row + 2)
+                        {
+                            _midTargetPosX = (m_EnemyPosOld.m_row + 1) * DiffX;
+                            _midTargetPosZ = this.transform.position.z;
+                        }
+                        else if (m_EnemyPosNew.m_row == m_EnemyPosOld.m_row - 2)
+                        {
+                            _midTargetPosX = (m_EnemyPosOld.m_row - 1) * DiffX;
+                            _midTargetPosZ = this.transform.position.z;
+                        }
+                        else if (m_EnemyPosNew.m_col == m_EnemyPosOld.m_col + 2)
+                        {
+                            _midTargetPosX = this.transform.position.x;
+                            _midTargetPosZ = (m_EnemyPosOld.m_col + 1) * DiffZ;
+                        }
+                        else if (m_EnemyPosNew.m_col == m_EnemyPosOld.m_col - 2)
+                        {
+                            _midTargetPosX = this.transform.position.x;
+                            _midTargetPosZ = (m_EnemyPosOld.m_col - 1) * DiffZ;
+                        }
+                        _sequence.Append(transform.DOMove(new Vector3(_midTargetPosX, this.transform.position.y, _midTargetPosZ), 0.3f).SetEase(_sceneModule.m_player.m_maCurve1));
+                        _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_maCurve2));
+                    }
+                    break;
+                case (int)ChessType.XIANG:
+                    _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_xiangCurve));
+                    break;
+                case (int)ChessType.SHI:
+                    _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_juCurve));
+                    break;
+                case (int)ChessType.JU:
+                    _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_juCurve));
+                    break;
+            }
+
+            _sequence.AppendCallback(MoveEnd);
+            _sequence.SetAutoKill(true);
+
+        }
+
+        private void MoveEnd()
+        {
+            //m_state = State.Idle;
+            //m_move = false;
+            //SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            //_sceneModule.WaitNpc();
+            //EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
+        }
+
         //敌人能否走的时候加入判断虞姬是否卡住了
         //敌人吃的时候，吃虞姬项羽优先级一样高，但是靠近虞姬
         //1 吃主子， 2吃副子， 0都没被吃
-		public int GetEnemyNextPos(bool YuJiExist)
+        public int GetEnemyNextPos(bool YuJiExist)
         {
         	SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
 			//判断,是否是可走的点
@@ -336,7 +408,7 @@ namespace MiniProj
 								}
                             }
                         }
-                        if (playerCol + 1 < _mapCol)
+                        if (playerCol + 2 < _mapCol)
                         {
                             if (_sceneModule.m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
@@ -521,7 +593,7 @@ namespace MiniProj
                             }
                         }
                     }
-                    if(playerRow + 2 < _mapCol)
+                    if(playerRow + 2 < _mapRow)
                     {
                         if (playerCol >= 2)
                         {
@@ -818,6 +890,7 @@ namespace MiniProj
                 _sceneModule.m_enemyList[minrow][mincol] = _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
                 _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
                 MovePos(minrow, mincol);
+                PosIsChange = 1;
                 if (RetValue == 2)
                 {
                     return 2;

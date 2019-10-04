@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 using UnityEngine.UI;
+
 
 namespace MiniProj
 {
@@ -15,6 +17,14 @@ namespace MiniProj
 		JU = 4,
 		PAO = 5,
     }
+
+    //人
+    public enum PlayerType
+    {
+        XIANGYU = 1,
+        YUJI = 2,
+        ENEMY = 3,
+    }
     public class SceneModule : Module
     {
         /*
@@ -24,6 +34,7 @@ namespace MiniProj
 			JU = 4,
 			PAO = 5,
 		*/
+        private int m_SceneStep;
         private int m_waitCount;
         private int m_npcCount;
         private GameObject m_sceneObj;
@@ -32,7 +43,7 @@ namespace MiniProj
         private GameObject m_sceneMenuObject;
 
         public SceneConfig m_config;
-        private Player m_player;
+        public Player m_player;
         private List<List<Transform>> m_tsfMapList;
         private List<Material> m_matList;
         private List<Color> m_originColorList;
@@ -47,10 +58,10 @@ namespace MiniProj
         private static string[] EnemyPrefabName =
         {
             "null",
-            "Enemy",
-            "Enemy",
-            "Enemy",
-            "Enemy",
+            "diHorse",
+            "diXiang",
+            "diBing",
+            "diChe",
             "Enemy",
         };
 
@@ -60,6 +71,7 @@ namespace MiniProj
 
         public MapPos YuJiPos;
         public List<List<Enemy>> m_enemyList;
+        public Rock m_Rock;
         private List<Arrow> m_ArrowList;
         public List<List<FixedRouteNpc>> m_npcList;
         public List<List<MapDataType>> m_mapData;
@@ -168,8 +180,10 @@ namespace MiniProj
             LoadSceneMenu();
             LoadNpc();
             LoadEnemy();
+
             LoadBackground();
             //LoadRookieModule();
+
         }
 
         //进入下一关
@@ -218,10 +232,34 @@ namespace MiniProj
             
         }
 
+        private void LoadRock()
+        {
+            m_Rock = new Rock();
+            m_Rock.m_RockPos.m_row = m_config.SceneConfigList[GameManager.SceneConfigId].RockData.m_RockPos.m_row;
+            m_Rock.m_RockPos.m_col = m_config.SceneConfigList[GameManager.SceneConfigId].RockData.m_RockPos.m_col;
+
+            m_Rock.m_dir = m_config.SceneConfigList[GameManager.SceneConfigId].RockData.dir;
+
+            for(int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].RockData.m_Trigger.Count; _i++)
+            {
+                m_Rock.m_Trigger.Add(m_config.SceneConfigList[GameManager.SceneConfigId].RockData.m_Trigger[_i]);
+            }
+        }
+
+        private void RockTrigger()
+        {            
+            //动画结束，清除路线上的敌人结束
+            m_Rock.Trigger();
+
+            if(m_Rock.m_IsEnd == true)
+            {
+                m_Rock.DestroyObj();
+            }
+        }
+
         private void LoadArrow()
         {
             Arrow arrow = new Arrow();
-            arrow.SetType(ArrowStatus.WAIT);
 
             for (int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData.Count; _i++)
             {
@@ -465,6 +503,19 @@ namespace MiniProj
                 m_player.SetCanMove(true);
                 EnemyListUpdate();
                 CheckSkillCount();
+                m_SceneStep++;
+                //map2在项羽走了两步以后在9,0，出现一个马
+                if (GameManager.SceneConfigId == 2 && 2 == m_SceneStep)
+                {
+                    int _type = 1;
+                    int row = 4;
+                    int col = 4;
+                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
+                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                    m_enemyList[row][col] = _obj.GetComponent<Enemy>();
+                    m_enemyList[row][col].SetType(_type);
+                    m_enemyList[row][col].SetStartPos(col, col);
+                }
             }
         }
 
@@ -529,6 +580,7 @@ namespace MiniProj
                     if (m_enemyList[_i][_j] != null)
                     {
                         m_enemyList[_i][_j].PosIsChange = 0;
+                        m_enemyList[_i][_j].m_EnemyIsMove = false;
                     }
                 }
             }
@@ -546,8 +598,6 @@ namespace MiniProj
                         {
                             //吃子特效写在这，1副子， 2主子**
                         }
-                        //更新改变位置，ischange
-                        m_enemyList[_i][_j].PosIsChange = 1;
                     }
                 }
             }
@@ -557,9 +607,10 @@ namespace MiniProj
             {
                 for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
-                    if (m_enemyList[_i][_j] != null)
+                    if (m_enemyList[_i][_j] != null && !m_enemyList[_i][_j].m_EnemyIsMove)
                     {
-                        m_enemyList[_i][_j].Update();
+                        m_enemyList[_i][_j].EnemyMove(_i, _j);
+                       // m_enemyList[_i][_j].Update();
                     }
                 }
             }
@@ -585,7 +636,7 @@ namespace MiniProj
                 int _r = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Pos.m_row;
                 int _c = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Pos.m_col;
                 int _type = m_config.SceneConfigList[GameManager.SceneConfigId].EnemyData[_j].Type;
-                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
                 _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                 m_enemyList[_r][_c] = _obj.GetComponent<Enemy>();
                 if (m_enemyList[_r][_c] != null)

@@ -78,8 +78,12 @@ namespace MiniProj
     {
         [SerializeField]
         public MapPos m_RockPos;
+        //滚动方向
         [SerializeField]
         public int dir;
+        //触发角色
+        [SerializeField]
+        public List<PlayerType> m_Trigger;
     }
 
     [System.Serializable]
@@ -106,7 +110,7 @@ namespace MiniProj
         [SerializeField]
         private List<ArrowConfig> m_Arrow;
         [SerializeField]
-        private List<RockConfig> m_Rock;
+        private RockConfig m_Rock;
 
         public string PrefabName
         {
@@ -150,7 +154,7 @@ namespace MiniProj
             get { return m_Arrow; }
         }
 
-        public List<RockConfig> RockData
+        public RockConfig RockData
         {
             get { return m_Rock; }
         }

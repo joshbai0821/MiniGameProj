@@ -202,7 +202,7 @@ namespace MiniProj
             //SceneManager.LoadScene(0);
         }
 
-        private void GotoNextScene()
+        public void GotoNextScene()
         {
             if (GameManager.SceneConfigId == 0)
             {
@@ -502,16 +502,19 @@ namespace MiniProj
 
         public bool WaitNpc()
         {
+            //到达终点
             if(m_sceneWin)
             {
                 GotoNextScene();
                 return false;
             }
+
             m_waitCount = m_npcCount;
             if(m_npcCount == 0)
             {
                 NpcComplete(null);
-                return false;
+                if (GameManager.SceneConfigId == 0) return true;
+                else return false;
             }
             else
             {

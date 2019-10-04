@@ -242,6 +242,7 @@ namespace MiniProj
             m_followList.Clear();
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
             _sceneModule.ArriveSceneFinal();
+            _sceneModule.GotoNextScene();
         }
 
         private void DelayLoadRookieJu(EventArgs args)

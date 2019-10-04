@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8258a54bbe1bf34da15f9e4c63283b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_audioSource: {fileID: 0}
+  m_audioSource: {fileID: 82260223594593510}
   UILayer: {fileID: 224838604272652668}
   SceneLayer: {fileID: 4807501200599810}
 --- !u!114 &114979522004935266

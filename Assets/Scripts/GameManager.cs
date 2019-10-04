@@ -186,8 +186,9 @@ namespace MiniProj
                 if(m_freeModuleList[_i].TimeStamp > 10.0f)
                 {
                     Destroy(m_freeModuleList[_i]);
+                    m_freeModuleList.RemoveAt(_i);
                 }
-                m_freeModuleList.RemoveAt(_i);
+                
             }
         }
     }

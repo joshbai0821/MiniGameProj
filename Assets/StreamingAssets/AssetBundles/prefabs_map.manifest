@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 302709164
+CRC: 3992421580
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 28a94b7bd8d7e9962d77a7574229726f
+    Hash: edb011cbb3a8a9012ce03866cb712e3c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: aa7fa7960e325e9fd0c87874d562bd69
+    Hash: 6979946c7744444a3fd46377c0659f24
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,6 +32,8 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 950d234077bad014690507776eed9d19, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 8f757ad128b813d4a88444f4ae4135a1, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -48,6 +50,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 6b248ffcf9fd88141852326113f3eb8a, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 05833fcd474bcc94b9eea6d4d280a46e, type: 3}
@@ -55,8 +59,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 37901c3ea7ca0c6448e16d69bc737cc0, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -74,7 +76,9 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Map/RookieXiang.prefab
 - Assets/Prefabs/Map/RookieMa.prefab
+- Assets/Prefabs/Map/SceneMenu.prefab
 - Assets/Prefabs/Map/Npc.prefab
+- Assets/Prefabs/Map/SceneTarget.prefab
 - Assets/Prefabs/Map/Enemy.prefab
 - Assets/Prefabs/Map/Map1Test.prefab
 - Assets/Prefabs/Map/M_Cube.mat

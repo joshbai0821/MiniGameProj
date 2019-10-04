@@ -22,9 +22,9 @@ namespace MiniProj
         {
 #if UNITY_EDITOR 
             m_obj = (GameObject)GameManager.ResManager.LoadPrefabSync(LoginPrefabPath, "RawImage", typeof(GameObject));
-			m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
 #else
-            Handheld.PlayFullScreenMovie("cg8.ogv", Color.black, FullScreenMovieControlMode.CancelOnInput);
+            Handheld.PlayFullScreenMovie("cg8.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("LoginModule");
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("MainMenuModule");
 #endif

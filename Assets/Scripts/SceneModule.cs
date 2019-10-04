@@ -195,41 +195,27 @@ namespace MiniProj
         {
             ClearNpcData();
             InitialNpcData();
-            //只加载一个虞姬的路线
-            bool Retry = false;
-            int _npcr = -1;
-            int _npcc = -1;
-
-            for (int _j = 0; m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count > 0 && _j < m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData.Count; ++_j)
+            m_npcCount = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count;
+            m_waitCount = 0;
+            for (int _j = 0, _max = m_npcCount; _j  < _max; ++_j)
             {
-                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[_j].m_row;
-                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[_j].m_col;
+                int _r = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[0].m_row;
+                int _c = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[0].m_npcPosData[0].m_col;
 
-                if (Retry == false)
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, "yuji", typeof(GameObject));
+                _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
+                if (m_npcList[_r][_c] != null)
                 {
-                    //加载虞姬的第一步
-                    Retry = true;
-                    _npcr = _r;
-                    _npcc = _c;
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "Npc", typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_npcList[_r][_c] = _obj.GetComponent<FixedRouteNpc>();
-                    if (m_npcList[_r][_c] != null)
-                    {
-                        m_npcList[_r][_c].SetPosition(_r, _c);
-                    }
-                    else
-                    {
-                        Debug.Log("SceneModule | LoadEnemy Error");
-                    }
+                    m_npcList[_r][_c].SetPosition(_r, _c);
+                    m_npcList[_r][_c].m_routePosList = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData[_j].m_npcPosData;
                 }
                 else
                 {
-                    //加载虞姬的其他步数
-                    m_npcList[_npcr][_npcc].m_routePosList.Add(new MapPos(0, 2));
+                    Debug.Log("SceneModule | LoadEnemy Error");
                 }
             }
-            m_npcCount = m_config.SceneConfigList[GameManager.SceneConfigId].NpcPosData.Count;
+            
         }
 
         private void LoadArrow()

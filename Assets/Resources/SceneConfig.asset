@@ -27,6 +27,8 @@ MonoBehaviour:
       m_count: 1
     m_enemyData: []
     m_npcPosData: []
+    m_Arrow: []
+    m_Rock: []
   - m_prefabName: map1
     m_backgroundName: BackGround1
     m_mapRow: 8
@@ -42,6 +44,8 @@ MonoBehaviour:
       m_count: 10
     m_enemyData: []
     m_npcPosData: []
+    m_Arrow: []
+    m_Rock: []
   - m_prefabName: map2
     m_backgroundName: BackGround3
     m_mapRow: 8
@@ -56,4 +60,9 @@ MonoBehaviour:
     - m_id: 3
       m_count: 2
     m_enemyData: []
-    m_npcPosData: []
+    m_npcPosData:
+    - m_npcPosData:
+      - m_row: 2
+        m_col: 2
+    m_Arrow: []
+    m_Rock: []

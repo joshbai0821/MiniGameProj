@@ -22,7 +22,7 @@ MonoBehaviour:
     - m_id: 1
       m_count: 1
     - m_id: 3
-      m_count: 1
+      m_count: 2
     - m_id: 0
       m_count: 1
     m_enemyData: []

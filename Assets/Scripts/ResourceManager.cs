@@ -18,8 +18,8 @@ namespace MiniProj
 
         public ResourceManager()
         {
+            m_manifest = null;
             m_strBuilder = new StringBuilder();
-            m_manifest = new Dictionary<string, List<string>>(8);
             m_bundleList = new List<BundleItem>(8);
             m_assetList = new List<Asset>(8);
             m_count = 0;
@@ -27,7 +27,7 @@ namespace MiniProj
 
         private void Awake()
         {
-            AssetBundlePath = Application.streamingAssetsPath + "/AssetBundles/";
+            AssetBundlePath = System.IO.Path.Combine(Application.streamingAssetsPath, "AssetBundles");
         }
 
         public UnityEngine.Object LoadPrefabSync(string path, string name, Type type, string abName = null)
@@ -78,11 +78,9 @@ namespace MiniProj
         protected bool LoadAssetBundleManifest()
         {
             bool _ret = true;
-            m_strBuilder.Length = 0;
-            m_strBuilder.Append(AssetBundlePath);
-            m_strBuilder.Append("/AssetBundles");
+            string _filePath = System.IO.Path.Combine(AssetBundlePath, "AssetBundles");
 
-            var _bundle = AssetBundle.LoadFromFile(m_strBuilder.ToString());
+            var _bundle = AssetBundle.LoadFromFile(_filePath);
             if (_bundle == null)
             {
                 Debug.Log("Load asset bundle manifest failed");
@@ -93,6 +91,7 @@ namespace MiniProj
             // 加载AssetBundleManifest
             AssetBundleManifest _manifest = _bundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
+            m_manifest = new Dictionary<string, List<string>>(8);
             foreach (string _abName in _manifest.GetAllAssetBundles())
             {
                 string[] _dependencies = _manifest.GetAllDependencies(_abName);

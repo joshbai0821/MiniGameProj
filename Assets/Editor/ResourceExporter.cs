@@ -24,7 +24,7 @@ public class ResourceExporter {
     public bool ExportAb()
     {
         bool _ret = true;
-        string _path = Application.dataPath + "/prefabs";
+        string _path = Application.dataPath + "/Prefabs";
         Dictionary<string, List<string>> _abResDic = new Dictionary<string, List<string>>(8);
 
         CollectBuildMap(_path, ref _abResDic);

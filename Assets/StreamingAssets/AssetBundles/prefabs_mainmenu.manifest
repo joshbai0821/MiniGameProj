@@ -1,17 +1,27 @@
 ManifestFileVersion: 0
-CRC: 1583539380
+CRC: 2064136593
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 45454d3c91017617b79b6789879648e6
+    Hash: bf7721698d652f5bea22588dac4d78a9
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e545d43a6c31e54c311c12e1b263cdbc
+    Hash: 9e39493848881abd0528642c6c20d971
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -25,7 +35,19 @@ ClassTypes:
   Script: {fileID: -2061169968, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc1c0e274f2fc4ed093ed8e84d2fe67c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9199e5573ffd14da69df1212c90868e9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3160ba9731a344d29af7fcc2db11ebb5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c760e94a8711a476bbd5b9403f193f90, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+- Class: 212
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
@@ -34,6 +56,7 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
+- Assets/Prefabs/MainMenu/ChooseMenuCamera.prefab
 - Assets/Prefabs/MainMenu/MainMenuPanel.prefab
 - Assets/Prefabs/MainMenu/ChooseScene.prefab
 Dependencies: []

@@ -114,7 +114,7 @@ namespace MiniProj
 
         public BundleAsset(string path, string name, Type type) :base(path, name, type)
         {
-            m_assetBundleName = path.Replace('/', '_');
+            m_assetBundleName = path.Replace('/', '_').ToLower();
         }
 
         internal override void Load()

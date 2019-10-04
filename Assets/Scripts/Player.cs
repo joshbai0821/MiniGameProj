@@ -405,8 +405,11 @@ namespace MiniProj
             m_state = State.Idle;
             m_move = false;
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-            _sceneModule.WaitNpc();
-            EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null); 
+            bool _bWait = _sceneModule.WaitNpc();
+            if(_bWait)
+            {
+                EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
+            }
         }
 
         private void UseSkill(EventArgs args)

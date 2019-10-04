@@ -88,6 +88,7 @@ namespace MiniProj
 
         private void OnEnable()
         {
+            m_sceneWin = false;
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
@@ -186,7 +187,7 @@ namespace MiniProj
 
         }
 
-        //进入下一关
+        //进入主菜单
         private void GotoMainMenu()
         {
             if(GameManager.SceneConfigId == 0)
@@ -197,6 +198,18 @@ namespace MiniProj
             SceneManager.LoadScene(0);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("MainMenuModule");
             //SceneManager.LoadScene(0);
+        }
+
+        private void GotoNextScene()
+        {
+            if (GameManager.SceneConfigId == 0)
+            {
+                GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
+            }
+            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
+            ++GameManager.SceneConfigId;
+            SceneManager.LoadScene(GameManager.SceneConfigId + 1);
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
         }
 
         private void LoadBackground()
@@ -398,7 +411,7 @@ namespace MiniProj
             m_sceneMenuObject = _sceneMenuObj;
             m_sceneMenuObject.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ReplayScene);
             m_sceneMenuObject.transform.Find("Button1").GetComponent<Button>().onClick.AddListener(GotoMainMenu);
-            m_sceneMenuObject.transform.Find("Button2").GetComponent<Button>().onClick.AddListener(ArriveSceneFinal);
+            m_sceneMenuObject.transform.Find("Button2").GetComponent<Button>().onClick.AddListener(GotoNextScene);
         }
 
         private void InitialSkillBtnData()
@@ -483,12 +496,23 @@ namespace MiniProj
 
 
 
-        public void WaitNpc()
+
+        public bool WaitNpc()
         {
+            if(m_sceneWin)
+            {
+                GotoNextScene();
+                return false;
+            }
             m_waitCount = m_npcCount;
             if(m_npcCount == 0)
             {
                 NpcComplete(null);
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -1126,14 +1150,7 @@ namespace MiniProj
 
         public void ArriveSceneFinal()
         {
-            if (GameManager.SceneConfigId == 0)
-            {
-                GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
-            }
-            GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
-            ++GameManager.SceneConfigId;
-            SceneManager.LoadScene(GameManager.SceneConfigId + 1);
-            GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
+            m_sceneWin = true;
         }
     }
 }

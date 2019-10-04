@@ -88,6 +88,7 @@ namespace MiniProj
 
         private void OnEnable()
         {
+            m_SceneStep = 0;
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
@@ -173,6 +174,7 @@ namespace MiniProj
                 }
             }
             //LoadBackground();
+            m_SceneStep = 0;
             LoadMap();
             LoadPlayer();
             LoadSkillBtn();
@@ -273,6 +275,7 @@ namespace MiniProj
 
         private void LoadArrow()
         {
+            m_ArrowList = new List<Arrow>();
             Arrow arrow = new Arrow();
 
             for (int _i = 0; _i < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData.Count; _i++)
@@ -282,6 +285,7 @@ namespace MiniProj
                 for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea.Count; _j++)
                 {
                     arrow.m_AttackArea.Add(new MapPos(m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea[_j].m_row, m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_AttackArea[_j].m_col));
+                    //arrow.m_AttackArea.Add(new MapPos(6, 0));
                 }
                 //加载触发区域
                 for (int _j = 0; _j < m_config.SceneConfigList[GameManager.SceneConfigId].ArrowData[_i].m_TriggerArea.Count; _j++)
@@ -519,16 +523,16 @@ namespace MiniProj
                 CheckSkillCount();
                 m_SceneStep++;
                 //map2在项羽走了两步以后在9,0，出现一个马
-                if (GameManager.SceneConfigId == 2 && 2 == m_SceneStep)
+                if (GameManager.SceneConfigId == 2 && 3 == m_SceneStep)
                 {
-                    int _type = 1;
-                    int row = 4;
-                    int col = 4;
+                    int _type = 4;
+                    int row = 7;
+                    int col = 5;
                     GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
                     _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     m_enemyList[row][col] = _obj.GetComponent<Enemy>();
                     m_enemyList[row][col].SetType(_type);
-                    m_enemyList[row][col].SetStartPos(col, col);
+                    m_enemyList[row][col].SetStartPos(row, col);
                 }
             }
         }

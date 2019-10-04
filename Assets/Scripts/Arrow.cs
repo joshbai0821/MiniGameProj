@@ -36,6 +36,9 @@ namespace MiniProj
         public Arrow()
         {
             m_status = ArrowStatus.WAIT;
+            m_AttackArea = new List<MapPos>();
+            m_TriggerArea = new List<MapPos>();
+            m_Trigger = new List<PlayerType>();
         }
 
         private void Awake()

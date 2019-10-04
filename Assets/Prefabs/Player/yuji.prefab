@@ -100,6 +100,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4158839675623114}
+  - component: {fileID: 136069641179590450}
+  - component: {fileID: 114684483419593728}
   m_Layer: 9
   m_Name: yuji
   m_TagString: Untagged
@@ -1201,6 +1203,33 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114684483419593728
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365704351694736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_routePosList: []
+  m_stepPerRound: 2
+  m_curStep: 0
+--- !u!136 &136069641179590450
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365704351694736}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.65, y: 1.19, z: -5.14}
 --- !u!137 &137025432382642508
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

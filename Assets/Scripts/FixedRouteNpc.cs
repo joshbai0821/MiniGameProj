@@ -8,8 +8,8 @@ namespace MiniProj
 {
     public class FixedRouteNpc : MonoBehaviour
     {
-        private static float DiffX = 3.5f;
-        private static float DiffZ = 5.0f;
+        private static float DiffX = 1f;
+        private static float DiffZ = -1.0f;
         private MapPos m_playerPos;
         public List<MapPos> m_routePosList;
 
@@ -19,11 +19,13 @@ namespace MiniProj
 
         private void Awake()
         {
+            m_curStep = 1;
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
 
         public void DestroyObj()
         {
+            EventManager.UnregisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode());
             GameObject.Destroy(this.gameObject);
         }
 
@@ -31,7 +33,7 @@ namespace MiniProj
         {
             m_playerPos.m_row = row;
             m_playerPos.m_col = col;
-            transform.position = new Vector3(row * DiffX, 1f, col * DiffZ);
+            transform.position = new Vector3(row * DiffX, 0f, col * DiffZ);
         }
 
         private void FollowPlayer(EventArgs args)
@@ -60,7 +62,7 @@ namespace MiniProj
                     m_playerPos.m_row = _row;
                     m_playerPos.m_col = _col;
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 1f, _col * DiffZ), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 0f, _col * DiffZ), 0.5f));
                     _sequence.onComplete += DoOneStep;
                     _sequence.SetAutoKill(true);
                     ++m_curRoundStep;
@@ -87,7 +89,7 @@ namespace MiniProj
                     m_playerPos.m_col = _col;
                     m_curRoundStep = 0;
                     Sequence _sequence = DOTween.Sequence();
-                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 1f, _col * DiffZ), 2));
+                    _sequence.Append(transform.DOMove(new Vector3(_row * DiffX, 0f, _col * DiffZ), 0.5f));
                     _sequence.SetAutoKill(true);
                     _sequence.onComplete += NpcEndMoveCallBack;
                     ++m_curStep;

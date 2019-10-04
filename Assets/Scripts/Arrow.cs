@@ -145,6 +145,7 @@ namespace MiniProj
 
             SetType(ArrowStatus.END);
             //É¾³ýÕâ¸öarrow
+            DestroyObj();
             return Ret;
         }
 

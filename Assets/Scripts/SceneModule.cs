@@ -314,7 +314,6 @@ namespace MiniProj
             {
                 PlayerD Ret = m_ArrowList[_i].ArrowAttack();
                 //删掉arrow
-                m_ArrowList[_i].DestroyObj();
 
 
                 //是否删掉项羽虞姬，游戏是否结束
@@ -520,6 +519,9 @@ namespace MiniProj
                     m_enemyList[row][col].SetType(_type);
                     m_enemyList[row][col].SetStartPos(row, col);
                 }
+                ArrowAttack();
+                ArrowTrigger();
+                
             }
         }
 

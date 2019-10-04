@@ -30,21 +30,23 @@ namespace MiniProj
 
         private void Awake()
         {
-            SGameManagerObj = CreateGameRootObject();
+            SGameManagerObj = this.gameObject;
             SResourceMgr = CreateInstance<ResourceManager>();
             m_moduleList = new List<Module>();
             m_freeModuleList = new List<Module>();
 
             m_sceneConfigId = 0;
             LoadModule("LoginModule");
-			//Application.LoadLevel("login");
-			//LoadModule("SceneModule");
+            DontDestroyOnLoad(gameObject);
+            //Application.LoadLevel("login");
+            //LoadModule("SceneModule");
 
         }
 
         public void OnMapSceneLoad(Scene arg0, LoadSceneMode arg1)
         {
             LoadModule("SceneModule");
+            SceneManager.sceneLoaded -= GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
         }
 
         public void LoadModule(string name)
@@ -64,6 +66,7 @@ namespace MiniProj
                 {
                     m_freeModuleList[_i].enabled = true;
                     Module _module = m_freeModuleList[_i];
+                    _module.enabled = true;
                     m_freeModuleList.RemoveAt(_i);
                     m_moduleList.Add(_module);
                     return;
@@ -114,36 +117,28 @@ namespace MiniProj
                     break;
                 case ModuleId.LoginModule:
                     LoginModule _loginModule = CreateInstance<LoginModule>();
+                    _loginModule.enabled = true;
                     m_moduleList.Add(_loginModule);
                     break;
                 case ModuleId.MainMenuModule:
                     MainMenuModule _mainMenuModule = CreateInstance<MainMenuModule>();
+                    _mainMenuModule.enabled = true;
                     m_moduleList.Add(_mainMenuModule);
                     break;
                 case ModuleId.SceneModule:
                     SceneModule _sceneModule = CreateInstance<SceneModule>();
+                    _sceneModule.enabled = true;
                     m_moduleList.Add(_sceneModule);
                     break;
                 case ModuleId.RookieModule:
                     RookieModule _rookieModule = CreateInstance<RookieModule>();
+                    _rookieModule.enabled = true;
                     m_moduleList.Add(_rookieModule);
                     break;
                 default:
                     break;
             }
             return ;
-        }
-
-        private static GameObject CreateGameRootObject()
-        {
-            GameObject _pObj = GameObject.Find("GameManager");
-            if (_pObj == null)
-            {
-                _pObj = new GameObject();
-                _pObj.name = "GameManager";
-            }
-            DontDestroyOnLoad(_pObj);
-            return _pObj;
         }
 
         private static T CreateInstance<T>() where T : Component
@@ -191,7 +186,9 @@ namespace MiniProj
                 if(m_freeModuleList[_i].TimeStamp > 10.0f)
                 {
                     Destroy(m_freeModuleList[_i]);
+                    m_freeModuleList.RemoveAt(_i);
                 }
+                
             }
         }
     }

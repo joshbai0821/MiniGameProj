@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 1058463717
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f8b876998c215f6b02fd23210202f1b4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 55118412d60275b4fe2c55015e9885a7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 84
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 328
+  Script: {instanceID: 0}
+- Class: 329
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Login/RawImage.prefab
+- Assets/Prefabs/Login/Rt.renderTexture
+Dependencies: []

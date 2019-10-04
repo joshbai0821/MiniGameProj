@@ -35,10 +35,8 @@ namespace MiniProj
 
         internal virtual void Load()
         {
-            m_stringBuilder.Length = 0;
-            m_stringBuilder.Append(ResourceManager.AssetBundlePath);
-            m_stringBuilder.Append(m_name);
-            m_assetBundle = AssetBundle.LoadFromFile(m_stringBuilder.ToString());
+            string _filePath = System.IO.Path.Combine(ResourceManager.AssetBundlePath, m_name);
+            m_assetBundle = AssetBundle.LoadFromFile(_filePath);
             if (m_assetBundle == null)
                 m_error = m_name + " LoadFromFile failed.";
         }

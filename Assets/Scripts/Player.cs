@@ -398,6 +398,8 @@ namespace MiniProj
             }
         }
 
+
+
         private void MoveEnd()
         {
             m_state = State.Idle;

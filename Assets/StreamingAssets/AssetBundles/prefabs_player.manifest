@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3096595118
+CRC: 1662320017
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 43fe4dfb4ebe92ed986fb99d692a0d87
+    Hash: cf69777278e9f4ecc108ea06f6da32de
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0a98ad632afe9710d697991b5a714aaf
+    Hash: ae2ac282dd71a223253bf3e6edaf50b5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,7 +28,11 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 0199ab4370939944fb2c95f501bf80c6, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 6b248ffcf9fd88141852326113f3eb8a, type: 3}
 - Class: 114
@@ -45,10 +49,11 @@ Assets:
 - Assets/Prefabs/Player/woBing.prefab
 - Assets/Prefabs/Player/RookieDiBing.prefab
 - Assets/Prefabs/Player/woHorse.prefab
+- Assets/Prefabs/Player/diBing.prefab
 - Assets/Prefabs/Player/xiangyu.prefab
 - Assets/Prefabs/Player/diHorse.prefab
 - Assets/Prefabs/Player/woXiang.prefab
 - Assets/Prefabs/Player/yuji.prefab
 - Assets/Prefabs/Player/diXiang.prefab
 Dependencies:
-- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material
+- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material"

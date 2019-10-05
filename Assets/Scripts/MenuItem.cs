@@ -49,6 +49,7 @@ namespace SwipeMenu
                 AudioFx.Instance.clicktochooselv();
                 Camera.main.GetComponent<WaterWaveEffect>().enabled = true;
                 GameManager.GameManagerObj.GetComponent<MainMenuModule>().LoadEffect();
+
                 Invoke("LoadMapScene", 0.8f);
                 //SceneManager.LoadScene(gameindex);
                 timer = 0;

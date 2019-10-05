@@ -20,6 +20,7 @@ Shader "Mini/Humans"
  
 			CGPROGRAM
 			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
 			fixed4 _Diffuse, _MainTex_ST;
 			fixed4 _RimColor;
 			float _RimPower, _MainPower;

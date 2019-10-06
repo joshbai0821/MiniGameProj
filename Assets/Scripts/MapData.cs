@@ -24,6 +24,7 @@ namespace MiniProj
         PINGDI = 0,
         GAOTAI = 1,
         NEWMODE = 2,
+        JUMATUI = 3,
     }
 
     public class MapData : MonoBehaviour

@@ -16,6 +16,8 @@ namespace MiniProj
     {
         [SerializeField]
         private MapPos m_playerPos;
+        private ParticleSystem m_playereff;
+        private ParticleSystem m_hiteff;
         public MapPos Pos
         {
             get { return m_playerPos; }
@@ -38,6 +40,8 @@ namespace MiniProj
             m_move = true;
             m_skillId = SkillId.NONE;
             m_state = State.Idle;
+            m_playereff = transform.Find("Pawndown").GetComponentInChildren<ParticleSystem>();
+            m_hiteff = transform.Find("SoftFightAction2").GetComponent<ParticleSystem>();
             EventManager.RegisterEvent(HLEventId.USE_SKILL, this.GetHashCode(), UseSkill);
         }
 
@@ -405,15 +409,29 @@ namespace MiniProj
             m_state = State.Idle;
             m_move = false;
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+			if (_sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col] == null)
+            {
+                AudioFx.Instance.pawndown();
+                m_playereff.Play();
+
+            }
+            else
+            {
+                AudioFx.Instance.pawnhit();
+                m_playereff.Play();
+                m_hiteff.Play();
+                _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col].DestroyObj();
+            }
             _sceneModule.WaitNpc();
             EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null); 
         }
 
         private void UseSkill(EventArgs args)
-        {
+        {            
             m_state = State.UseSkill;
             m_skillId = (SkillId)((IntEventArgs)args).m_args;
-            if(GameManager.SceneConfigId == 0)
+            AudioFx.Instance.clickskill((int)m_skillId);
+            if (GameManager.SceneConfigId == 0)
             {
                 RookieModule _rookieModule = (RookieModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("RookieModule");
                 _rookieModule.ChangeMap(m_skillId);

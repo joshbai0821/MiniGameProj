@@ -15,6 +15,7 @@ namespace MiniProj
 
 		private GameObject m_mainMenuObj;
         private GameObject m_chooseSceneObj;
+        private GameObject m_mengban;
 
 		private static string MainPrefabPath = "Prefabs/MainMenu";
 
@@ -78,6 +79,8 @@ namespace MiniProj
         //加载选关卡界面
         private void LoadChooseScene()
         {
+            AudioFx.Instance.clicktochooselv();
+
             if (m_mainMenuObj != null)
             {
                 m_mainMenuObj.SetActive(false);
@@ -85,16 +88,31 @@ namespace MiniProj
             if(m_chooseSceneObj == null)
             {
                 m_chooseSceneObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "ChooseMenuCamera", typeof(GameObject));
-                //m_chooseSceneObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
-                //m_chooseSceneObj.transform.Find("Viewport/Content/Button").GetComponent<Button>().onClick.AddListener(()=> { LoadOneMapScene(0); });
-                //m_chooseSceneObj.transform.Find("Viewport/Content/Button1").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(1); });
-                //m_chooseSceneObj.transform.Find("Viewport/Content/Button2").GetComponent<Button>().onClick.AddListener(() => { LoadOneMapScene(2); });
                 Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = true;
             }
             else
             {
                 m_chooseSceneObj.SetActive(true);
             }
+        }
+
+        public void LoadEffect()
+        {
+            if (m_mengban == null)
+            {
+                m_mengban = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "mengban", typeof(GameObject));
+                m_mengban.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            }
+            else
+            {
+                m_mengban.SetActive(true);
+            }
+
+            if (m_chooseSceneObj != null)
+            {
+                m_chooseSceneObj.SetActive(false);
+            }
+            Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = false;
         }
 
         public void LoadOneMapScene(int id)
@@ -107,11 +125,14 @@ namespace MiniProj
             {
                 GameObject.Destroy(m_chooseSceneObj);
             }
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(id + 1);
+            Audio_BGM.Instance.LvBGM(id + 1);
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("MainMenuModule");
             GameManager.SceneConfigId = id;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
             SceneManager.LoadScene(id + 1);
             Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = false;
+            Camera.main.GetComponent<WaterWaveEffect>().enabled = false;
         }
 
     }

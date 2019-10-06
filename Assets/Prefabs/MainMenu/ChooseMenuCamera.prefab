@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4255105356807952}
   - component: {fileID: 212323195359417738}
   - component: {fileID: 114458138049957148}
-  - component: {fileID: 65010811705911682}
+  - component: {fileID: 65297590881876806}
   m_Layer: 10
   m_Name: third
   m_TagString: MenuItem
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 4884536254573588}
   - component: {fileID: 212227666688529720}
   - component: {fileID: 114177761239739840}
-  - component: {fileID: 65731318822325386}
+  - component: {fileID: 65696005783017762}
   m_Layer: 10
   m_Name: first
   m_TagString: MenuItem
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4333338947378998}
   - component: {fileID: 212893892062719128}
   - component: {fileID: 114081730039137682}
-  - component: {fileID: 65699103343012182}
+  - component: {fileID: 65459440239967104}
   m_Layer: 10
   m_Name: second
   m_TagString: MenuItem
@@ -122,7 +122,7 @@ Transform:
   m_GameObject: {fileID: 1489585066088870}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4910474813373968}
   m_RootOrder: 2
@@ -135,7 +135,7 @@ Transform:
   m_GameObject: {fileID: 1950675543207562}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4910474813373968}
   m_RootOrder: 1
@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 1928227389228978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4910474813373968}
   m_RootOrder: 0
@@ -205,7 +205,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!65 &65010811705911682
+--- !u!65 &65297590881876806
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -215,9 +215,9 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 480, y: 380, z: 0.2}
+  m_Size: {x: 3, y: 3, z: 0.19999999}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65699103343012182
+--- !u!65 &65459440239967104
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -227,9 +227,9 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 480, y: 380, z: 0.2}
+  m_Size: {x: 3, y: 3, z: 0.19999999}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65731318822325386
+--- !u!65 &65696005783017762
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -239,7 +239,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 480, y: 380, z: 0.2}
+  m_Size: {x: 3, y: 3, z: 0.19999999}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114081730039137682
 MonoBehaviour:
@@ -349,8 +349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingMenuItem: 1
-  menuItemAngle: 10
-  distanceBetweenMenus: 2
+  menuItemAngle: 30
+  distanceBetweenMenus: 2.5
   zOffsetForCentredItem: 0.5
   menuItems:
   - {fileID: 114177761239739840}
@@ -397,7 +397,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0c9b9b5183662224097571d1a5229891, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7eb5843035a7ebf4783d192a14c48384, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -441,7 +441,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 00349995c2f4af744b5e57f8160a61bd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f01287d90293c854f951663870fee4d3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -485,7 +485,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e788096f4a63d7645a0c27a416d2ce9f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f935f7b01a9abdd479d70ef1ca5ea729, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

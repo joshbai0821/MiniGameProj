@@ -15,6 +15,10 @@ namespace MiniProj
         public static GameObject GameManagerObj { get { return SGameManagerObj; } }
         public static ResourceManager ResManager { get { return SResourceMgr; } }
         public AudioSource m_audioSource;
+        public AudioClip MainBGM;
+        public AudioClip Lv1BGM;
+        public AudioClip Lv2BGM;
+        public AudioClip Lv3BGM;
 
         private List<Module> m_moduleList;
         private List<Module> m_freeModuleList;
@@ -40,7 +44,29 @@ namespace MiniProj
             DontDestroyOnLoad(gameObject);
             //Application.LoadLevel("login");
             //LoadModule("SceneModule");
+        }
 
+        public void LoadBGM(int lvnum)
+        {
+            switch (lvnum)
+            {
+                case 0:
+                    m_audioSource.clip = MainBGM;
+                    break;
+                case 1:
+                    m_audioSource.clip = Lv1BGM;
+                    break;
+                case 2:
+                    m_audioSource.clip = Lv2BGM;
+                    break;
+                case 3:
+                    m_audioSource.clip = Lv3BGM;
+                    break;
+                default:
+                    m_audioSource.clip = MainBGM;
+                    break;
+            }
+            m_audioSource.Play();
         }
 
         public void OnMapSceneLoad(Scene arg0, LoadSceneMode arg1)
@@ -124,6 +150,7 @@ namespace MiniProj
                     MainMenuModule _mainMenuModule = CreateInstance<MainMenuModule>();
                     _mainMenuModule.enabled = true;
                     m_moduleList.Add(_mainMenuModule);
+                    LoadBGM(0);
                     break;
                 case ModuleId.SceneModule:
                     SceneModule _sceneModule = CreateInstance<SceneModule>();

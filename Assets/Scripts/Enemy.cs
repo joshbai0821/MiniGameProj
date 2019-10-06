@@ -74,12 +74,14 @@ namespace MiniProj
 		//卡马腿，象腿用的
 		private bool PosExitChess(int row, int col, bool YuJiExist)
         {
+            //enemy卡
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
 			if(_sceneModule.m_enemyList[row][col] != null )
 			{
 				return true;
 			}
 
+            //player卡
             MapPos _pos = new MapPos();
             _sceneModule.GetPlayerPos(ref _pos);
 
@@ -88,12 +90,20 @@ namespace MiniProj
 				return true;
 			}
 
+            //虞姬卡
             if (YuJiExist && _sceneModule.YuJiPos.m_row == row && _sceneModule.YuJiPos.m_col == col)
             {
                 return true;
             }
 
-			return false;
+            //拒马卡
+            if(_sceneModule.m_mapData[row][col] == MapDataType.JUMATUI)
+            {
+                return true;
+            }
+
+
+            return false;
 		}
 
         public void EnemyMove(int row, int col)
@@ -227,7 +237,8 @@ namespace MiniProj
                     {
                         if(playerCol >= 2)
                         {
-                            if(_sceneModule.m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
+                            if((_sceneModule.m_mapData[playerRow - 1][playerCol - 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 1][playerCol - 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
@@ -264,7 +275,8 @@ namespace MiniProj
                         }
                         if(playerCol + 2 < _mapCol)
                         {
-                            if(_sceneModule.m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
+                            if((_sceneModule.m_mapData[playerRow - 1][playerCol + 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 1][playerCol + 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
@@ -302,7 +314,8 @@ namespace MiniProj
                     {
                         if (playerCol >= 1)
                         {
-                            if (_sceneModule.m_mapData[playerRow - 2][playerCol - 1] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow - 2][playerCol - 1] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 2][playerCol - 1] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
@@ -337,7 +350,8 @@ namespace MiniProj
                         }
                         if (playerCol + 1 < _mapCol)
                         {
-                            if (_sceneModule.m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow - 2][playerCol + 1] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 2][playerCol + 1] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI)))
                             {
@@ -375,7 +389,8 @@ namespace MiniProj
                     {
                         if(playerCol >= 2)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 1][playerCol - 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 1][playerCol - 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 1][playerCol - 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI)))
                             {
@@ -410,7 +425,8 @@ namespace MiniProj
                         }
                         if (playerCol + 2 < _mapCol)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 1][playerCol + 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 1][playerCol + 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI)))
                             {
@@ -448,7 +464,8 @@ namespace MiniProj
                     {
                         if (playerCol >= 1)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 2][playerCol - 1] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 2][playerCol - 1] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 2][playerCol - 1] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
@@ -483,7 +500,8 @@ namespace MiniProj
                         }
                         if (playerCol + 1 < _mapCol)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 2][playerCol + 1] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 2][playerCol + 1] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI)))
                             {
@@ -523,7 +541,8 @@ namespace MiniProj
                     {
                         if(playerCol >= 2)
                         {
-                            if (_sceneModule.m_mapData[playerRow - 2][playerCol - 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow - 2][playerCol - 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 2][playerCol - 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
@@ -558,7 +577,8 @@ namespace MiniProj
                         }
                         if(playerCol + 2 < _mapCol)
                         {
-                            if (_sceneModule.m_mapData[playerRow - 2][playerCol + 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow - 2][playerCol + 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow - 2][playerCol + 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow - 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
@@ -597,7 +617,8 @@ namespace MiniProj
                     {
                         if (playerCol >= 2)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 2][playerCol - 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 2][playerCol - 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 2][playerCol - 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol - 1] != MapDataType.GAOTAI)))
                             {
@@ -633,7 +654,8 @@ namespace MiniProj
                         }
                         if (playerCol + 2 < _mapCol)
                         {
-                            if (_sceneModule.m_mapData[playerRow + 2][playerCol + 2] != MapDataType.NONE
+                            if ((_sceneModule.m_mapData[playerRow + 2][playerCol + 2] != MapDataType.NONE
+                                && _sceneModule.m_mapData[playerRow + 2][playerCol + 2] != MapDataType.JUMATUI)
                                 && (_sceneModule.m_mapData[playerRow][playerCol] == MapDataType.GAOTAI ||
                                 (_sceneModule.m_mapData[playerRow + 1][playerCol + 1] != MapDataType.GAOTAI)))
                             {
@@ -670,7 +692,65 @@ namespace MiniProj
                     }
                     break;
                 case (int)ChessType.SHI:
-						if(playerCol >= 1 && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol - 1] == null)
+                    if (playerRow >= 1 && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.JUMATUI && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow - 1][playerCol] == null)
+                    {
+                        temprow = playerRow - 1;
+                        tempcol = playerCol;
+                        //找一个最近的点
+                        //能否吃副子
+                        if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                        {
+                            RetValue = 2;
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                            break;
+                        }
+                        else if (DistancePlayer == -1)
+                        {
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                        }
+                        else if (DistancePlayer > (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol))
+                        {
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                        }
+
+                    }
+
+                    if (playerRow + 1 < _mapRow && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.JUMATUI && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow + 1][playerCol] == null)
+                    {
+                        temprow = playerRow + 1;
+                        tempcol = playerCol;
+                        //找一个最近的点
+                        //能否吃副子
+                        if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
+                        {
+                            RetValue = 2;
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                            break;
+                        }
+                        else if (DistancePlayer == -1)
+                        {
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                        }
+                        else if (DistancePlayer > (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol))
+                        {
+                            DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
+                            minrow = temprow;
+                            mincol = tempcol;
+                        }
+
+                    }
+
+                    if (playerCol >= 1 && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.JUMATUI && _sceneModule.m_mapData[playerRow][playerCol - 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol - 1] == null)
 						{
 							temprow = playerRow;
 							tempcol = playerCol - 1;
@@ -698,7 +778,7 @@ namespace MiniProj
 							}
 						}
 						
-						if(playerCol + 1 < _mapCol && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol + 1] == null)
+						if(playerCol + 1 < _mapCol && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.JUMATUI && _sceneModule.m_mapData[playerRow][playerCol + 1] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow][playerCol + 1] == null)
 						{
 							temprow = playerRow;
 							tempcol = playerCol + 1;
@@ -727,64 +807,7 @@ namespace MiniProj
 
 						}
 
-						
-						if(playerRow >= 1 && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow - 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow - 1][playerCol] == null)
-						{
-							temprow = playerRow - 1;
-							tempcol = playerCol;
-                        //找一个最近的点
-                        //能否吃副子
-                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
-                            {
-                                RetValue = 2;
-                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
-                                minrow = temprow;
-                                mincol = tempcol;
-                                break;
-                            }
-                            else if (DistancePlayer == -1)
-							{
-								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
-								minrow = temprow;
-								mincol = tempcol;
-							}
-							else if(DistancePlayer > (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol))
-							{
-								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
-								minrow = temprow;
-								mincol = tempcol;
-							}
-
-						}
-
-						if(playerRow + 1 < _mapRow && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.GAOTAI && _sceneModule.m_mapData[playerRow + 1][playerCol] != MapDataType.NONE && _sceneModule.m_enemyList[playerRow + 1][playerCol] == null)
-						{
-							temprow = playerRow + 1;
-							tempcol = playerCol;
-                            //找一个最近的点
-                            //能否吃副子
-                            if (YuJiExist && temprow == SecondRow && tempcol == SecondCol)
-                            {
-                                RetValue = 2;
-                                DistancePlayer = (PRow - temprow) * (PRow - temprow) + (tempcol - PCol) * (tempcol - PCol);
-                                minrow = temprow;
-                                mincol = tempcol;
-                                break;
-                            }
-                            else if (DistancePlayer == -1)
-							{
-								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
-								minrow = temprow;
-								mincol = tempcol;
-							}
-							else if(DistancePlayer > (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol))
-							{
-								DistancePlayer = (PRow - temprow)*(PRow - temprow)+(tempcol - PCol)*(tempcol - PCol);
-								minrow = temprow;
-								mincol = tempcol;
-							}
-
-						}
+					
 						
                     break;
                 case (int)ChessType.JU:

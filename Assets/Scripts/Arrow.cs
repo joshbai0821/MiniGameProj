@@ -107,8 +107,10 @@ namespace MiniProj
         //返回游戏是否结束,项羽1， 虞姬2， 游戏没结束0, 都死3
         public PlayerD ArrowAttack()
         {
+
             if (m_status != ArrowStatus.ATTACK)
             {
+                SetType(ArrowStatus.ATTACK);
                 return 0;
             }
 
@@ -143,7 +145,7 @@ namespace MiniProj
 
             }
 
-            SetType(ArrowStatus.END);
+            SetType(ArrowStatus.WAIT);
             //删除这个arrow
             DestroyObj();
             return Ret;

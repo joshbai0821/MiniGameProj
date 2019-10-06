@@ -15,6 +15,7 @@ namespace MiniProj
 
 		private GameObject m_mainMenuObj;
         private GameObject m_chooseSceneObj;
+        private GameObject m_mengban;
 
 		private static string MainPrefabPath = "Prefabs/MainMenu";
 
@@ -97,6 +98,16 @@ namespace MiniProj
 
         public void LoadEffect()
         {
+            if (m_mengban == null)
+            {
+                m_mengban = (GameObject)GameManager.ResManager.LoadPrefabSync(MainPrefabPath, "mengban", typeof(GameObject));
+                m_mengban.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            }
+            else
+            {
+                m_mengban.SetActive(true);
+            }
+
             if (m_chooseSceneObj != null)
             {
                 m_chooseSceneObj.SetActive(false);

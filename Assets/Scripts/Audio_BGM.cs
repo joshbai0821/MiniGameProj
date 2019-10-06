@@ -24,7 +24,7 @@ public class Audio_BGM : MonoBehaviour {
                 _instance = GameObject.FindObjectOfType<Audio_BGM>();
                 if (_instance == null)
                 {
-                    GameObject go = new GameObject("mAudioBGM");
+                    GameObject go = new GameObject("All_BGM");
                     _instance = go.AddComponent<Audio_BGM>();
                 }
             }

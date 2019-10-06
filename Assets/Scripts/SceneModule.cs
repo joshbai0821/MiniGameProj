@@ -831,7 +831,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[_i][playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetColor("_Color", Color.red);
+                            _material.SetFloat("_EmissPower", 2.0f);
                             m_matList.Add(_material);
                             if(m_enemyList[_i][playerCol] != null)
                             {
@@ -850,7 +850,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[_i][playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetColor("_Color", Color.red);
+                            _material.SetFloat("_EmissPower", 2.0f);
                             m_matList.Add(_material);
                             if(m_enemyList[_i][playerCol] != null)
                             {
@@ -868,8 +868,8 @@ namespace MiniProj
                               && m_npcList[playerRow][_j] == null)
                         {
                             Material _material = m_tsfMapList[playerRow][_j].GetComponent<MeshRenderer>().material;
-                            m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetColor("_Color", Color.red);
+                            //m_originColorList.Add(_material.GetColor("_Color"));
+                            _material.SetFloat("_EmissPower", 2.0f);
                             m_matList.Add(_material);
                             if(m_enemyList[playerRow][_j] != null)
                             {
@@ -887,8 +887,8 @@ namespace MiniProj
                               && m_npcList[playerRow][_j] == null)
                         {
                             Material _material = m_tsfMapList[playerRow][_j].GetComponent<MeshRenderer>().material;
-                            m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetColor("_Color", Color.red);
+                            //m_originColorList.Add(_material.GetColor("_Color"));
+                            _material.SetFloat("_EmissPower", 2.0f);
                             m_matList.Add(_material);
                             if(m_enemyList[playerRow][_j] != null)
                             {
@@ -914,8 +914,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow, playerCol - 1))
                                 {
                                     Material _material = m_tsfMapList[(playerRow - 1)][playerCol - 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -931,8 +931,8 @@ namespace MiniProj
                                 if (!PosExitChess(playerRow, playerCol + 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow - 1][ playerCol + 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }                                 
                             }
@@ -950,8 +950,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow - 1, playerCol))
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol - 1].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -966,8 +966,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow - 1, playerCol))
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol + 1].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -986,8 +986,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow, playerCol - 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 1][playerCol - 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1003,8 +1003,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow, playerCol + 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 1][playerCol + 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1022,8 +1022,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow + 1, playerCol))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol - 1].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1039,8 +1039,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow + 1, playerCol))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol + 1].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1062,8 +1062,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow-1, playerCol -1))
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol - 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1079,8 +1079,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow - 1, playerCol + 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol + 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1099,8 +1099,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow + 1, playerCol - 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol - 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1116,8 +1116,8 @@ namespace MiniProj
                                 if(!PosExitChess(playerRow + 1, playerCol + 1))
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol + 2].GetComponent<MeshRenderer>().material;
-                                    m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetColor("_Color", Color.red);
+                                    //m_originColorList.Add(_material.GetColor("_Color"));
+                                    _material.SetFloat("_EmissPower", 2.0f);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1137,7 +1137,7 @@ namespace MiniProj
             {
                 for (int _i = 0; _i < m_matList.Count; ++_i)
                 {
-                    m_matList[_i].SetColor("_Color", m_originColorList[_i]);
+                    m_matList[_i].SetFloat("_EmissPower", 0); ;
                 }
                 m_matList.Clear();
                 m_originColorList.Clear();

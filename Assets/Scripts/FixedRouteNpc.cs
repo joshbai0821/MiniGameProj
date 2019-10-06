@@ -55,7 +55,13 @@ namespace MiniProj
                 _sceneModule.GetPlayerPos(ref _playPos);
                 int _col = m_routePosList[m_curStep].m_col;
                 int _row = m_routePosList[m_curStep].m_row;
-                if((_col != _playPos.m_col || _row != _playPos.m_row) && _sceneModule.m_enemyList[_row][_col] == null)
+                if (_row == m_playerPos.m_row && _col == m_playerPos.m_col)
+                {
+                    ++m_curRoundStep;
+                    ++m_curStep;
+                    DoOneStep();
+                }
+                else if ((_col != _playPos.m_col || _row != _playPos.m_row) && _sceneModule.m_enemyList[_row][_col] == null && _sceneModule.Data[_row][_col] != MapDataType.NONE)
                 {
                     _sceneModule.m_npcList[_row][_col] = _sceneModule.m_npcList[m_playerPos.m_row][m_playerPos.m_col];
                     _sceneModule.m_npcList[m_playerPos.m_row][m_playerPos.m_col] = null;
@@ -81,7 +87,13 @@ namespace MiniProj
                 _sceneModule.GetPlayerPos(ref _playPos);
                 int _col = m_routePosList[m_curStep].m_col;
                 int _row = m_routePosList[m_curStep].m_row;
-                if ((_col != _playPos.m_col || _row != _playPos.m_row) && _sceneModule.m_enemyList[_row][_col] == null)
+                if(_row == m_playerPos.m_row && _col == m_playerPos.m_col)
+                {
+                    m_curRoundStep = 0;
+                    ++m_curStep;
+                    EventManager.SendEvent(HLEventId.NPC_END_MOVE, null);
+                }
+                else if ((_col != _playPos.m_col || _row != _playPos.m_row) && _sceneModule.m_enemyList[_row][_col] == null && _sceneModule.Data[_row][_col] != MapDataType.NONE)
                 {
                     _sceneModule.m_npcList[_row][_col] = _sceneModule.m_npcList[m_playerPos.m_row][m_playerPos.m_col];
                     _sceneModule.m_npcList[m_playerPos.m_row][m_playerPos.m_col] = null;

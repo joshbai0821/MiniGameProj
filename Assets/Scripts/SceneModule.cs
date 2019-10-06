@@ -74,9 +74,15 @@ namespace MiniProj
             "SkillBtnJu"
         };
 
+        private static int[] ConfigIdToSceneIdx =
+        {
+            1,2,3,3,3,
+        };
+
         private const string MapPrefabPath = "Prefabs/Map";
         private const string PlayerPrefabPath = "Prefabs/Player";
         private const string BcakGroundPath = "Prefabs/BackGround";
+        private const string TipPrefabPath = "Prefabs/TipPanel";
 
         public MapPos YuJiPos;
         public List<List<Enemy>> m_enemyList;
@@ -219,8 +225,9 @@ namespace MiniProj
                 GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
             }
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
-            ++GameManager.SceneConfigId;
-            SceneManager.LoadScene(GameManager.SceneConfigId + 1);
+            GameManager.SceneConfigId = 4;
+            //++GameManager.SceneConfigId;
+            SceneManager.LoadScene(ConfigIdToSceneIdx[GameManager.SceneConfigId]);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(GameManager.SceneConfigId + 1);
             Audio_BGM.Instance.LvBGM(GameManager.SceneConfigId + 1);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
@@ -516,14 +523,20 @@ namespace MiniProj
 
         public bool WaitNpc()
         {
+            m_waitCount = m_npcCount;
             //到达终点
-            if(m_sceneWin)
+            if (m_sceneWin)
             {
                 GotoNextScene();
                 return false;
             }
 
-            m_waitCount = m_npcCount;
+            if(GameManager.SceneConfigId == 4 && m_SceneStep == 2)
+            {
+                LoadTipPrefab2();
+                return false;
+            }
+            
             if(m_npcCount == 0)
             {
                 NpcComplete(null);
@@ -544,10 +557,10 @@ namespace MiniProj
             }
             if (m_waitCount == 0)
             {
+                m_SceneStep++;
                 m_player.SetCanMove(true);
                 EnemyListUpdate();
                 CheckSkillCount();
-                m_SceneStep++;
                 //map2在项羽虞姬走了两步以后在9,0，出现一个马
                 if (GameManager.SceneConfigId == 2 && 3 == m_SceneStep)
                 {
@@ -589,11 +602,27 @@ namespace MiniProj
             return false;
         }
 
+        private void LoadTipPrefab2()
+        {
+            GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(TipPrefabPath, "TipPanel2", typeof(GameObject));
+            _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+        }
+
+        private void LoadTipsPrefab3()
+        {
+            GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(TipPrefabPath, "TipPanel3", typeof(GameObject));
+            _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+        }
 
 		private void CheckSkillCount()
         {
             if(GameManager.SceneConfigId == 0)
             {
+                return;
+            }
+            else if(GameManager.SceneConfigId == 4 && m_SceneStep == 3)
+            {
+                LoadTipsPrefab3();
                 return;
             }
             bool _ret = false;

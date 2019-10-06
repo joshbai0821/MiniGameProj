@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace MiniProj
 {
-    public class BackGroundControl : MonoBehaviour
+    public class TipPanelControl : MonoBehaviour
     {
+        public int m_id;
         public float m_destroyTime;
         private bool m_click = false;
         // Use this for initialization
@@ -25,14 +26,18 @@ namespace MiniProj
 
         private void OnDestroy()
         {
-            if(GameManager.SceneConfigId == 0)
+            if(m_id == 2)
             {
-                GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("RookieModule");
+                EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
             }
-            else if(GameManager.SceneConfigId == 4)
+            else if(m_id == 3)
             {
-                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync("Prefabs/TipPanel", "TipPanel1", typeof(GameObject));
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync("Prefabs/TipPanel", "TipPanel4", typeof(GameObject));
                 _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            }
+            else if(m_id == 4)
+            {
+
             }
         }
     }

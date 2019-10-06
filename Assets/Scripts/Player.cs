@@ -86,7 +86,7 @@ namespace MiniProj
             {
                 return _ret;
             }
-            if(targetData == MapDataType.NONE)
+            if(targetData == MapDataType.NONE || targetData == MapDataType.JUMATUI)
             {
                 return _ret;
             }
@@ -109,6 +109,7 @@ namespace MiniProj
                             {
                                 if(_sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.GAOTAI 
                                     || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE
+                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.JUMATUI
                                     || _sceneModule.m_npcList[m_playerPos.m_row][_i] != null)
                                 {
                                     return _ret;
@@ -130,6 +131,7 @@ namespace MiniProj
                             {
                                 if (_sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.GAOTAI
                                     || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE
+                                    || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.JUMATUI
                                     || _sceneModule.m_enemyList[m_playerPos.m_row][_i] != null
                                     || _sceneModule.m_npcList[m_playerPos.m_row][_i] != null)
                                 {
@@ -153,6 +155,7 @@ namespace MiniProj
                             {
                                 if (_sceneModule.Data[_i][targetCol] == MapDataType.GAOTAI
                                     || _sceneModule.Data[_i][targetCol] == MapDataType.NONE
+                                    || _sceneModule.Data[_i][targetCol] == MapDataType.JUMATUI
                                     || _sceneModule.m_npcList[_i][targetCol] != null)
                                 {
                                     return _ret;
@@ -174,6 +177,7 @@ namespace MiniProj
                             {
                                 if (_sceneModule.Data[_i][targetCol] == MapDataType.GAOTAI
                                     || _sceneModule.Data[_i][targetCol] == MapDataType.NONE
+                                    || _sceneModule.Data[_i][targetCol] == MapDataType.JUMATUI
                                     || _sceneModule.m_enemyList[_i][targetCol] != null
                                     || _sceneModule.m_npcList[_i][targetCol] != null)
                                 {
@@ -192,7 +196,8 @@ namespace MiniProj
                         {
                             if(_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                                 (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI))
+                                (_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.GAOTAI
+                                && _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col] != MapDataType.JUMATUI)))
                             {
                                 if(_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col))
                                 {
@@ -207,7 +212,8 @@ namespace MiniProj
                         {
                             if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                                 (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI))
+                                (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.GAOTAI
+                                && _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col] != MapDataType.JUMATUI)))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col))
                                 {
@@ -223,7 +229,8 @@ namespace MiniProj
                         {
                             if(_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                                 (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.GAOTAI
+                                && _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col + 1] != MapDataType.JUMATUI)))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col + 1))
                                 {
@@ -238,7 +245,8 @@ namespace MiniProj
                         {
                             if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                                 (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                                _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
+                                (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.GAOTAI
+                                && _sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col - 1] != MapDataType.JUMATUI)))
                             {
                                 if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row, m_playerPos.m_col - 1))
                                 {
@@ -255,7 +263,8 @@ namespace MiniProj
                     {
                         if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                             (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
+                            (_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI
+                            && _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col + 1] != MapDataType.JUMATUI)))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col + 1))
                             {
@@ -267,7 +276,8 @@ namespace MiniProj
                     {
                         if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                             (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
+                            (_sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI
+                            && _sceneModule.Data[m_playerPos.m_row + 1][m_playerPos.m_col - 1] != MapDataType.JUMATUI)))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row + 1, m_playerPos.m_col - 1))
                             {
@@ -279,7 +289,8 @@ namespace MiniProj
                     {
                         if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                             (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI))
+                            (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.GAOTAI
+                            && _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col + 1] != MapDataType.JUMATUI)))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col + 1))
                             {
@@ -291,7 +302,8 @@ namespace MiniProj
                     {
                         if (_sceneModule.Data[targetRow][targetCol] != MapDataType.NEWMODE &&
                             (_sceneModule.Data[m_playerPos.m_row][m_playerPos.m_col] == MapDataType.GAOTAI ||
-                            _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI))
+                            (_sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.GAOTAI
+                            && _sceneModule.Data[m_playerPos.m_row - 1][m_playerPos.m_col - 1] != MapDataType.JUMATUI)))
                         {
                             if (_sceneModule.m_npcList[targetRow][targetCol] == null && !PosExitChess(m_playerPos.m_row - 1, m_playerPos.m_col - 1))
                             {
@@ -413,7 +425,6 @@ namespace MiniProj
             {
                 AudioFx.Instance.pawndown();
                 m_playereff.Play();
-
             }
             else
             {
@@ -422,7 +433,8 @@ namespace MiniProj
                 m_hiteff.Play();
                 _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col].DestroyObj();
             }
-            _sceneModule.WaitNpc();
+            bool _bWait = _sceneModule.WaitNpc();
+            if(_bWait)
             EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null); 
         }
 

@@ -13,7 +13,7 @@ namespace SwipeMenu
     {
         public int gameindex;
 
-        const float dragtime = 0.1f;
+        const float dragtime = 0.2f;
         float timer = 0;
         bool isDown = false;
 
@@ -46,12 +46,19 @@ namespace SwipeMenu
             isDown = false;
             if (timer < dragtime)
             {
-                GameManager.GameManagerObj.GetComponent<MainMenuModule>().LoadOneMapScene(gameindex);
+                AudioFx.Instance.clicktochooselv();
+                Camera.main.GetComponent<WaterWaveEffect>().enabled = true;
+                GameManager.GameManagerObj.GetComponent<MainMenuModule>().LoadEffect();
+                Invoke("LoadMapScene", 0.8f);
                 //SceneManager.LoadScene(gameindex);
                 timer = 0;
             }
             timer = 0;
         }
 
+        void LoadMapScene()
+        {
+            GameManager.GameManagerObj.GetComponent<MainMenuModule>().LoadOneMapScene(gameindex);
+        }
     }
 }

@@ -199,6 +199,7 @@ namespace MiniProj
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
             SceneManager.LoadScene(0);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("MainMenuModule");
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(0);
             //SceneManager.LoadScene(0);
         }
 
@@ -211,6 +212,8 @@ namespace MiniProj
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
             ++GameManager.SceneConfigId;
             SceneManager.LoadScene(GameManager.SceneConfigId + 1);
+            GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(GameManager.SceneConfigId + 1);
+            Audio_BGM.Instance.LvBGM(GameManager.SceneConfigId + 1);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
         }
 

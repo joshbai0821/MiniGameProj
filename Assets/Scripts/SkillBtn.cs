@@ -20,7 +20,7 @@ namespace MiniProj
     {
         public string[] SkillName =
         {
-            "车","马","炮","象","士","兵",
+            "车","马","炮","相","士","兵",
         };
 
         private SkillId m_id;

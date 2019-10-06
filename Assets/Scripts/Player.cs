@@ -402,21 +402,33 @@ namespace MiniProj
 
         private void MoveEnd()
         {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (_sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col] == null)
+            {
+                AudioFx.Instance.pawndown();
+            }
+            else
+            {
+                AudioFx.Instance.pawnhit();
+            }
             m_state = State.Idle;
             m_move = false;
-            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            _sceneModule.WaitNpc();
+            EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null); 
+
             bool _bWait = _sceneModule.WaitNpc();
             if(_bWait)
             {
                 EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
-            }
-        }
+            }        
+		}
 
         private void UseSkill(EventArgs args)
-        {
+        {            
             m_state = State.UseSkill;
             m_skillId = (SkillId)((IntEventArgs)args).m_args;
-            if(GameManager.SceneConfigId == 0)
+            AudioFx.Instance.clickskill((int)m_skillId);
+            if (GameManager.SceneConfigId == 0)
             {
                 RookieModule _rookieModule = (RookieModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("RookieModule");
                 _rookieModule.ChangeMap(m_skillId);

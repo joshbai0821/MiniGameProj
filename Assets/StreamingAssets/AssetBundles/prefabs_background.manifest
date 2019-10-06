@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 143723176
+CRC: 2760943961
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9ca0314d913fe1a5508090ed9579f32a
+    Hash: 6322286816310e81cf0646719c0512ad
   TypeTreeHash:
     serializedVersion: 2
     Hash: 0880c2b3b3fabd620c1d2d744db494a8
@@ -34,4 +34,4 @@ Assets:
 - Assets/Prefabs/BackGround/BackGround2.prefab
 - Assets/Prefabs/BackGround/BackGround3.prefab
 Dependencies:
-- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_background_tex
+- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_background_tex"

@@ -549,19 +549,80 @@ namespace MiniProj
                 CheckSkillCount();
                 m_SceneStep++;
                 //map2在项羽虞姬走了两步以后在9,0，出现一个马
-                if (GameManager.SceneConfigId == 2 && 3 == m_SceneStep)
+                if (GameManager.SceneConfigId == 2 && 4 == m_SceneStep)
                 {
-                    int _type = 4;
-                    int row = 7;
-                    int col = 5;
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row][col] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row][col].SetType(_type);
-                    m_enemyList[row][col].SetStartPos(row, col);
+                    List<int> _type = new List<int>();
+                    List<int> row = new List<int>();
+                    List<int> col = new List<int>();
+                    _type.Add(4);
+                    row.Add(0);
+                    col.Add(2);
+                    _type.Add(3);
+                    row.Add(0);
+                    col.Add(3);
+                    _type.Add(3);
+                    row.Add(6);
+                    col.Add(6);
+                    _type.Add(3);
+                    row.Add(10);
+                    col.Add(3);
+
+                    for (int _i = 0; _i < _type.Count; _i++)
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                    }
+                }
+                else if(GameManager.SceneConfigId == 2 && 7 == m_SceneStep)
+                {
+                    List<int> _type = new List<int>();
+                    List<int> row = new List<int>();
+                    List<int> col = new List<int>();
+                    _type.Add(4);
+                    row.Add(0);
+                    col.Add(1);
+
+                    _type.Add(1);
+                    row.Add(0);
+                    col.Add(2);
+
+                    _type.Add(4);
+                    row.Add(6);
+                    col.Add(6);
+
+                    _type.Add(3);
+                    row.Add(7);
+                    col.Add(0);
+
+                    _type.Add(3);
+                    row.Add(8);
+                    col.Add(0);
+
+                    _type.Add(1);
+                    row.Add(10);
+                    col.Add(4);
+
+                    _type.Add(1);
+                    row.Add(10);
+                    col.Add(5);
+
+                    for (int _i = 0; _i < _type.Count; _i++)
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                    }
+
                 }
                 ArrowAttack();
-                ArrowTrigger();
+                //ArrowTrigger();
                 
             }
         }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sceneConfigList:
   - m_prefabName: map0
-    m_backgroundName: BackGround2
+    m_backgroundName: BackGround1
     m_mapRow: 11
     m_mapCol: 7
     m_playerStartRow: 1
@@ -35,9 +35,9 @@ MonoBehaviour:
       dir: 0
       m_Trigger: 
   - m_prefabName: map1
-    m_backgroundName: BackGround1
-    m_mapRow: 8
-    m_mapCol: 6
+    m_backgroundName: BackGround2
+    m_mapRow: 11
+    m_mapCol: 7
     m_playerStartRow: 0
     m_playerStartCol: 0
     m_skillData:
@@ -62,8 +62,8 @@ MonoBehaviour:
       m_Trigger: 
   - m_prefabName: map2
     m_backgroundName: BackGround3
-    m_mapRow: 8
-    m_mapCol: 6
+    m_mapRow: 11
+    m_mapCol: 7
     m_playerStartRow: 0
     m_playerStartCol: 0
     m_skillData:

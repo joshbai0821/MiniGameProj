@@ -21,25 +21,25 @@ namespace MiniProj
         private List<GameObject> m_followList;
         private MapPos[] m_enemyPosList =
         {
-            new MapPos(4, 2), new MapPos(4, 3), new MapPos(4, 4), new MapPos(4, 5), new MapPos(4, 6),
-            new MapPos(5, 2), new MapPos(5, 3), new MapPos(5, 5), new MapPos(5, 6),
-            new MapPos(7, 2), new MapPos(7, 3), new MapPos(7, 4), new MapPos(7, 5), new MapPos(7, 6),
-            new MapPos(8, 2), new MapPos(8, 3), new MapPos(8, 5), new MapPos(8, 6),
-            new MapPos(10, 0), new MapPos(10, 1), new MapPos(10, 2), new MapPos(10, 3), new MapPos(10, 4),
+            new MapPos(4, 2), /*new MapPos(4, 3),*/ new MapPos(4, 4), /*new MapPos(4, 5),*/ new MapPos(4, 6),
+            new MapPos(5, 2), /*new MapPos(5, 3),*/ /*new MapPos(5, 5),*/ new MapPos(5, 6),
+            new MapPos(7, 2), /*new MapPos(7, 3),*/ new MapPos(7, 4), /*new MapPos(7, 5),*/ new MapPos(7, 6),
+            new MapPos(8, 2), /*new MapPos(8, 3),*/ /*new MapPos(8, 5),*/ new MapPos(8, 6),
+            new MapPos(10, 0), /*new MapPos(10, 1),*/ new MapPos(10, 2), /*new MapPos(10, 3),*/ new MapPos(10, 4),
         };
         private MapPos[] m_maPosList =
         {
-            new MapPos(1,1), new MapPos(1,2), new MapPos(1,4), new MapPos(1,5),
+            new MapPos(1,1), /*new MapPos(1,2), new MapPos(1,4),*/ new MapPos(1,5),
         };
 
         private MapPos[] m_juPosList =
         {
-            new MapPos(3,2), new MapPos(3,3), new MapPos(3,5), new MapPos(3,6),
+            new MapPos(3,2), /*new MapPos(3,3), new MapPos(3,5),*/ new MapPos(3,6),
         };
 
         private MapPos[] m_xiangPosList =
         {
-            new MapPos(5,2), new MapPos(5,3), new MapPos(5,5), new MapPos(5,6),
+            new MapPos(5,2), /*new MapPos(5,3), new MapPos(5,5),*/ new MapPos(5,6),
         };
 
         private List<Material> m_matList;

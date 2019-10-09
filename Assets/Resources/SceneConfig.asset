@@ -72,14 +72,14 @@ MonoBehaviour:
       m_Trigger: 
   - m_prefabName: map2
     m_backgroundName: BackGround2
-    m_sceneTargetName: SceneTarget34
+    m_sceneTargetName: SceneTarget3
     m_mapRow: 11
     m_mapCol: 7
     m_playerStartRow: 0
     m_playerStartCol: 3
     m_skillData:
     - m_id: 0
-      m_count: 2
+      m_count: 5
     - m_id: 1
       m_count: 7
     - m_id: 3
@@ -140,7 +140,7 @@ MonoBehaviour:
       m_Trigger: 
   - m_prefabName: map3
     m_backgroundName: BackGround4
-    m_sceneTargetName: SceneTarget34
+    m_sceneTargetName: SceneTarget4
     m_mapRow: 11
     m_mapCol: 7
     m_playerStartRow: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
     - m_id: 0
       m_count: 2
     - m_id: 1
-      m_count: 5
+      m_count: 6
     - m_id: 3
       m_count: 2
     m_enemyData:

@@ -659,10 +659,10 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     if (m_enemyList[row[_i]][col[_i]] == null)
                     {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);                    
                         m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
                         m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
                         m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
@@ -705,10 +705,10 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     if (m_enemyList[row[_i]][col[_i]] == null)
                     {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                         m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
                         m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
                         m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
@@ -728,10 +728,10 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     if (m_enemyList[row[_i]][col[_i]] == null)
                     {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                         m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
                         m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
                         m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
@@ -750,10 +750,10 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     if (m_enemyList[row[_i]][col[_i]] == null)
                     {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                         m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
                         m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
                         m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
@@ -772,10 +772,10 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
                     if (m_enemyList[row[_i]][col[_i]] == null)
                     {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);                    
                         m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
                         m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
                         m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);

@@ -19,9 +19,14 @@ namespace MiniProj
         {
             if (!m_click && Input.GetMouseButtonDown(0))
             {
-                GameObject.Destroy(this.gameObject);
+                GameObject.Destroy(gameObject);
                 m_click = true;
             }
+        }
+
+        public void destroyit()
+        {
+            GameObject.Destroy(gameObject);
         }
     }
 }

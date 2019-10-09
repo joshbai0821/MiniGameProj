@@ -130,7 +130,7 @@ namespace MiniProj
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("MainMenuModule");
             GameManager.SceneConfigId = id;
             SceneManager.sceneLoaded += GameManager.GameManagerObj.GetComponent<GameManager>().OnMapSceneLoad;
-            SceneManager.LoadScene(id + 1);
+            SceneManager.LoadScene(SceneModule.ConfigIdToSceneIdx[GameManager.SceneConfigId]);
             Camera.main.GetComponent<CameraFilterPack_Blur_Movie>().enabled = false;
             Camera.main.GetComponent<WaterWaveEffect>().enabled = false;
         }

@@ -156,10 +156,10 @@ namespace MiniProj
                     _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_xiangCurve));
                     break;
                 case (int)ChessType.SHI:
-                    _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_juCurve));
+                    _sequence.Append(transform.DOMove(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f).SetEase(_sceneModule.m_player.m_juCurve));
                     break;
                 case (int)ChessType.JU:
-                    _sequence.Append(transform.DOJump(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f, 1, 0.5f).SetEase(_sceneModule.m_player.m_juCurve));
+                    _sequence.Append(transform.DOMove(new Vector3(_targetPosX, _targetPosY, _targetPosZ), 0.4f).SetEase(_sceneModule.m_player.m_juCurve));
                     break;
             }
 
@@ -913,6 +913,7 @@ namespace MiniProj
                 _sceneModule.m_enemyList[minrow][mincol] = _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col];
                 _sceneModule.m_enemyList[m_EnemyPosNew.m_row][m_EnemyPosNew.m_col] = null;
                 MovePos(minrow, mincol);
+                EnemyMove(minrow, mincol);
                 PosIsChange = 1;
                 if (RetValue == 2)
                 {

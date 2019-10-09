@@ -146,8 +146,6 @@ namespace MiniProj
             }
 
             SetType(ArrowStatus.WAIT);
-            //É¾³ýÕâ¸öarrow
-            DestroyObj();
             return Ret;
         }
 

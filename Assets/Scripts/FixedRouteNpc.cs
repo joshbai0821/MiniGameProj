@@ -25,8 +25,12 @@ namespace MiniProj
 
         public void DestroyObj()
         {
-            EventManager.UnregisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode());
             GameObject.Destroy(this.gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.UnregisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode());
         }
 
         public void SetPosition(int row, int col)
@@ -119,6 +123,23 @@ namespace MiniProj
         private void NpcEndMoveCallBack()
         {
             EventManager.SendEvent(HLEventId.NPC_END_MOVE, null);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+                Enemy _enemy = other.gameObject.GetComponent<Enemy>();
+                if(_enemy != null)
+                {
+                    MapPos _mapPos = _enemy.m_EnemyPosNew;
+                    if(_mapPos.m_row == m_playerPos.m_row && _mapPos.m_col == m_playerPos.m_col)
+                    {
+                        DestroyObj();
+                    }
+                }
+                
+            }
         }
     }
 

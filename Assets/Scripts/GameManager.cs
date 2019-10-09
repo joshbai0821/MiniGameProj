@@ -15,10 +15,24 @@ namespace MiniProj
         public static GameObject GameManagerObj { get { return SGameManagerObj; } }
         public static ResourceManager ResManager { get { return SResourceMgr; } }
         public AudioSource m_audioSource;
-        public AudioClip MainBGM;
-        public AudioClip Lv1BGM;
-        public AudioClip Lv2BGM;
-        public AudioClip Lv3BGM;
+
+        public AudioClip MainBG;
+        public float mainBG_Volum;
+
+        public AudioClip Lv1BG;
+        public float Lv1BG_Volum;
+
+        public AudioClip Lv2BG;
+        public float Lv2BG_Volum;
+
+        public AudioClip Lv3BG;
+        public float Lv3BG_Volum;
+
+        public AudioClip Lv4BG;
+        public float Lv4BG_Volum;
+
+        public AudioClip Lv5BG;
+        public float Lv5BG_Volum;
 
         private List<Module> m_moduleList;
         private List<Module> m_freeModuleList;
@@ -51,19 +65,32 @@ namespace MiniProj
             switch (lvnum)
             {
                 case 0:
-                    m_audioSource.clip = MainBGM;
+                    m_audioSource.clip = MainBG;
+                    m_audioSource.volume = mainBG_Volum;
                     break;
                 case 1:
-                    m_audioSource.clip = Lv1BGM;
+                    m_audioSource.clip = Lv1BG;
+                    m_audioSource.volume = Lv1BG_Volum;
                     break;
                 case 2:
-                    m_audioSource.clip = Lv2BGM;
+                    m_audioSource.clip = Lv2BG;
+                    m_audioSource.volume = Lv2BG_Volum;
                     break;
                 case 3:
-                    m_audioSource.clip = Lv3BGM;
+                    m_audioSource.clip = Lv3BG;
+                    m_audioSource.volume = Lv3BG_Volum;
+                    break;
+                case 4:
+                    m_audioSource.clip = Lv4BG;
+                    m_audioSource.volume = Lv4BG_Volum;
+                    break;
+                case 5:
+                    m_audioSource.clip = Lv5BG;
+                    m_audioSource.volume = Lv5BG_Volum;
                     break;
                 default:
-                    m_audioSource.clip = MainBGM;
+                    m_audioSource.clip = MainBG;
+                    m_audioSource.volume = mainBG_Volum;
                     break;
             }
             m_audioSource.Play();

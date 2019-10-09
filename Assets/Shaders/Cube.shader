@@ -32,7 +32,7 @@
 			fixed4 mask = tex2D(_MaskTex, IN.uv_MaskTex) * _Channel;
 			fixed maskChannel = max(max(mask.x, mask.y), mask.z);
 			fixed3 finalColor = lerp(_LineColor.rgb, c.rgb, maskChannel);
-			finalColor += _EmissPower * _EmissColor  * abs(frac(0.5 * _Time.y)-0.5) * mask.a;
+			finalColor += _EmissPower * _EmissColor  * abs(frac(0.5 * _Time.y)-0.5) * (1 - mask.a);
 			o.Albedo = finalColor;
 			o.Alpha = c.a;
 		}

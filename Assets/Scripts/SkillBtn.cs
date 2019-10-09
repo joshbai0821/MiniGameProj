@@ -48,10 +48,10 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_START_MOVE, this.GetHashCode(), PlayerMove);
         }
 
-        //public void UnregisterEvents()
-        //{
+        public void ShowNewModeTips()
+        {
 
-        //}
+        }
 
         private void OnDestroy()
         {
@@ -83,6 +83,10 @@ namespace MiniProj
             {
                 m_count--;
                 m_skillCountText.text = m_count.ToString();
+                if(m_count == 0)
+                {
+                    this.GetComponent<Button>().interactable = false;
+                }
             }
 
         }

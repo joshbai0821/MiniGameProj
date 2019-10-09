@@ -9,7 +9,11 @@ namespace MiniProj
     public class RookieModule : Module
     {
         private static string PlayerPrefabPath = "Prefabs/Player";
+        private static string MapPrefabPath = "Prefabs/Map";
         private int m_step = 0;
+
+        //亮度
+        private float EmissPower = 5.0f;
 
         private List<long> m_timerIdList;
         private List<GameObject> m_btnList;
@@ -62,10 +66,14 @@ namespace MiniProj
                 m_btnList.Add(_btnObj);
                 _btnObj.GetComponent<Button>().interactable = false;
             }
+
+            GameObject _introduce2 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel2", typeof(GameObject));
+            _introduce2.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+
             LoadRookieEnemies();
-            long _id = TimerManager.StartTimer(1000, false, null, DelayExecuteRookieEnemies, 0);
+            long _id = TimerManager.StartTimer(4500, false, null, DelayExecuteRookieEnemies, 0);
             m_timerIdList.Add(_id);
-            _id = TimerManager.StartTimer(1500, false, null, DelayLoadRookieMa, 0);
+            _id = TimerManager.StartTimer(7000, false, null, DelayLoadRookieMa, 0);
             m_timerIdList.Add(_id);
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
@@ -128,6 +136,9 @@ namespace MiniProj
 
         private void DelayLoadRookieMa(EventArgs args)
         {
+            GameObject _introduce1 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel1", typeof(GameObject));
+            _introduce1.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+
             LoadRookieMa();
             long _id = TimerManager.StartTimer(1000, false, null, DelayActiveMaBtn, 0);
             m_timerIdList.Add(_id);
@@ -291,15 +302,18 @@ namespace MiniProj
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
             if (id == SkillId.MA && m_matList.Count == 0)
             {
+                //改动
                 Transform _tsf1 = _sceneModule.GetTsfMapData(3, 2);
                 Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material1.GetColor("_Color"));
-                _material1.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material1.GetColor("_Color"));
+                //_material1.SetColor("_Color", Color.red);
+                //_material1.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material1);
                 Transform _tsf2 = _sceneModule.GetTsfMapData(3, 4);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material2.GetColor("_Color"));
-                _material2.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material2.GetColor("_Color"));
+                //_material2.SetColor("_Color", Color.red);
+                _material2.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material2);
             }
             if(id == SkillId.JU && m_matList.Count == 0)
@@ -307,32 +321,37 @@ namespace MiniProj
                 //
                 Transform _tsf1 = _sceneModule.GetTsfMapData(0, 4);
                 Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material1.GetColor("_Color"));
-                _material1.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material1.GetColor("_Color"));
+                //_material1.SetColor("_Color", Color.red);
+                //_material1.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material1);
                 //
                 Transform _tsf2 = _sceneModule.GetTsfMapData(1, 4);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material2.GetColor("_Color"));
-                _material2.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material2.GetColor("_Color"));
+                //_material2.SetColor("_Color", Color.red);
+                //_material2.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material2);
                 //
                 Transform _tsf3 = _sceneModule.GetTsfMapData(2, 4);
                 Material _material3 = _tsf3.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material3.GetColor("_Color"));
-                _material3.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material3.GetColor("_Color"));
+                //_material3.SetColor("_Color", Color.red);
+                //_material3.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material3);
                 //
                 Transform _tsf4 = _sceneModule.GetTsfMapData(4, 4);
                 Material _material4 = _tsf4.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material4.GetColor("_Color"));
-                _material4.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material4.GetColor("_Color"));
+                //_material4.SetColor("_Color", Color.red);
+                //_material4.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material4);
                 //
                 Transform _tsf5 = _sceneModule.GetTsfMapData(5, 4);
                 Material _material5 = _tsf5.GetComponent<MeshRenderer>().material;
-                m_originColorList.Add(_material5.GetColor("_Color"));
-                _material5.SetColor("_Color", Color.red);
+                //m_originColorList.Add(_material5.GetColor("_Color"));
+                //_material5.SetColor("_Color", Color.red);
+                _material5.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material5);
             }
             if(id == SkillId.XIANG && m_matList.Count == 0)
@@ -342,26 +361,30 @@ namespace MiniProj
                     //
                     Transform _tsf1 = _sceneModule.GetTsfMapData(3, 2);
                     Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
-                    m_originColorList.Add(_material1.GetColor("_Color"));
-                    _material1.SetColor("_Color", Color.red);
+                    //m_originColorList.Add(_material1.GetColor("_Color"));
+                    //_material1.SetColor("_Color", Color.red);
+                    //_material1.SetFloat("_EmissPower", EmissPower);
                     m_matList.Add(_material1);
                     //
                     Transform _tsf2 = _sceneModule.GetTsfMapData(3, 6);
                     Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
-                    m_originColorList.Add(_material2.GetColor("_Color"));
-                    _material2.SetColor("_Color", Color.red);
+                    //m_originColorList.Add(_material2.GetColor("_Color"));
+                    //_material2.SetColor("_Color", Color.red);
+                    //_material2.SetFloat("_EmissPower", EmissPower);
                     m_matList.Add(_material2);
                     //
                     Transform _tsf3 = _sceneModule.GetTsfMapData(7, 2);
                     Material _material3 = _tsf3.GetComponent<MeshRenderer>().material;
-                    m_originColorList.Add(_material3.GetColor("_Color"));
-                    _material3.SetColor("_Color", Color.red);
+                    //m_originColorList.Add(_material3.GetColor("_Color"));
+                    //_material3.SetColor("_Color", Color.red);
+                    _material3.SetFloat("_EmissPower", EmissPower);
                     m_matList.Add(_material3);
                     //
                     Transform _tsf4 = _sceneModule.GetTsfMapData(7, 6);
                     Material _material4 = _tsf4.GetComponent<MeshRenderer>().material;
-                    m_originColorList.Add(_material4.GetColor("_Color"));
-                    _material4.SetColor("_Color", Color.red);
+                    //m_originColorList.Add(_material4.GetColor("_Color"));
+                    //_material4.SetColor("_Color", Color.red);
+                    //_material4.SetFloat("_EmissPower", EmissPower);
                     m_matList.Add(_material4);
                 }
                 //else if(m_step == 3)
@@ -417,6 +440,7 @@ namespace MiniProj
                 if(m_btnList[_i].GetComponent<SkillBtn>().Id == id)
                 {
                     m_btnList[_i].GetComponent<Button>().interactable = true;
+                    m_btnList[_i].GetComponent<SkillBtn>().Initial(id, 1);
                 }
             }
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
@@ -459,7 +483,8 @@ namespace MiniProj
             {
                 for (int _i = 0; _i < m_matList.Count; ++_i)
                 {
-                    m_matList[_i].SetColor("_Color", m_originColorList[_i]);
+                    //m_matList[_i].SetColor("_Color", m_originColorList[_i]);
+                    m_matList[_i].SetFloat("_EmissPower", 0.0f);
                 }
                 m_matList.Clear();
             }

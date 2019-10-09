@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 4165431885713850}
   - component: {fileID: 136513893641258274}
   - component: {fileID: 114204071901794112}
+  - component: {fileID: 54080139027227876}
   m_Layer: 9
   m_Name: diXiang
   m_TagString: Untagged
@@ -128,8 +129,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1180109763982066}
-  m_LocalRotation: {x: -0, y: 0.52499115, z: -0, w: 0.8511077}
-  m_LocalPosition: {x: -2.254, y: -0.195, z: -29.219}
+  m_LocalRotation: {x: -0, y: 0.93200636, z: -0, w: 0.36244193}
+  m_LocalPosition: {x: -23.326267, y: -0.195, z: -6.159887}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4629443556153458}
@@ -137,7 +138,7 @@ Transform:
   - {fileID: 4623416489195860}
   m_Father: {fileID: 4165431885713850}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 63.335003, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 137.49901, z: 0}
 --- !u!4 &4623416489195860
 Transform:
   m_ObjectHideFlags: 1
@@ -287,6 +288,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1822662205058658}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54080139027227876
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636053096502730}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &64714445837232596
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -328,7 +344,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636053096502730}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.4
   m_Height: 1.8

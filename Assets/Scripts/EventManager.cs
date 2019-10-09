@@ -73,10 +73,10 @@ namespace MiniProj
         public static bool UnregisterEvent(HLEventId id, int objHashId)
         {
             bool _ret = true;
-            if(id >= 0 && id < HLEventId.MAX_EVENT)
+            if (id == HLEventId.MAX_EVENT)
             {
                 _ret = false;
-                Debug.Log(string.Format(String.Format("HLEventManager, EventID {0} is Out of Range", id)));
+                Debug.Log(String.Format("HLEventManager, EventID {0} is Out of Range", id));
             }
             Dictionary<int, EventHandleFun> _eventHandler;
             if(EventPool.TryGetValue(id, out _eventHandler))

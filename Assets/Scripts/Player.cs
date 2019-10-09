@@ -50,6 +50,11 @@ namespace MiniProj
             GameObject.Destroy(this.gameObject);
         }
 
+        private void OnDestroy()
+        {
+            EventManager.UnregisterEvent(HLEventId.USE_SKILL, this.GetHashCode());
+        }
+
         public void SetStartPosition(int row, int col)
         {
             m_playerPos.m_row = row;
@@ -127,15 +132,21 @@ namespace MiniProj
                         }
                         else if(targetCol < m_playerPos.m_col)
                         {
-                            for (int _i = m_playerPos.m_col - 1; _i > targetCol; _i--)
+                            for (int _i = m_playerPos.m_col - 1; _i >= targetCol; _i--)
                             {
                                 if (_sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.GAOTAI
                                     || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.NONE
                                     || _sceneModule.Data[m_playerPos.m_row][_i] == MapDataType.JUMATUI
-                                    || _sceneModule.m_enemyList[m_playerPos.m_row][_i] != null
                                     || _sceneModule.m_npcList[m_playerPos.m_row][_i] != null)
                                 {
                                     return _ret; ;
+                                }
+                                else
+                                {
+                                    if(_sceneModule.m_npcList[m_playerPos.m_row][_i] != null && _i != targetCol)
+                                    {
+                                        return _ret;
+                                    }
                                 }
                             }
                             _ret = true;
@@ -173,15 +184,21 @@ namespace MiniProj
                         }
                         else if (targetRow < m_playerPos.m_row)
                         {
-                            for (int _i = m_playerPos.m_row - 1; _i > targetRow; _i--)
+                            for (int _i = m_playerPos.m_row - 1; _i >= targetRow; _i--)
                             {
                                 if (_sceneModule.Data[_i][targetCol] == MapDataType.GAOTAI
                                     || _sceneModule.Data[_i][targetCol] == MapDataType.NONE
                                     || _sceneModule.Data[_i][targetCol] == MapDataType.JUMATUI
-                                    || _sceneModule.m_enemyList[_i][targetCol] != null
                                     || _sceneModule.m_npcList[_i][targetCol] != null)
                                 {
                                     return _ret; ;
+                                }
+                                else
+                                {
+                                    if(_sceneModule.m_enemyList[_i][targetCol] != null && _i != targetRow)
+                                    {
+                                        return _ret;
+                                    }
                                 }
                             }
                             _ret = true;
@@ -416,7 +433,7 @@ namespace MiniProj
 
 
 
-        private void MoveEnd()
+        public void MoveEnd()
         {
             m_state = State.Idle;
             m_move = false;
@@ -432,6 +449,7 @@ namespace MiniProj
                 m_playereff.Play();
                 m_hiteff.Play();
                 _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col].DestroyObj();
+                _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col] = null;
             }
             bool _bWait = _sceneModule.WaitNpc();
             if(_bWait)
@@ -458,6 +476,14 @@ namespace MiniProj
         public void SetCanMove(bool bState)
         {
             m_move = bState;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.tag == "Enemy" && !m_move)
+            {
+                DestroyObj();
+            }
         }
     }
 

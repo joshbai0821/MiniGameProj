@@ -34,6 +34,7 @@ namespace MiniProj
         {
             UnityEngine.Object _obj = null;
             var _assets = LoadAssetSync(path, name, type, abName);
+            //Debug.Log(name);
             if (_assets != null)
             {
                 _obj = UnityEngine.Object.Instantiate(_assets.m_asset);

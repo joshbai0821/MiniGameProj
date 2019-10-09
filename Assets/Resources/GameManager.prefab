@@ -159,7 +159,8 @@ AudioSource:
   m_GameObject: {fileID: 1930292441713890}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243147072011680964, guid: f1f0f6509124fca41be8e2b1c79f897a,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -218,7 +219,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -239,7 +240,8 @@ AudioSource:
   m_GameObject: {fileID: 1200281580393158}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243053517664608014, guid: f1f0f6509124fca41be8e2b1c79f897a,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -298,7 +300,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -319,7 +321,8 @@ AudioSource:
   m_GameObject: {fileID: 1661061574153726}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243188581004800200, guid: f1f0f6509124fca41be8e2b1c79f897a,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -378,7 +381,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -403,10 +406,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   A_BGMAll: {fileID: 8300000, guid: bb86fce047fac184691b06c4ea8c6ec7, type: 3}
+  mainMenuVolum: 0
   A_lv1: {fileID: 8300000, guid: c56f74cbadad55a4fb09e975ccf25f4e, type: 3}
-  A_lv2: {fileID: 8300000, guid: 74a32c888df55004e9003f168d96a181, type: 3}
-  A_lv3: {fileID: 8300000, guid: cdc4a841caf6a1e4bb6ddb787a974266, type: 3}
-  A_lv4: {fileID: 8300000, guid: 599b7b85ea8f305439e8c15351e41822, type: 3}
+  lv1_Volum: 0.6
+  A_lv2: {fileID: 8300000, guid: c43151b4b490fb344b6da0038201e9e1, type: 3}
+  lv2_Volum: 0.6
+  A_lv3: {fileID: 8300000, guid: 1915bdc1e67df564b81ae2a870af04ec, type: 3}
+  lv3_Volum: 1
+  A_lv4: {fileID: 8300000, guid: 1915bdc1e67df564b81ae2a870af04ec, type: 3}
+  lv4_Volum: 1
+  A_lv5: {fileID: 8300000, guid: 1362c8282b44ea44abeeb25c1ae00195, type: 3}
+  lv5_Volum: 1
 --- !u!114 &114069446156013352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -435,10 +445,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_audioSource: {fileID: 82260223594593510}
-  MainBGM: {fileID: 8300000, guid: a8cf24ce0b8a16845b8188c5ccb4dc5a, type: 3}
-  Lv1BGM: {fileID: 8300000, guid: 90696dc8976594c4c990b23e46a45bf3, type: 3}
-  Lv2BGM: {fileID: 8300000, guid: 5cf9ae3f1bf295b469f09a22907909f3, type: 3}
-  Lv3BGM: {fileID: 8300000, guid: 0088f1db064fba74da8e890f104645af, type: 3}
+  MainBG: {fileID: 8300000, guid: a8cf24ce0b8a16845b8188c5ccb4dc5a, type: 3}
+  mainBG_Volum: 0.2
+  Lv1BG: {fileID: 8300000, guid: 90696dc8976594c4c990b23e46a45bf3, type: 3}
+  Lv1BG_Volum: 0.55
+  Lv2BG: {fileID: 8300000, guid: 5cf9ae3f1bf295b469f09a22907909f3, type: 3}
+  Lv2BG_Volum: 0.35
+  Lv3BG: {fileID: 8300000, guid: 0088f1db064fba74da8e890f104645af, type: 3}
+  Lv3BG_Volum: 1
+  Lv4BG: {fileID: 8300000, guid: 0088f1db064fba74da8e890f104645af, type: 3}
+  Lv4BG_Volum: 1
+  Lv5BG: {fileID: 8300000, guid: 0088f1db064fba74da8e890f104645af, type: 3}
+  Lv5BG_Volum: 1
   UILayer: {fileID: 224838604272652668}
   SceneLayer: {fileID: 4807501200599810}
 --- !u!114 &114972583563079484
@@ -452,13 +470,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c642f667bb6cc2345882f24c1c5a7ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  A_chooseLv: {fileID: 8300000, guid: e6ab4a00c28ecb844bca3cf3c974f874, type: 3}
+  A_chooseLv: {fileID: 8300000, guid: d6045e70a4e8f6b48a022491b782a800, type: 3}
+  A_chooseLv_Volum: 1
   A_click: {fileID: 8300000, guid: 10fd93329c8fe874787caa2500108d0b, type: 3}
+  A_click_Volum: 1
   A_ma: {fileID: 8300000, guid: e56d89f6d50739847b9b98a75b3220af, type: 3}
+  A_ma_Volum: 0.6
   A_che: {fileID: 8300000, guid: b9f4ecc529811f849bbf39f292a5b3ab, type: 3}
-  A_xiang: {fileID: 8300000, guid: ea1402b2e1c136f45b113e7acdb2e5eb, type: 3}
+  A_che_Volum: 0.8
+  A_xiang: {fileID: 8300000, guid: 4ef4219a74734554490e14ae2350c1ac, type: 3}
+  A_xiang_Volum: 1
   A_down: {fileID: 8300000, guid: 27b88a1ec24c82544ac973b8fb06072b, type: 3}
+  A_down_Volum: 1
   A_hit: {fileID: 8300000, guid: 74d92071867185a46ab9074a90c65892, type: 3}
+  A_hit_Volum: 1
+  A_bridge: {fileID: 8300000, guid: b45fee4502361bd4ba9f789e31aa0609, type: 3}
+  A_bridge_Volum: 1
+  A_arrow: {fileID: 8300000, guid: 76128de18ffbca846abd591f8952087e, type: 3}
+  A_arrow_Volum: 1
 --- !u!114 &114979522004935266
 MonoBehaviour:
   m_ObjectHideFlags: 1

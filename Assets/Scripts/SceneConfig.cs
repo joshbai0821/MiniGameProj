@@ -94,6 +94,8 @@ namespace MiniProj
         [SerializeField]
         private string m_backgroundName;
         [SerializeField]
+        private string m_sceneTargetName;
+        [SerializeField]
         private int m_mapRow;
         [SerializeField]
         private int m_mapCol;
@@ -119,6 +121,10 @@ namespace MiniProj
         public string BackGroundName
         {
             get { return m_backgroundName; }
+        }
+        public string SceneTargetName
+        {
+            get { return m_sceneTargetName; }
         }
         public int MapRow
         {

@@ -28,7 +28,8 @@ namespace MiniProj
         {
             if(m_id == 2)
             {
-                EventManager.SendEvent(HLEventId.PLAYER_END_MOVE, null);
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync("Prefabs/TipPanel", "TipPanel3", typeof(GameObject));
+                _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             }
             else if(m_id == 3)
             {
@@ -37,7 +38,8 @@ namespace MiniProj
             }
             else if(m_id == 4)
             {
-
+                SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+                _sceneModule.Loadweisheng();
             }
         }
     }

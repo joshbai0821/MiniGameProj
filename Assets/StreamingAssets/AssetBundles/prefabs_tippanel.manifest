@@ -1,0 +1,51 @@
+ManifestFileVersion: 0
+CRC: 2803509720
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 560ce68966e2851ce4aa25ddef3c269d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 15a98c106417a7569014efa52251f4da
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b935bbf7a2201a540a9bc536c1d8fd2b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/TipPanel/TipPanel2.prefab
+- Assets/Prefabs/TipPanel/TipPanel4.prefab
+- Assets/Prefabs/TipPanel/weisheng.prefab
+- Assets/Prefabs/TipPanel/TipPanel3.prefab
+- Assets/Prefabs/TipPanel/TipPanel1.prefab
+Dependencies:
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_tippanel_ui

@@ -488,6 +488,16 @@ namespace MiniProj
             m_sceneMenuObject.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ReplayScene);
             m_sceneMenuObject.transform.Find("Button1").GetComponent<Button>().onClick.AddListener(GotoMainMenu);
             m_sceneMenuObject.transform.Find("Button2").GetComponent<Button>().onClick.AddListener(GotoNextScene);
+            m_sceneMenuObject.transform.Find("Button3").GetComponent<Button>().onClick.AddListener(Loadmissionpanel);
+        }
+
+        private void Loadmissionpanel()
+        {
+            GameObject _winpanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "winpanel", typeof(GameObject));
+            _winpanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_winPanelObject = _winpanelObj;
+            m_winPanelObject.transform.Find("skipButton").GetComponent<Button>().onClick.AddListener(() => { Destroy(m_winPanelObject); });
+            m_winPanelObject.GetComponent<winpanelcontrol>().Lvmission();
         }
 
         private void LoadWinpanel()
@@ -496,6 +506,7 @@ namespace MiniProj
             _winpanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             m_winPanelObject = _winpanelObj;
             m_winPanelObject.transform.Find("skipButton").GetComponent<Button>().onClick.AddListener(GotoNextScene);
+            m_winPanelObject.GetComponent<winpanelcontrol>().Lvmission();
         }
 
         private void LoadFailpanel(string siwayuanyin)
@@ -517,6 +528,7 @@ namespace MiniProj
         private void LoadPlayer()
         {
             m_player = null;
+            MissionList.Instance.Cleardata();
             string _name = "xiangyu";
             GameObject _playerPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, _name, typeof(GameObject));
             _playerPrefab.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);

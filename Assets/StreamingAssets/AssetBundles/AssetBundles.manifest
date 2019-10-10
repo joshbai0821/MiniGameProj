@@ -1,35 +1,52 @@
 ManifestFileVersion: 0
-CRC: 2132704458
+CRC: 1478135517
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: prefabs_background
       Dependencies:
-        Dependency_0: prefabs_background_tex
+        Dependency_0: prefabs_background_new_tex
+        Dependency_1: prefabs_background_tex
     Info_1:
-      Name: prefabs_background_tex
+      Name: prefabs_background_new_tex
       Dependencies: {}
     Info_2:
-      Name: prefabs_login
+      Name: prefabs_background_tex
       Dependencies: {}
     Info_3:
-      Name: prefabs_mainmenu
+      Name: prefabs_login
       Dependencies: {}
     Info_4:
+      Name: prefabs_mainmenu
+      Dependencies: {}
+    Info_5:
       Name: prefabs_map
       Dependencies:
         Dependency_0: prefabs_map_material
-    Info_5:
-      Name: prefabs_map_material
-      Dependencies: {}
+        Dependency_1: prefabs_map_ui
+        Dependency_2: prefabs_player_material
     Info_6:
+      Name: prefabs_map_material
+      Dependencies:
+        Dependency_0: prefabs_map_ui
+    Info_7:
+      Name: prefabs_map_ui
+      Dependencies: {}
+    Info_8:
       Name: prefabs_player
       Dependencies:
         Dependency_0: prefabs_player_material
-    Info_7:
+    Info_9:
       Name: prefabs_player_material
       Dependencies:
         Dependency_0: prefabs_player_tex
-    Info_8:
+    Info_10:
       Name: prefabs_player_tex
+      Dependencies: {}
+    Info_11:
+      Name: prefabs_tippanel
+      Dependencies:
+        Dependency_0: prefabs_tippanel_ui
+    Info_12:
+      Name: prefabs_tippanel_ui
       Dependencies: {}

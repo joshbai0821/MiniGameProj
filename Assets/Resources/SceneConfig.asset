@@ -17,14 +17,14 @@ MonoBehaviour:
     m_sceneTargetName: SceneTarget1
     m_mapRow: 11
     m_mapCol: 7
-    m_playerStartRow: 1
+    m_playerStartRow: 0
     m_playerStartCol: 3
     m_skillData:
+    - m_id: 0
+      m_count: 0
     - m_id: 1
       m_count: 0
     - m_id: 3
-      m_count: 0
-    - m_id: 0
       m_count: 0
     m_enemyData: []
     m_npcPosData: []

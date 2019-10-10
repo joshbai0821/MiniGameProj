@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2760943961
+CRC: 1533757883
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6322286816310e81cf0646719c0512ad
+    Hash: 447fb241d5d5d4061452b69fc986a780
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0880c2b3b3fabd620c1d2d744db494a8
+    Hash: fec1a66b4d80b8f005e4060d8bbd6ded
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -20,6 +20,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: e080658fb6e4f274c8b168956e6c601d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
@@ -31,7 +33,10 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Prefabs/BackGround/BackGround1.prefab
+- Assets/Prefabs/BackGround/BackGround5.prefab
 - Assets/Prefabs/BackGround/BackGround2.prefab
+- Assets/Prefabs/BackGround/BackGround4.prefab
 - Assets/Prefabs/BackGround/BackGround3.prefab
 Dependencies:
-- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_background_tex"
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_background_new_tex
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_background_tex

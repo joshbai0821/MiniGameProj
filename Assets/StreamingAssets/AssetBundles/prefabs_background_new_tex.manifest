@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 367423243
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 99fabd4ebaa6dc801417bc25927f2036
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- "Assets/Prefabs/BackGround/new_Tex/\u5341\u9762\u57CB\u4F0F_\u5B57.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u82F1\u96C4\u672B\u8DEF_\u5B57.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u82F1\u96C4\u672B\u8DEF_\u56FE.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u9738\u738B\u522B\u59EC_\u5B57.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u8D25\u8D70\u6DEE\u6C34_\u5B57.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u5175\u4E34\u57CE\u4E0B_\u5B57.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u5341\u9762\u57CB\u4F0F_\u56FE.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u8D25\u8D70\u6DEE\u6C34_\u56FE.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u5377\u8F74\u80CC\u666F.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u9738\u738B\u522B\u59EC_\u56FE.png"
+- "Assets/Prefabs/BackGround/new_Tex/\u5175\u4E34\u57CE\u4E0B_\u56FE.png"
+Dependencies: []

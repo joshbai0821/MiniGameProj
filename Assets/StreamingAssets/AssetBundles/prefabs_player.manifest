@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1662320017
+CRC: 2299341701
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cf69777278e9f4ecc108ea06f6da32de
+    Hash: ca7c64b2ad65cdb2299cfb89574fc42f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ae2ac282dd71a223253bf3e6edaf50b5
+    Hash: 0ec314d5ecfcd366724c6bfe73fc2c78
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,11 +17,17 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 23
   Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
 - Class: 33
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
 - Class: 54
+  Script: {instanceID: 0}
+- Class: 64
   Script: {instanceID: 0}
 - Class: 90
   Script: {instanceID: 0}
@@ -43,6 +49,10 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
 Assets:
 - Assets/Prefabs/Player/diChe.prefab
 - Assets/Prefabs/Player/woChe.prefab
@@ -56,4 +66,4 @@ Assets:
 - Assets/Prefabs/Player/yuji.prefab
 - Assets/Prefabs/Player/diXiang.prefab
 Dependencies:
-- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material"
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material

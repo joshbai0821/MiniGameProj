@@ -42,6 +42,12 @@ namespace MiniProj
             get { return m_sceneConfigId; }
             set { m_sceneConfigId = value; }
         }
+        public static bool firstv1 = true;
+        public static bool firstv2 = true;
+        public static bool firstv3 = true;
+        public static bool firstv4 = true;
+        public static bool firstv5 = true;
+
         public Transform UILayer;
         public Transform SceneLayer;
         //private int _test;
@@ -132,7 +138,6 @@ namespace MiniProj
 
         public void UnloadModule(string name)
         {
-            
             for (int _i = 0, _max = m_moduleList.Count; _i < _max; _i++)
             {
                 if (m_moduleList[_i].Name == name)

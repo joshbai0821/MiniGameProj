@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1611949745
+CRC: 1262018699
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 65d07455a1ffa8b310b2fdd3a6e18f85
+    Hash: 27fba2877926fbd2dae37013fc5dcb82
   TypeTreeHash:
     serializedVersion: 2
     Hash: 460b4f5d62b6facbccf7c01637df8f00
@@ -16,8 +16,9 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/BackGround/Tex/bg3.jpg
 - Assets/Prefabs/BackGround/Tex/reelLeft.png
+- Assets/Prefabs/BackGround/Tex/bg4.png
 - Assets/Prefabs/BackGround/Tex/bg2.jpg
 - Assets/Prefabs/BackGround/Tex/reelRight.png
-- Assets/Prefabs/BackGround/Tex/bg1.jpg
 - Assets/Prefabs/BackGround/Tex/whiteBg.png
+- Assets/Prefabs/BackGround/Tex/bg1.png
 Dependencies: []

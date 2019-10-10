@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 906746895
+CRC: 3644903650
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ebb6ca95c5293581b561086bc50a2ad3
+    Hash: 421d3f451e2cce9cb22c95eff25311cf
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 62b73e2382e0027b6d495500de64764a
+    Hash: 339025d37c07389cf3dd9ed25f5b9c84
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,18 +23,18 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 94a8c6f042274a74fbc43d3f6a4dff92, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
-  Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-- Class: 114
   Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-- Class: 114
-  Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-- Class: 114
-  Script: {fileID: -2061169968, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-- Class: 114
-  Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -59,6 +59,6 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Prefabs/MainMenu/ChooseMenuCamera.prefab
+- Assets/Prefabs/MainMenu/mengban.prefab
 - Assets/Prefabs/MainMenu/MainMenuPanel.prefab
-- Assets/Prefabs/MainMenu/ChooseScene.prefab
 Dependencies: []

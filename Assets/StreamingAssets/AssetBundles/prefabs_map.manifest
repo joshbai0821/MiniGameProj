@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 692314360
+CRC: 530000537
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b2239007cc8c672b82f1c901afbdbc1c
+    Hash: c4bcc9018d74957e1461b233977ca8f6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 980933e476008d26fa8f699b1c5a1010
+    Hash: 645341195b7c088cfb9fde61d269c1fd
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,6 +31,20 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 950d234077bad014690507776eed9d19, type: 3}
 - Class: 114
@@ -48,7 +62,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 0199ab4370939944fb2c95f501bf80c6, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 24bdacc3533a1044494e10f3ce77c017, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ca5a43a5876758f4e9fb406905746835, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
 - Class: 114
@@ -59,6 +77,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 37901c3ea7ca0c6448e16d69bc737cc0, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: decdb12a179ec224cad45b9c7fee6e89, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -67,6 +87,14 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 136
   Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 - Class: 222
@@ -74,23 +102,41 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
+- Assets/Prefabs/Map/SceneTarget4.prefab
 - Assets/Prefabs/Map/RookieXiang.prefab
+- Assets/Prefabs/Map/faipanel.prefab
+- Assets/Prefabs/Map/IntroducePanel4.prefab
+- Assets/Prefabs/Map/SkillBtnXiang.prefab
+- Assets/Prefabs/Map/SkillBtnMa.prefab
 - Assets/Prefabs/Map/RookieMa.prefab
 - Assets/Prefabs/Map/SceneMenu.prefab
+- Assets/Prefabs/Map/SkillBtnJu.prefab
 - Assets/Prefabs/Map/Npc.prefab
 - Assets/Prefabs/Map/SceneTarget.prefab
 - Assets/Prefabs/Map/Enemy.prefab
 - Assets/Prefabs/Map/Map1Test.prefab
 - Assets/Prefabs/Map/M_Cube.mat
+- Assets/Prefabs/Map/Map3.prefab
+- Assets/Prefabs/Map/SceneTarget5.prefab
+- Assets/Prefabs/Map/winpanel.prefab
+- Assets/Prefabs/Map/IntroducePanel2.prefab
+- Assets/Prefabs/Map/Flag.prefab
+- Assets/Prefabs/Map/SceneTarget3.prefab
 - Assets/Prefabs/Map/Map2.prefab
 - Assets/Prefabs/Map/RookieEnemy.prefab
 - Assets/Prefabs/Map/Map1.prefab
 - Assets/Prefabs/Map/Cube.prefab
 - Assets/Prefabs/Map/Player.prefab
+- Assets/Prefabs/Map/SceneTarget2.prefab
+- Assets/Prefabs/Map/SceneTarget1.prefab
+- Assets/Prefabs/Map/IntroducePanel1.prefab
 - Assets/Prefabs/Map/RookieJu.prefab
 - Assets/Prefabs/Map/Map0.prefab
 - Assets/Prefabs/Map/Map0Test.prefab
 - Assets/Prefabs/Map/SkillPanel.prefab
-- Assets/Prefabs/Map/SkillBtn.prefab
+- Assets/Prefabs/Map/IntroducePanel3.prefab
+- Assets/Prefabs/Map/Map4.prefab
 Dependencies:
-- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_material"
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_material
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_ui
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_material

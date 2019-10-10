@@ -21,25 +21,25 @@ namespace MiniProj
         private List<GameObject> m_followList;
         private MapPos[] m_enemyPosList =
         {
-            new MapPos(4, 2), /*new MapPos(4, 3),*/ new MapPos(4, 4), /*new MapPos(4, 5),*/ new MapPos(4, 6),
+            /*new MapPos(4, 2),*/ new MapPos(4, 3), new MapPos(3, 4), new MapPos(4, 5), /*new MapPos(3, 6),*/
             new MapPos(5, 2), /*new MapPos(5, 3),*/ /*new MapPos(5, 5),*/ new MapPos(5, 6),
-            new MapPos(7, 2), /*new MapPos(7, 3),*/ new MapPos(7, 4), /*new MapPos(7, 5),*/ new MapPos(7, 6),
-            new MapPos(8, 2), /*new MapPos(8, 3),*/ /*new MapPos(8, 5),*/ new MapPos(8, 6),
-            new MapPos(10, 0), /*new MapPos(10, 1),*/ new MapPos(10, 2), /*new MapPos(10, 3),*/ new MapPos(10, 4),
+            /*new MapPos(7, 2),*/ new MapPos(7, 3), new MapPos(6, 4), new MapPos(7, 5), /*new MapPos(7, 6),*/
+            new MapPos(8, 2), /*new MapPos(8, 3), new MapPos(8, 5),*/ new MapPos(8, 6),
+            /*new MapPos(10, 0),*/ new MapPos(10, 1), new MapPos(9, 2), new MapPos(10, 3) /*new MapPos(10, 4),*/
         };
         private MapPos[] m_maPosList =
         {
-            new MapPos(1,1), /*new MapPos(1,2), new MapPos(1,4),*/ new MapPos(1,5),
+            //new MapPos(1,1), /*new MapPos(1,2), new MapPos(1,4),*/ new MapPos(1,5),
         };
 
         private MapPos[] m_juPosList =
         {
-            new MapPos(3,2), /*new MapPos(3,3), new MapPos(3,5),*/ new MapPos(3,6),
+            //new MapPos(3,2), /*new MapPos(3,3), new MapPos(3,5),*/ new MapPos(3,6),
         };
 
         private MapPos[] m_xiangPosList =
         {
-            new MapPos(5,2), /*new MapPos(5,3), new MapPos(5,5),*/ new MapPos(5,6),
+            //new MapPos(5,2), /*new MapPos(5,3), new MapPos(5,5),*/ new MapPos(5,6),
         };
 
         private List<Material> m_matList;
@@ -140,13 +140,13 @@ namespace MiniProj
             _introduce1.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
 
             LoadRookieMa();
-            long _id = TimerManager.StartTimer(1000, false, null, DelayActiveMaBtn, 0);
+            long _id = TimerManager.StartTimer(500, false, null, DelayActiveMaBtn, 0);
             m_timerIdList.Add(_id);
         }
 
         private void DelayActiveMaBtn(EventArgs args)
         {
-            ActiveBtn(SkillId.MA);
+            ActiveBtn(SkillId.MA,1);
         }
 
         private void FollowPlayer(EventArgs args)
@@ -161,7 +161,7 @@ namespace MiniProj
                     _follower.SetPosition(_row + 2, _col + 1);
                 }
                 IntEventArgs _args = new IntEventArgs(m_step);
-                long _id = TimerManager.StartTimer(1500, false, _args, DelayExecuteEnemies, 0);
+                long _id = TimerManager.StartTimer(500, false, _args, DelayExecuteEnemies, 0);
                 m_timerIdList.Add(_id);
                 ++m_step;
             }
@@ -175,7 +175,7 @@ namespace MiniProj
                     _follower.SetPosition(_row + 2, _col);
                 }
                 IntEventArgs _args = new IntEventArgs(m_step);
-                long _id = TimerManager.StartTimer(1500, false, _args, DelayExecuteEnemies, 0);
+                long _id = TimerManager.StartTimer(500, false, _args, DelayExecuteEnemies, 0);
                 m_timerIdList.Add(_id);
                 ++m_step;
             }
@@ -189,21 +189,23 @@ namespace MiniProj
                     _follower.SetPosition(_row + 2, _col - 2);
                 }
                 IntEventArgs _args = new IntEventArgs(m_step);
-                long _id = TimerManager.StartTimer(1500, false, _args, DelayDestroyXiangFollow, 0);
+                long _id = TimerManager.StartTimer(500, false, _args, DelayExecuteEnemies, 0);
                 m_timerIdList.Add(_id);
                 ++m_step;
+                MissionList.Instance.m_mission1_2 = true;
+                MissionList.Instance.m_mission1_3 = true;
             }
-            //else if(m_step == 3)
-            //{
-            //    for (int _i = 0; _i < m_followList.Count; ++_i)
-            //    {
-            //        Follower _follower = m_followList[_i].GetComponent<Follower>();
-            //        int _row = _follower.Pos.m_row;
-            //        int _col = _follower.Pos.m_col;
-            //        _follower.SetPosition(_row + 2, _col + 2);
-            //    }
-            //    ++m_step;
-            //}
+            else if (m_step == 3)
+            {
+                for (int _i = 0; _i < m_followList.Count; ++_i)
+                {
+                    Follower _follower = m_followList[_i].GetComponent<Follower>();
+                    int _row = _follower.Pos.m_row;
+                    int _col = _follower.Pos.m_col;
+                    _follower.SetPosition(_row + 2, _col + 2);
+                }
+                ++m_step;
+            }
         }
 
         private void DelayExecuteEnemies(EventArgs args)
@@ -216,6 +218,11 @@ namespace MiniProj
             else if (((IntEventArgs)args).m_args == 1)
             {
                 DelayDestroyJuFollow(null);
+                //TimerManager.StartTimer(300, false, null, DelayDestroyJuFollow, 0);
+            }
+            else if (((IntEventArgs)args).m_args == 2)
+            {
+                DelayDestroyXiangFollow(null);
                 //TimerManager.StartTimer(300, false, null, DelayDestroyJuFollow, 0);
             }
             ExecuteRookieEnemies();
@@ -251,9 +258,11 @@ namespace MiniProj
                 GameObject.Destroy(m_followList[_i]);
             }
             m_followList.Clear();
-            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-            _sceneModule.ArriveSceneFinal();
-            _sceneModule.GotoNextScene();
+            //SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            //_sceneModule.ArriveSceneFinal();
+            //_sceneModule.GotoNextScene();
+            long _id = TimerManager.StartTimer(500, false, null, DelayActiveJuBtn, 0);
+            m_timerIdList.Add(_id);
         }
 
         private void DelayLoadRookieJu(EventArgs args)
@@ -274,7 +283,8 @@ namespace MiniProj
 
         private void DelayActiveJuBtn(EventArgs args)
         {
-            ActiveBtn(SkillId.JU);
+            ActiveBtn(SkillId.JU, 1);
+
         }
 
         private void DelayLoadRookieXiang(EventArgs args)
@@ -294,7 +304,7 @@ namespace MiniProj
 
         private void DelayActiveXiangBtn(EventArgs args)
         {
-            ActiveBtn(SkillId.XIANG);
+            ActiveBtn(SkillId.XIANG,1);
         }
 
         public void ChangeMap(SkillId id)
@@ -303,20 +313,20 @@ namespace MiniProj
             if (id == SkillId.MA && m_matList.Count == 0)
             {
                 //改动
-                Transform _tsf1 = _sceneModule.GetTsfMapData(3, 2);
-                Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
+                //Transform _tsf1 = _sceneModule.GetTsfMapData(3, 2);
+                //Material _material1 = _tsf1.GetComponent<MeshRenderer>().material;
                 //m_originColorList.Add(_material1.GetColor("_Color"));
                 //_material1.SetColor("_Color", Color.red);
                 //_material1.SetFloat("_EmissPower", EmissPower);
-                m_matList.Add(_material1);
-                Transform _tsf2 = _sceneModule.GetTsfMapData(3, 4);
+                //m_matList.Add(_material1);
+                Transform _tsf2 = _sceneModule.GetTsfMapData(2, 4);
                 Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
                 //m_originColorList.Add(_material2.GetColor("_Color"));
                 //_material2.SetColor("_Color", Color.red);
                 _material2.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material2);
             }
-            if(id == SkillId.JU && m_matList.Count == 0)
+            if(id == SkillId.JU && m_matList.Count == 0 && m_step == 1)
             {
                 //
                 Transform _tsf1 = _sceneModule.GetTsfMapData(0, 4);
@@ -340,14 +350,7 @@ namespace MiniProj
                 //_material3.SetFloat("_EmissPower", EmissPower);
                 m_matList.Add(_material3);
                 //
-                Transform _tsf4 = _sceneModule.GetTsfMapData(4, 4);
-                Material _material4 = _tsf4.GetComponent<MeshRenderer>().material;
-                //m_originColorList.Add(_material4.GetColor("_Color"));
-                //_material4.SetColor("_Color", Color.red);
-                //_material4.SetFloat("_EmissPower", EmissPower);
-                m_matList.Add(_material4);
-                //
-                Transform _tsf5 = _sceneModule.GetTsfMapData(5, 4);
+                Transform _tsf5 = _sceneModule.GetTsfMapData(4, 4);
                 Material _material5 = _tsf5.GetComponent<MeshRenderer>().material;
                 //m_originColorList.Add(_material5.GetColor("_Color"));
                 //_material5.SetColor("_Color", Color.red);
@@ -373,7 +376,7 @@ namespace MiniProj
                     //_material2.SetFloat("_EmissPower", EmissPower);
                     m_matList.Add(_material2);
                     //
-                    Transform _tsf3 = _sceneModule.GetTsfMapData(7, 2);
+                    Transform _tsf3 = _sceneModule.GetTsfMapData(6, 2);
                     Material _material3 = _tsf3.GetComponent<MeshRenderer>().material;
                     //m_originColorList.Add(_material3.GetColor("_Color"));
                     //_material3.SetColor("_Color", Color.red);
@@ -417,6 +420,15 @@ namespace MiniProj
                 //    m_matList.Add(_material4);
                 //}
             }
+            if (id == SkillId.JU && m_matList.Count == 0 && m_step == 3)
+            {
+                Transform _tsf2 = _sceneModule.GetTsfMapData(10, 2);
+                Material _material2 = _tsf2.GetComponent<MeshRenderer>().material;
+                //m_originColorList.Add(_material2.GetColor("_Color"));
+                //_material2.SetColor("_Color", Color.red);
+                _material2.SetFloat("_EmissPower", EmissPower);
+                m_matList.Add(_material2);
+            }
         }
 
         private void LoadRookieMa()
@@ -433,14 +445,14 @@ namespace MiniProj
             }
         }
 
-        private void ActiveBtn(SkillId id)
+        private void ActiveBtn(SkillId id,int num)
         {
             for(int _i = 0; _i < m_btnList.Count; ++_i)
             {
                 if(m_btnList[_i].GetComponent<SkillBtn>().Id == id)
                 {
                     m_btnList[_i].GetComponent<Button>().interactable = true;
-                    m_btnList[_i].GetComponent<SkillBtn>().Initial(id, 1);
+                    m_btnList[_i].GetComponent<SkillBtn>().Initial(id, num);
                 }
             }
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");

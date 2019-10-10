@@ -370,6 +370,8 @@ namespace MiniProj
                             float _targetPosZ = _data.Pos.m_col * DiffZ;
                             if(m_skillId == SkillId.JU)
                             {
+                                MissionList.Instance.jutimes++;
+                                MissionList.Instance.Judgemission();
                                 Sequence _sequence = DOTween.Sequence();
                                 _sequence.Append(transform.DOMove(new Vector3(_targetPosX, this.transform.position.y, _targetPosZ), 0.4f).SetEase(m_juCurve));
                                 _sequence.AppendCallback(MoveEnd);
@@ -377,6 +379,8 @@ namespace MiniProj
                             }
                             else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO)
                             {
+                                MissionList.Instance.matimes++;
+                                MissionList.Instance.Judgemission();
                                 float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
                                 {
@@ -412,6 +416,8 @@ namespace MiniProj
                             }
                             else if(m_skillId == SkillId.XIANG)
                             {
+                                MissionList.Instance.xiangtimes++;
+                                MissionList.Instance.Judgemission();
                                 float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
                                 {
@@ -445,6 +451,7 @@ namespace MiniProj
             }
             else
             {
+                MissionList.Instance.enemykilled++;
                 AudioFx.Instance.pawnhit();
                 m_playereff.Play();
                 m_hiteff.Play();

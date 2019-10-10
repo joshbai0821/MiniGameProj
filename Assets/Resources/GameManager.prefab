@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 4594891477519280}
   - component: {fileID: 114303144997666718}
   - component: {fileID: 82260223594593510}
+  - component: {fileID: 114640178461292044}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -459,6 +460,54 @@ MonoBehaviour:
   Lv5BG_Volum: 1
   UILayer: {fileID: 224838604272652668}
   SceneLayer: {fileID: 4807501200599810}
+--- !u!114 &114640178461292044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1930292441713890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9d78501d93b6a48bc0783e57c31b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_mission1:
+  - "\u9879\u7FBD\u62B5\u8FBE\u7EC8\u70B9"
+  - "\u51FB\u6740\u4E09\u540D\u654C\u519B"
+  - "\u4F7F\u7528\u4E09\u79CD\u68CB\u5B50"
+  m_mission2:
+  - "\u9879\u7FBD\u62B5\u8FBE\u7EC8\u70B9"
+  - "\u51FB\u6740\u5168\u90E8\u654C\u519B"
+  - "\u4E0D\u4F7F\u7528\u76F8\u8FC7\u5173"
+  m_mission3:
+  - "\u4FDD\u62A4\u865E\u59EC\u62B5\u8FBE\u7EC8\u70B9"
+  - "\u51FB\u6740\u81F3\u5C11\u4E03\u540D\u654C\u519B"
+  - "\u4F7F\u7528\u4E0D\u8D85\u8FC7\u4E00\u4E2A\u8F66"
+  m_mission4:
+  - "\u4FDD\u62A4\u865E\u59EC\u62B5\u8FBE\u7EC8\u70B9"
+  - "\u4E0D\u4F7F\u7528\u8F66\u8FC7\u5173"
+  - "\u4E0D\u51FB\u6740\u4EFB\u4F55\u654C\u519B"
+  m_mission5:
+  - "\u4FDD\u62A4\u865E\u59EC"
+  - "\u529B\u6218\u5230\u5E95"
+  - "\u4E4C\u6C5F\u81EA\u520E"
+  m_mission1_1: 0
+  m_mission1_2: 0
+  m_mission1_3: 0
+  m_mission2_1: 0
+  m_mission2_2: 0
+  m_mission2_3: 0
+  m_mission3_1: 0
+  m_mission3_2: 0
+  m_mission3_3: 0
+  m_mission4_1: 0
+  m_mission4_2: 0
+  m_mission4_3: 0
+  m_mission5_1: 1
+  enemykilled: 0
+  jutimes: 0
+  matimes: 0
+  xiangtimes: 0
 --- !u!114 &114972583563079484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,7 +528,7 @@ MonoBehaviour:
   A_che: {fileID: 8300000, guid: b9f4ecc529811f849bbf39f292a5b3ab, type: 3}
   A_che_Volum: 0.8
   A_xiang: {fileID: 8300000, guid: 4ef4219a74734554490e14ae2350c1ac, type: 3}
-  A_xiang_Volum: 1
+  A_xiang_Volum: 0.8
   A_down: {fileID: 8300000, guid: 27b88a1ec24c82544ac973b8fb06072b, type: 3}
   A_down_Volum: 1
   A_hit: {fileID: 8300000, guid: 74d92071867185a46ab9074a90c65892, type: 3}

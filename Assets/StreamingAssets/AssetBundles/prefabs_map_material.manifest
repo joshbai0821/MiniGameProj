@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 750770034
+CRC: 2204639230
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 38f0e0dc742c01eeeeb964d25a4d5f97
+    Hash: dd9072150af91627338452647027d5fa
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6f165f44e4778b6c9d85e7a145a54cb1
@@ -18,17 +18,26 @@ ClassTypes:
 Assets:
 - Assets/Prefabs/Map/Material/M_Plane2.mat
 - Assets/Prefabs/Map/Material/CubeV1_2.mat
+- Assets/Prefabs/Map/Material/CubeV3_3.mat
+- Assets/Prefabs/Map/Material/CubeV3_2.mat
 - Assets/Prefabs/Map/Material/TEST.mat
-- Assets/Prefabs/Map/Material/T_FloorLine.tga
 - Assets/Prefabs/Map/Material/M_Plane.mat
 - Assets/Prefabs/Map/Material/M_PlaneMiddle2.mat
+- Assets/Prefabs/Map/Material/Cubev3.mat
 - Assets/Prefabs/Map/Material/Blue.mat
-- Assets/Prefabs/Map/Material/Concrete_Albedo.tga
+- Assets/Prefabs/Map/Material/CubeV2_2.mat
+- Assets/Prefabs/Map/Material/CubeV2.mat
 - Assets/Prefabs/Map/Material/Red.mat
 - Assets/Prefabs/Map/Material/Green.mat
+- Assets/Prefabs/Map/Material/yuji_hua.mat
 - Assets/Prefabs/Map/Material/M_PlaneCorner.mat
+- Assets/Prefabs/Map/Material/waterv3.mat
 - Assets/Prefabs/Map/Material/CubeV1_3.mat
+- Assets/Prefabs/Map/Material/waterv4.mat
+- Assets/Prefabs/Map/Material/hua_floor.mat
 - Assets/Prefabs/Map/Material/M_PlaneCorner2.mat
+- Assets/Prefabs/Map/Material/CubeV2_3.mat
 - Assets/Prefabs/Map/Material/M_PlaneMiddle.mat
 - Assets/Prefabs/Map/Material/CubeV1.mat
-Dependencies: []
+Dependencies:
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_ui

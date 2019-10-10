@@ -1,0 +1,51 @@
+ManifestFileVersion: 0
+CRC: 877465077
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 24a34b96bfa510437f76c0558c6a1099
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Map/UI/T_WaterLine.tga
+- Assets/Prefabs/Map/UI/T_FloorLine 1.tga
+- Assets/Prefabs/Map/UI/name5.png
+- "Assets/Prefabs/Map/UI/\u4EFB\u52A1\u6846.png"
+- Assets/Prefabs/Map/UI/yuji_hua.png
+- Assets/Prefabs/Map/UI/name3.png
+- Assets/Prefabs/Map/UI/UI-Ma.png
+- Assets/Prefabs/Map/UI/Water.tga
+- "Assets/Prefabs/Map/UI/\u4EFB\u52A1\u6309\u94AE1.png"
+- Assets/Prefabs/Map/UI/T_FloorLine.tga
+- "Assets/Prefabs/Map/UI/\u8FC7.png"
+- "Assets/Prefabs/Map/UI/\u521D-\u767D\u5E95.png"
+- "Assets/Prefabs/Map/UI/\u521D.png"
+- Assets/Prefabs/Map/UI/name1.png
+- "Assets/Prefabs/Map/UI/\u8FD4.png"
+- "Assets/Prefabs/Map/UI/\u8FC7-\u767D\u5E95.png"
+- Assets/Prefabs/Map/UI/Concrete_Albedo.tga
+- Assets/Prefabs/Map/UI/introduce1.png
+- Assets/Prefabs/Map/UI/name4.png
+- "Assets/Prefabs/Map/UI/\u52FE-2.png"
+- Assets/Prefabs/Map/UI/UI-Xiang.png
+- "Assets/Prefabs/Map/UI/\u6C34\u58A8\u5708-1.png"
+- Assets/Prefabs/Map/UI/UI-black-Xiang.png
+- "Assets/Prefabs/Map/UI/\u8FD4-\u767D\u5E95.png"
+- Assets/Prefabs/Map/UI/UI-black-Ma.png
+- Assets/Prefabs/Map/UI/introduce3.png
+- Assets/Prefabs/Map/UI/Sand_Albedo.tga
+- Assets/Prefabs/Map/UI/lock.png
+- Assets/Prefabs/Map/UI/ConcretePlate_Diffuse.tga
+- Assets/Prefabs/Map/UI/introduce2.png
+- Assets/Prefabs/Map/UI/introduce4.png
+- Assets/Prefabs/Map/UI/UI-black-che.png
+- Assets/Prefabs/Map/UI/UI-Che.png
+- Assets/Prefabs/Map/UI/name2.png
+Dependencies: []

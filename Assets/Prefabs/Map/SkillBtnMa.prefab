@@ -202,7 +202,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300000, guid: c44b619b6d90c7f46b452ad01bdab7be, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 03a9f67c967147d4b859d0172b17da06, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

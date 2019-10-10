@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 857884023
+CRC: 938418743
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d858b9030941b7928ddce7a9c56ac228
+    Hash: f31f3274b6ed425e4921786d2b149084
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6f165f44e4778b6c9d85e7a145a54cb1
@@ -29,6 +29,7 @@ Assets:
 - Assets/Prefabs/Player/Material/diHorse.mat
 - Assets/Prefabs/Player/Material/jian.mat
 - Assets/Prefabs/Player/Material/diXiang.mat
+- Assets/Prefabs/Player/Material/shadow.mat
 - Assets/Prefabs/Player/Material/xy_leg.mat
 - Assets/Prefabs/Player/Material/diChe.mat
 - Assets/Prefabs/Player/Material/woBing.mat
@@ -41,4 +42,4 @@ Assets:
 - Assets/Prefabs/Player/Material/woHorse.mat
 - Assets/Prefabs/Player/Material/xy_fce.mat
 Dependencies:
-- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_tex"
+- E:/newproj/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_tex

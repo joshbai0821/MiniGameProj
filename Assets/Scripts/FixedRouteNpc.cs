@@ -25,7 +25,10 @@ namespace MiniProj
 
         public void DestroyObj()
         {
-            GameObject.Destroy(this.gameObject);
+            if (this != null)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
         }
 
         private void OnDestroy()

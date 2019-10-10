@@ -15,7 +15,7 @@ namespace MiniProj
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        private MapPos m_playerPos;
+        public MapPos m_playerPos;
         private ParticleSystem m_playereff;
         private ParticleSystem m_hiteff;
         public MapPos Pos
@@ -47,7 +47,10 @@ namespace MiniProj
 
         public void DestroyObj()
         {
-            GameObject.Destroy(this.gameObject);
+            if (this != null)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
         }
 
         private void OnDestroy()
@@ -499,7 +502,6 @@ namespace MiniProj
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
             if (!_sceneModule.m_sceneWin)
             {
-
                 _sceneModule.LoadFailpanel("项羽阵亡");
                 DestroyObj();
             }            

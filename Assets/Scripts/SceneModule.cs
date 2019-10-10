@@ -52,7 +52,7 @@ namespace MiniProj
         private List<Material> m_matList;
         private List<Color> m_originColorList;
         private List<SkillBtn> m_skillBtnList;
-        private bool m_sceneWin = false;
+        public bool m_sceneWin = false;
 
         public SceneModule() : base("SceneModule")
         {
@@ -396,29 +396,29 @@ namespace MiniProj
                 {
                     _gameOver = 3;
                     Debug.Log("项羽虞姬死了");
-                    if (!m_sceneWin)
-                    {
-                        LoadFailpanel("虞姬阵亡");
-                    }
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
                 }
                 else if (Ret == PlayerD.YUJI)
                 {
                     _gameOver = 1;
                     Debug.Log("虞姬死了");
-                    if (!m_sceneWin)
-                    {
-                        LoadFailpanel("虞姬阵亡");
-                    }
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
 
                 }
                 else if(Ret == PlayerD.XIANGYU)
                 {
                     _gameOver = 2;
                     Debug.Log("项羽死了");
-                    if (!m_sceneWin)
-                    {
-                        LoadFailpanel("项羽阵亡");
-                    }
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("项羽阵亡");
+                    //}
                 }
 
             }
@@ -502,14 +502,14 @@ namespace MiniProj
 
         private void LoadWinpanel()
         {
-            GameObject _winpanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "winpanel", typeof(GameObject));
+            GameObject _winpanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "winwin", typeof(GameObject));
             _winpanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             m_winPanelObject = _winpanelObj;
             m_winPanelObject.transform.Find("skipButton").GetComponent<Button>().onClick.AddListener(GotoNextScene);
             m_winPanelObject.GetComponent<winpanelcontrol>().Lvmission();
         }
 
-        private void LoadFailpanel(string siwayuanyin)
+        public void LoadFailpanel(string siwayuanyin)
         {
             GameObject _faipanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "faipanel", typeof(GameObject));
             _faipanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
@@ -963,7 +963,6 @@ namespace MiniProj
             }
 
             //遍历所有enemy,播位置变化的动画,update
-            
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
                 for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
@@ -972,10 +971,9 @@ namespace MiniProj
                     {
 
                         m_enemyList[_i][_j].EnemyMove(_i, _j);
-                       // m_enemyList[_i][_j].Update();
+                        // m_enemyList[_i][_j].Update();
                     }
                 }
-
             }
             
 
@@ -989,10 +987,10 @@ namespace MiniProj
                     //虞姬死了
                     Debug.Log("虞姬死了");
                     //ReplayScene();
-                    if (!m_sceneWin)
-                    {
-                        LoadFailpanel("虞姬阵亡");
-                    }
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
                 }
                 else
                 {
@@ -1001,10 +999,10 @@ namespace MiniProj
                     //项羽死了
                     Debug.Log("项羽死了");
                     //ReplayScene();
-                    if (!m_sceneWin)
-                    {
-                        LoadFailpanel("项羽阵亡");
-                    }
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("项羽阵亡");
+                    //}
                 }
             }
 

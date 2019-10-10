@@ -33,6 +33,9 @@ public class AudioFx : MonoBehaviour {
     public AudioClip A_arrow;
     public float A_arrow_Volum;
 
+    public AudioClip A_enemy;
+    public float A_enemy_Volum;
+
 
     //私有的静态实例
     private static AudioFx _instance = null;
@@ -110,6 +113,13 @@ public class AudioFx : MonoBehaviour {
     {
         m_FXAudio.clip = A_hit;
         m_FXAudio.volume = A_hit_Volum;
+        m_FXAudio.Play();
+    }
+
+    public void enemymovesound()
+    {
+        m_FXAudio.clip = A_enemy;
+        m_FXAudio.volume = A_enemy_Volum;
         m_FXAudio.Play();
     }
 

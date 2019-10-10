@@ -13,7 +13,7 @@ namespace MiniProj
         private int m_step = 0;
 
         //亮度
-        private float EmissPower = 5.0f;
+        private float EmissPower = 1.2f;
 
         private List<long> m_timerIdList;
         private List<GameObject> m_btnList;

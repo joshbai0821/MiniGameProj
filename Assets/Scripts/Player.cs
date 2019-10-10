@@ -489,8 +489,20 @@ namespace MiniProj
         {
             if(other.gameObject.tag == "Enemy" && !m_move)
             {
-                DestroyObj();
+                Invoke("delayLoadFailpanel", 0.7f);
+                gameObject.SetActive(false);                
             }
+        }
+
+        private void delayLoadFailpanel()
+        {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (!_sceneModule.m_sceneWin)
+            {
+
+                _sceneModule.LoadFailpanel("项羽阵亡");
+                DestroyObj();
+            }            
         }
     }
 

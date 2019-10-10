@@ -527,8 +527,8 @@ MonoBehaviour:
   A_ma_Volum: 0.6
   A_che: {fileID: 8300000, guid: b9f4ecc529811f849bbf39f292a5b3ab, type: 3}
   A_che_Volum: 0.8
-  A_xiang: {fileID: 8300000, guid: 4ef4219a74734554490e14ae2350c1ac, type: 3}
-  A_xiang_Volum: 0.8
+  A_xiang: {fileID: 8300000, guid: b53b6d9da9a23dd4e9d6f534831e7296, type: 3}
+  A_xiang_Volum: 1
   A_down: {fileID: 8300000, guid: 27b88a1ec24c82544ac973b8fb06072b, type: 3}
   A_down_Volum: 1
   A_hit: {fileID: 8300000, guid: 74d92071867185a46ab9074a90c65892, type: 3}
@@ -537,6 +537,8 @@ MonoBehaviour:
   A_bridge_Volum: 1
   A_arrow: {fileID: 8300000, guid: 76128de18ffbca846abd591f8952087e, type: 3}
   A_arrow_Volum: 1
+  A_enemy: {fileID: 8300000, guid: 8a6d18a1c8e750e44a43acd7095a1c47, type: 3}
+  A_enemy_Volum: 1
 --- !u!114 &114979522004935266
 MonoBehaviour:
   m_ObjectHideFlags: 1

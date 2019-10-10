@@ -626,21 +626,42 @@ namespace MiniProj
             }
         }
 
+        //public void NpcComplete(EventArgs args)
+        //{
+        //    if(m_waitCount > 0)
+        //    {
+        //        --m_waitCount;
+        //    }
+        //    if (m_waitCount == 0)
+        //    {
+        //        m_SceneStep++;
+        //        int _gameOver = EnemyListUpdate();
+        //        //if(_gameOver == 0)
+        //        //{
+        //        //    _gameOver = ArrowAttack();
+        //        //}
+        //        CheckSkillCount(_gameOver);
+        //        m_player.SetCanMove(_gameOver == 0);
+        //        LoadSpecilEmeny();
+        //        //ArrowTrigger();
+
+        //    }
+        //}
         public void NpcComplete(EventArgs args)
         {
-            if(m_waitCount > 0)
+            if (m_waitCount > 0)
             {
                 --m_waitCount;
             }
             if (m_waitCount == 0)
             {
                 m_SceneStep++;
-                int _gameOver = EnemyListUpdate();
-                if(_gameOver == 0)
+                int _gameOver = CheckSkillCount();
+                if (_gameOver == 0 && !m_sceneWin)
                 {
-                    _gameOver = ArrowAttack();
+                    _gameOver = EnemyListUpdate(_gameOver);
                 }
-                CheckSkillCount(_gameOver);
+
                 m_player.SetCanMove(_gameOver == 0);
                 LoadSpecilEmeny();
                 //ArrowTrigger();
@@ -887,21 +908,21 @@ namespace MiniProj
             _obj.transform.Find("back").GetComponent<Button>().onClick.AddListener(weishengend);
         }
 
-        private void CheckSkillCount(int gameOver)
+        private int CheckSkillCount(/*int gameOver*/)
         {
-            if(gameOver != 0)
-            {
-                return;
-            }
+            //if(gameOver != 0)
+            //{
+            //    return;
+            //}
             if(GameManager.SceneConfigId == 0)
             {
-                return;
+                return 0;
             }
             else if(GameManager.SceneConfigId == 4 && m_SceneStep == 3)
             {
                 LoadPerformEmemy();
                 Invoke("LoadTipPrefab2", 1.0f);
-                return;
+                return 0;
             }
             bool _ret = false;
             for (int _i = 0; _i < m_skillBtnList.Count; ++_i)
@@ -915,7 +936,9 @@ namespace MiniProj
             if(!_ret)
             {
                 RoundFail(null);
+                return 1;
             }
+            return 0;
         }
 
         public void RoundFail(EventArgs args)
@@ -928,7 +951,7 @@ namespace MiniProj
             }
         }
 
-        public int EnemyListUpdate()
+        public int EnemyListUpdate(int GameOver)
         {
             bool YuJiExist = UpdateYuJiPos();
             //清空所有enemy change 标记
@@ -944,7 +967,7 @@ namespace MiniProj
                 }
             }
 
-            int GameOver = 0;
+            //int GameOver = 0;
             //找一个enemy
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
